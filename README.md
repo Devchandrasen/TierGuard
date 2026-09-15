@@ -78,6 +78,21 @@ baseline using a two-sided exact paired sign-flip permutation test and paired
 Cohen's dz. P-values are Holm-adjusted within each dataset × attack × metric
 family. There is no post-hoc best-baseline selection.
 
+## Confirmatory-v1 outcome
+
+The integrity gate passed all 180 expected runs from commit
+`88a02253ff67d0d336dc4dc041c8620b5b851533`. Across the 72 pre-specified
+TierGuard-versus-baseline outcome comparisons, the mean paired direction favored
+TierGuard in 56 and favored the baseline in 16. None of the 72 comparisons
+remained significant at 0.05 after the pre-specified within-family Holm
+correction. These results are therefore descriptive confirmatory evidence under
+the released simulation conditions, not evidence of general or statistically
+established superiority.
+
+The machine-readable validation, per-run metrics, descriptive summaries, paired
+comparisons, and concise report are in `artifacts/confirmatory_v1/`. Raw
+per-round records and their SHA-256 manifest are attached to the GitHub release.
+
 ## Repository layout
 
 - `configs/confirmatory_v1/`: frozen matrix, dataset configs, and checksums

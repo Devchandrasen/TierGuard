@@ -8,4 +8,5 @@
 - Pin the Python and CUDA 12.8 package environment.
 - Capture per-run Git, configuration, platform, and package provenance.
 - Add exact paired permutation tests, confidence intervals, effect sizes, and Holm correction.
+- Publish the validated 180-run aggregate results and raw-output checksum manifest.
 - State the secure-aggregation, privacy, malicious-edge, and threat-knowledge boundaries explicitly.
