@@ -1,0 +1,36 @@
+protocol_id: tierguard-confirmatory-v1
+frozen: true
+frozen_on: 2026-09-15
+target_method: tierguard
+device: cpu
+seeds: [101, 202, 303, 404, 505, 606]
+methods:
+  - hfl_fedavg
+  - hfl_fltrust
+  - hfl_trimmed_mean
+  - hfl_rfa
+  - tierguard
+attacks:
+  - name: backdoor_model_replacement
+    malicious_fraction: 0.2
+  - name: adaptive_tierguard_aware
+    malicious_fraction: 0.2
+datasets:
+  - name: mnist
+    config: configs/confirmatory_v1/mnist.yaml
+  - name: fashionmnist
+    config: configs/confirmatory_v1/fashionmnist.yaml
+  - name: digits
+    config: configs/confirmatory_v1/digits.yaml
+analysis:
+  metrics:
+    - name: clean_accuracy
+      direction: higher
+    - name: macro_f1
+      direction: higher
+    - name: attack_success_rate
+      direction: lower
+  test: exact_paired_sign_flip_permutation
+  confidence_interval: paired_t_95
+  effect_size: paired_cohens_dz
+  multiplicity: holm_within_dataset_attack_metric

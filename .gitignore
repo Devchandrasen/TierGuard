@@ -8,10 +8,21 @@ htmlcov/
 build/
 dist/
 *.egg-info/
-data/
-results/
-outputs/
+/data/
+/results/
+/outputs/
 *.log
 .DS_Store
 Thumbs.db
 
+# Recovered exploratory/HPC launchers are retained locally but are not part of
+# the frozen public artifact.
+Makefile
+scripts/*.sh
+scripts/*.pbs
+scripts/prepare_nsl_kdd.py
+configs/ablation/
+configs/main/
+configs/overhead/
+configs/privacy/
+configs/smoke/

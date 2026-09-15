@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the archived TierGuard release."
+type: software
+title: "TierGuard: trusted-edge robust aggregation for hierarchical federated learning"
+version: 1.0.0.0
+date-released: 2026-09-15
+license: MIT
+repository-code: "https://github.com/Devchandrasen/TierGuard"
+abstract: >-
+  Reproducible research code, frozen configurations, matched hierarchical
+  baselines, confirmatory multi-seed outputs, and paired analysis for TierGuard.
+authors:
+  - given-names: Rajan
+    family-names: Mani
+    affiliation: National Institute of Technology Meghalaya
+  - given-names: Surmila
+    family-names: Thokchom
+    affiliation: National Institute of Technology Meghalaya
+  - given-names: Sarsij
+    family-names: Tripathi
+    affiliation: MNNIT Allahabad
+  - given-names: Ashish
+    family-names: Pandey
+    affiliation: Manipal University Jaipur
+keywords:
+  - hierarchical federated learning
+  - backdoor attack
+  - robust aggregation
+  - trusted edge
+  - reproducibility

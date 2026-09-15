@@ -1,0 +1,11 @@
+* text=auto
+.gitattributes text eol=lf
+*.py text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.toml text eol=lf
+*.txt text eol=lf
+*.md text eol=lf
+configs/confirmatory_v1/FROZEN_SHA256SUMS text eol=lf
+VERSION text eol=lf
+CITATION.cff text eol=lf

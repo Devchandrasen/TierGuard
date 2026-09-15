@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12.10"
+          cache: pip
+      - name: Install pinned environment
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-lock-cu128.txt
+          python -m pip install -e . --no-deps
+      - name: Verify frozen protocol
+        run: python scripts/freeze_protocol.py
+      - name: Lint
+        run: python -m ruff check src tests scripts/freeze_protocol.py scripts/run_confirmatory.py scripts/analyze_confirmatory.py
+      - name: Test
+        run: python -m pytest -q
