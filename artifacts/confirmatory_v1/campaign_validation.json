@@ -1,0 +1,19 @@
+{
+  "errors": [],
+  "expected_runs": 180,
+  "expected_seeds": [
+    101,
+    202,
+    303,
+    404,
+    505,
+    606
+  ],
+  "git_commits": [
+    "88a02253ff67d0d336dc4dc041c8620b5b851533"
+  ],
+  "observed_runs": 180,
+  "protocol_id": "tierguard-confirmatory-v1",
+  "protocol_manifest_sha256": "14d610cc9ec7357c3341a8848f3ff882f68045781c29b0f78e6b44bbd1f2103e",
+  "status": "PASS"
+}
