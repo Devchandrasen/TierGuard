@@ -5,6 +5,8 @@ from .base import BaseAggregator
 from .brea_sim import BreaSimAggregator
 from .fedavg import FedAvgAggregator
 from .fltrust import FLTrustAggregator
+from .flame_hierarchical import HierarchicalFlameAggregator
+from .fedgame_hierarchical import HierarchicalFedGameAggregator
 from .foolsgold import FoolsGoldAggregator
 from .hfl_fedavg import HFLFedAvgAggregator
 from .krum import KrumAggregator
@@ -24,11 +26,14 @@ def build_aggregator(method: str, config: dict, dimension: int | None = None) ->
         "fedavg": FedAvgAggregator,
         "hfl_fedavg": HFLFedAvgAggregator,
         "hfl_fltrust": FLTrustAggregator,
+        "hfl_flame": HierarchicalFlameAggregator,
+        "hfl_fedgame": HierarchicalFedGameAggregator,
         "hfl_trimmed_mean": TrimmedMeanAggregator,
         "hfl_rfa": RFAAggregator,
         "krum": KrumAggregator,
         "multikrum": MultiKrumAggregator,
         "median": MedianAggregator,
+        "hfl_median": MedianAggregator,
         "trimmed_mean": TrimmedMeanAggregator,
         "rfa": RFAAggregator,
         "foolsgold": FoolsGoldAggregator,

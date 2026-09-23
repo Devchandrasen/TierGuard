@@ -17,6 +17,7 @@ class ClientUpdate:
     malicious: bool
     local_loss: float
     local_accuracy: float
+    attack_trigger: torch.Tensor | None = None
 
 
 class FederatedClient:
@@ -26,7 +27,8 @@ class FederatedClient:
         self.loader = loader
         self.malicious = malicious
 
-    def train(self, model, config: dict, device: torch.device, num_classes: int) -> ClientUpdate:
+    def train(self, model, config: dict, device: torch.device, num_classes: int,
+              round_idx: int = 0) -> ClientUpdate:
         result = train_local_model(
             model,
             self.loader,
@@ -35,6 +37,8 @@ class FederatedClient:
             attack_config=config.get("attack", {}),
             malicious=self.malicious,
             num_classes=num_classes,
+            attack_seed=int(config.get("experiment", {}).get("seed", 1))
+            + self.client_id * 1009 + round_idx * 100_003,
         )
         return ClientUpdate(
             update=result.update,
@@ -44,4 +48,5 @@ class FederatedClient:
             malicious=self.malicious,
             local_loss=result.loss,
             local_accuracy=result.accuracy,
+            attack_trigger=result.attack_trigger,
         )

@@ -1,9 +1,12 @@
 from __future__ import annotations
 
 import numpy as np
+from torch.utils.data import Subset
 
 
 def labels_to_numpy(dataset) -> np.ndarray:
+    if isinstance(dataset, Subset):
+        return labels_to_numpy(dataset.dataset)[np.asarray(dataset.indices, dtype=np.int64)]
     if hasattr(dataset, "targets"):
         targets = dataset.targets
         return np.asarray(targets, dtype=np.int64)

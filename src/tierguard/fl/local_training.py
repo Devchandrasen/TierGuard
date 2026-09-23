@@ -8,6 +8,7 @@ from torch.utils.data import DataLoader
 
 from tierguard.attacks.backdoor import poison_batch
 from tierguard.attacks.label_flip import flip_labels
+from tierguard.attacks.optimized_trigger import optimize_trigger
 from tierguard.fl.update_utils import get_update
 
 
@@ -18,6 +19,7 @@ class LocalTrainResult:
     loss: float
     accuracy: float
     num_samples: int
+    attack_trigger: torch.Tensor | None = None
 
 
 def make_optimizer(model: nn.Module, config: dict) -> torch.optim.Optimizer:
@@ -55,6 +57,7 @@ def _poison_or_flip_batch(
             targets,
             target_label=int(attack_config.get("target_label", 0)),
             fraction=float(attack_config.get("backdoor_fraction", 0.3)),
+            attack_config=attack_config,
         )
     return inputs, _label_flip_batch(targets, attack_config, num_classes)
 
@@ -67,12 +70,21 @@ def train_local_model(
     attack_config: dict | None = None,
     malicious: bool = False,
     num_classes: int = 10,
+    attack_seed: int = 1,
 ) -> LocalTrainResult:
     model = copy.deepcopy(global_model).to(device)
     model.train()
     optimizer = make_optimizer(model, federated_config)
     criterion = nn.CrossEntropyLoss(label_smoothing=float(federated_config.get("label_smoothing", 0.0)))
     attack_name = (attack_config or {}).get("name", "none") if malicious else "none"
+    attack_trigger = None
+    if attack_name == "defence_aware_optimized_trigger":
+        attack_trigger = attack_config.get("trigger_tensor")
+        if attack_trigger is None:
+            attack_trigger = optimize_trigger(
+                global_model, loader, attack_config, device, seed=attack_seed,
+            )
+        attack_config = {**attack_config, "trigger_tensor": attack_trigger}
     total_loss = 0.0
     total_correct = 0
     total = 0
@@ -88,6 +100,9 @@ def train_local_model(
                 "backdoor_model_replacement",
                 "sybil_backdoor",
                 "adaptive_tierguard_aware",
+                "unknown_patch_model_replacement",
+                "distributed_backdoor",
+                "defence_aware_optimized_trigger",
             }:
                 inputs, targets = _poison_or_flip_batch(inputs, targets, attack_config, num_classes)
 
@@ -109,6 +124,7 @@ def train_local_model(
         loss=total_loss / max(1, total),
         accuracy=total_correct / max(1, total),
         num_samples=total,
+        attack_trigger=attack_trigger,
     )
 
 

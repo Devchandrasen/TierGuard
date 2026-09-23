@@ -1,5 +1,9 @@
 # TierGuard
 
+> New-study work is in the `codex/tierguard2-cross-layer` branch. It is **not
+> submission-ready**; see [TierGuard 2 implementation status](docs/TIERGUARD2_IMPLEMENTATION_STATUS.md)
+> and the [prefreeze protocol draft](configs/tierguard2/protocol_draft.yaml).
+
 TierGuard is a research implementation of trusted-edge robust aggregation for
 hierarchical federated learning (HFL). It contains the frozen confirmatory-v1
 protocol, matched two-level baselines, per-run provenance capture, and paired

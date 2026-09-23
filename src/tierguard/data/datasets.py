@@ -5,11 +5,12 @@ from typing import Any
 
 import numpy as np
 import torch
-from torch.utils.data import DataLoader, Dataset, Subset, random_split
+from torch.utils.data import ConcatDataset, DataLoader, Dataset, Subset, random_split
 from torch.nn import functional as F
 
-from tierguard.data.backdoor import BackdoorDataset
-from tierguard.data.partition import partition_dataset
+from tierguard.data.backdoor import BackdoorDataset, add_configured_trigger
+from tierguard.data.partition import labels_to_numpy, partition_dataset
+from tierguard.data.root_splits import stratified_root_split
 
 
 class SyntheticImageDataset(Dataset):
@@ -54,6 +55,39 @@ class TensorImageDataset(Dataset):
         return self.data[idx], self.targets[idx]
 
 
+class RootContaminationDataset(Dataset):
+    def __init__(self, base: Dataset, selected: set[int], attack_config: dict):
+        self.base = base
+        self.selected = selected
+        self.attack_config = attack_config
+
+    def __len__(self) -> int:
+        return len(self.base)
+
+    def __getitem__(self, index: int):
+        image, label = self.base[index]
+        if index in self.selected:
+            return add_configured_trigger(image, self.attack_config), int(
+                self.attack_config["target_label"]
+            )
+        return image, label
+
+
+def contaminate_root(base: Dataset, fraction: float, attack_config: dict,
+                     seed: int) -> tuple[Dataset, list[int]]:
+    if not 0 <= fraction <= 1:
+        raise ValueError("Root contamination fraction must be in [0, 1]")
+    if fraction == 0:
+        return base, []
+    labels = labels_to_numpy(base)
+    eligible = np.where(labels != int(attack_config["target_label"]))[0]
+    count = int(round(fraction * len(base)))
+    if count > len(eligible):
+        raise ValueError("Insufficient non-target root examples for contamination")
+    selected = np.random.default_rng(seed).choice(eligible, count, replace=False).tolist()
+    return RootContaminationDataset(base, set(selected), attack_config), selected
+
+
 @dataclass
 class DataBundle:
     client_loaders: list[DataLoader]
@@ -65,6 +99,10 @@ class DataBundle:
     num_classes: int
     input_shape: tuple[int, ...]
     input_dim: int
+    audit_search_loader: DataLoader | None = None
+    audit_eval_loader: DataLoader | None = None
+    partition_indices: dict[str, Any] | None = None
+    full_root_loader: DataLoader | None = None
 
 
 def _load_torchvision_dataset(name: str, root: str, train: bool, download: bool = False):
@@ -180,13 +218,43 @@ def make_data_bundle(config: dict[str, Any]) -> DataBundle:
     train, test, num_classes, input_shape = load_vision_datasets(data_cfg, seed)
     train = maybe_subset(train, data_cfg.get("train_size"), seed)
     test = maybe_subset(test, data_cfg.get("test_size") or data_cfg.get("validation_size"), seed + 1)
-    root_size = min(int(data_cfg.get("root_dataset_size", 200)), len(train))
-    main_size = max(0, len(train) - root_size)
-    main_train, root_set = random_split(
-        train,
-        [main_size, root_size],
-        generator=torch.Generator().manual_seed(seed + 2),
+    train_index_map = list(train.indices) if isinstance(train, Subset) else list(range(len(train)))
+    test_index_map = list(test.indices) if isinstance(test, Subset) else list(range(len(test)))
+    three_way_root = (
+        str(config.get("aggregation", {}).get("method", "")).lower() == "tierguard2"
+        or bool(data_cfg.get("three_way_root_split", False))
     )
+    root_indices = None
+    if three_way_root:
+        sizes = (
+            int(data_cfg.get("root_dataset_size", 200)),
+            int(data_cfg.get("audit_search_size", 100)),
+            int(data_cfg.get("audit_eval_size", 100)),
+        )
+        root_indices = stratified_root_split(train, sizes, seed + 2)
+        main_train = Subset(train, root_indices["clients"])
+        root_set = Subset(train, root_indices["reference"])
+        search_set = Subset(train, root_indices["search"])
+        eval_set = Subset(train, root_indices["evaluation"])
+        contamination_fraction = float(data_cfg.get("root_contamination_fraction", 0.0))
+        root_sets = [root_set, search_set, eval_set]
+        contamination_local = []
+        for offset, root_subset in enumerate(root_sets):
+            contaminated, local_indices = contaminate_root(
+                root_subset, contamination_fraction, config.get("attack", {}),
+                seed + 80_000 + offset,
+            )
+            root_sets[offset] = contaminated
+            contamination_local.append(local_indices)
+        root_set, search_set, eval_set = root_sets
+    else:
+        root_size = min(int(data_cfg.get("root_dataset_size", 200)), len(train))
+        main_size = max(0, len(train) - root_size)
+        main_train, root_set = random_split(
+            train,
+            [main_size, root_size],
+            generator=torch.Generator().manual_seed(seed + 2),
+        )
     parts, edge_mapping = partition_dataset(
         main_train,
         int(fed_cfg["num_clients"]),
@@ -224,6 +292,7 @@ def make_data_bundle(config: dict[str, Any]) -> DataBundle:
         test,
         target_label=int(attack_cfg.get("target_label", 0)),
         source_label=None,
+        attack_config=attack_cfg if three_way_root else None,
     )
     backdoor_test_loader = DataLoader(backdoor_test, batch_size=batch_size, shuffle=False)
     input_dim = int(np.prod(input_shape))
@@ -237,4 +306,37 @@ def make_data_bundle(config: dict[str, Any]) -> DataBundle:
         num_classes=num_classes,
         input_shape=input_shape,
         input_dim=input_dim,
+        audit_search_loader=(
+            DataLoader(search_set, batch_size=batch_size, shuffle=False) if three_way_root else None
+        ),
+        audit_eval_loader=(
+            DataLoader(eval_set, batch_size=batch_size, shuffle=False) if three_way_root else None
+        ),
+        partition_indices=(
+            {
+                "root": {
+                    name: [int(train_index_map[index]) for index in root_indices[name]]
+                    for name in ("reference", "search", "evaluation")
+                },
+                "clients": {
+                    str(client_id): [int(train_index_map[root_indices["clients"][index]])
+                                     for index in part]
+                    for client_id, part in enumerate(parts)
+                },
+                "test": [int(index) for index in test_index_map],
+                "root_contamination": {
+                    name: [int(train_index_map[root_indices[name][index]])
+                           for index in contamination_local[offset]]
+                    for offset, name in enumerate(("reference", "search", "evaluation"))
+                },
+                "note": "Train and test indices refer to their respective original loaded datasets",
+            }
+            if three_way_root else None
+        ),
+        full_root_loader=(
+            DataLoader(
+                ConcatDataset([root_set, search_set, eval_set]),
+                batch_size=batch_size, shuffle=False,
+            ) if three_way_root else None
+        ),
     )

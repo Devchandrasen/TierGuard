@@ -1,0 +1,59 @@
+# DRAFT ONLY. Do not run confirmatory seeds until every gate below passes and
+# this file, source, attacks, baselines, partitions and environment are frozen.
+status: prefreeze_incomplete
+study_name: tierguard2_counterfactual_cross_layer
+datasets: [mnist, fashionmnist, cifar10]
+development_seeds: [2001, 2002, 2003]
+confirmatory_seeds: [3001, 3002, 3003, 3004, 3005, 3006, 3007, 3008, 3009, 3010, 3011, 3012]
+topology:
+  num_clients: 60
+  num_edges: 6
+  clients_per_edge_per_round: 5
+  rounds: 40
+  local_epochs: 2
+  malicious_fraction: 0.20
+  dirichlet_alpha: 0.30
+root:
+  reference_per_dataset: 200
+  search_per_dataset: 200
+  evaluation_per_dataset: 200
+  class_balanced: true
+  disjoint_from_clients_and_test: true
+methods_required:
+  - tierguard2
+  - tierguard
+  - hfl_fedavg
+  - hfl_fltrust
+  - hfl_median
+  - hfl_rfa
+  - hfl_flame
+  - hfl_fedgame
+  - hfl_hflmnd
+main_attacks_required:
+  - unknown_patch_model_replacement
+  - distributed_backdoor
+  - defence_aware_optimized_trigger
+development_grid_draft:
+  patch_sizes: [[2, 3], [3, 4]]
+  risk_gamma: [4.0, 8.0]
+  clip_reference_multiplier: [1.5, 2.0]
+  clean_improvement_credit: [0.0, 0.25]
+  calibration_quantile: [0.95]
+primary_decision:
+  baseline_selection: lowest_aggregate_development_asr
+  asr_reduction_absolute_minimum: 0.05
+  paired_exact_sign_flip_two_sided_p_max_exclusive: 0.05
+  clean_accuracy_lower_95_minimum_exclusive: -0.02
+  asr_cells: 9
+  clean_cells: 3
+  paired_confirmatory_seeds: 12
+preconfirmation_gates:
+  - all_nine_methods_source_verified
+  - all_three_main_attacks_tested_against_undefended_fedavg
+  - three_clean_development_seeds_calibrated
+  - baseline_development_budget_matched
+  - client_and_edge_audit_separation_tested
+  - edge_receipt_failure_tests_pass
+  - exact_python_and_package_lock_verified_on_hpc
+  - all_partitions_and_attack_instances_frozen
+  - source_and_configuration_sha256_manifest_committed

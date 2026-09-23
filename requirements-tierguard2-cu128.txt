@@ -1,0 +1,6 @@
+# Candidate TierGuard 2 environment.  The confirmatory freeze has NOT yet
+# occurred; this extends, rather than modifies, the prior study's exact lock.
+-r requirements-lock-cu128.txt
+cryptography==48.0.0
+cffi==2.0.0
+pycparser==3.0

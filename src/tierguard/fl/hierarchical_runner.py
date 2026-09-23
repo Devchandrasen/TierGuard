@@ -19,10 +19,12 @@ from torch.nn import functional as F
 
 from tierguard.aggregators import build_aggregator
 from tierguard.aggregators.fedavg import FedAvgAggregator
+from tierguard.aggregators.tierguard2 import CounterfactualAuditor, aggregate_level, continuous_weight
 from tierguard.attacks import apply_post_update_attack
 from tierguard.attacks.alie import alie_attack
+from tierguard.attacks.optimized_trigger import optimize_trigger
 from tierguard.config import artifact_paths, make_run_dir, save_json, save_resolved_config
-from tierguard.data.backdoor import add_bottom_right_square
+from tierguard.data.backdoor import BackdoorDataset, add_bottom_right_square
 from tierguard.data.datasets import make_data_bundle
 from tierguard.data.partition import client_to_edge
 from tierguard.fl.client import ClientUpdate, FederatedClient
@@ -38,15 +40,27 @@ from tierguard.privacy.gaussian_noise import add_gaussian_noise
 from tierguard.privacy.privacy_budget import privacy_accounting
 from tierguard.protocol import locked_requirements
 from tierguard.security.comm_cost import threshold_comm_cost
+from tierguard.security.edge_receipts import (
+    ReceiptAuthority,
+    choose_challenges,
+    commit_edge,
+    update_digest,
+    verify_challenged_report,
+    single_report_escape_probability,
+)
 from tierguard.seed import seed_everything
 
 
 HIERARCHICAL_METHODS = {
     "hfl_fedavg",
     "hfl_fltrust",
+    "hfl_flame",
+    "hfl_fedgame",
     "hfl_trimmed_mean",
     "hfl_rfa",
+    "hfl_median",
     "tierguard",
+    "tierguard2",
     "shield_like",
     "shield_like_reimplementation",
     "roppfl_like",
@@ -54,6 +68,160 @@ HIERARCHICAL_METHODS = {
     "tapfed_sim",
     "brea_sim",
 }
+
+
+def _aggregate_tierguard2(client_results, model, auditor, reference_update,
+                          config, authority, round_idx):
+    """Independent client and edge audits with post-commit receipt challenges."""
+    settings = config["tierguard2"]
+    radius = max(float(settings.get("clip_floor", 0.1)),
+                 float(settings.get("clip_reference_multiplier", 2.0)) *
+                 float(torch.linalg.vector_norm(reference_update)))
+    model_hash = update_digest(flatten_model(model))
+    server_lr = float(config["federated"].get("server_lr", 1.0))
+    by_edge = {}
+    for index, item in enumerate(client_results):
+        by_edge.setdefault(item.edge_id, []).append((index, item))
+    reports = []
+    raw_by_edge = {}
+    direct_receipts = {}
+    client_risks = [0.0] * len(client_results)
+    client_audits = [None] * len(client_results)
+    edge_suggested_risks = {}
+    for edge_id, indexed in sorted(by_edge.items()):
+        updates = [item.update for _, item in indexed]
+        masses = [int(item.num_samples) for _, item in indexed]
+        local_risks = []
+        receipts = []
+        for (index, item), update in zip(indexed, updates):
+            clipped = clip_update(update, radius)
+            result = auditor.audit(model, clipped, server_lr=server_lr)
+            client_risks[index] = result.risk
+            client_audits[index] = {
+                "client_id": item.client_id,
+                "risk": result.risk,
+                "heldout_target_gain": result.heldout_target_gain,
+                "clean_loss_change": result.clean_loss_change,
+                "pattern": result.pattern,
+                "target_class": result.target_class,
+            }
+            local_risks.append(result.risk)
+            receipts.append(authority.sign(
+                round_idx=round_idx, model_hash=model_hash,
+                client_id=item.client_id, edge_id=edge_id,
+                sample_mass=int(item.num_samples), update=update,
+            ))
+        aggregate, effective = aggregate_level(updates, masses, local_risks, radius, settings)
+        edge_suggested_risks[edge_id] = sum(risk * mass for risk, mass in zip(local_risks, masses)) / sum(masses)
+        raw_by_edge[edge_id] = {item.client_id: item.update for _, item in indexed}
+        direct_receipts[edge_id] = tuple(receipts)
+        reports.append(commit_edge(round_idx, edge_id, aggregate, receipts))
+
+    # The report is committed before the cloud samples challenges.  A
+    # compromised edge can alter its aggregate or receipt, but cannot produce
+    # valid client signatures for altered raw updates.
+    edge_attack = config.get("edge_attack", {})
+    if edge_attack.get("name") not in (None, "none"):
+        compromised = int(edge_attack["edge_id"])
+        for index, report in enumerate(reports):
+            if report.edge_id != compromised:
+                continue
+            if edge_attack["name"] == "aggregate_replacement":
+                forged = -float(edge_attack.get("scale", 2.0)) * report.aggregate
+                reports[index] = commit_edge(round_idx, compromised, forged, list(report.receipts))
+            elif edge_attack["name"] == "report_forgery":
+                forged_receipt = copy.copy(report.receipts[0])
+                from dataclasses import replace
+                forged_receipt = replace(forged_receipt, sample_mass=forged_receipt.sample_mass + 1)
+                reports[index] = commit_edge(
+                    round_idx, compromised, report.aggregate,
+                    [forged_receipt, *report.receipts[1:]],
+                )
+            else:
+                raise ValueError("Unknown edge attack")
+    challenged = choose_challenges(reports)
+    verified_bytes = 0
+    rejected = set()
+    report_lookup = {report.edge_id: report for report in reports}
+    for report in reports:
+        try:
+            if report.receipts != direct_receipts[report.edge_id]:
+                raise ValueError("Edge receipt list differs from direct client receipts")
+            for receipt in report.receipts:
+                authority.verify_signature(receipt, round_idx=round_idx,
+                                           model_hash=model_hash, edge_id=report.edge_id)
+        except ValueError:
+            rejected.add(report.edge_id)
+    for edge_id in challenged:
+        if edge_id in rejected:
+            continue
+        report = report_lookup[edge_id]
+        verified_bytes += sum(update.numel() * update.element_size()
+                              for update in raw_by_edge[edge_id].values())
+        def recompute(updates, masses):
+            risks = [auditor.audit(model, clip_update(update, radius), server_lr=server_lr).risk
+                     for update in updates]
+            return aggregate_level(updates, masses, risks, radius, settings)[0]
+        try:
+            verify_challenged_report(
+                report, raw_by_edge[edge_id], authority,
+                round_idx=round_idx, model_hash=model_hash, recompute=recompute,
+            )
+        except ValueError:
+            rejected.add(edge_id)
+
+    surviving = [report for report in reports if report.edge_id not in rejected]
+    if not surviving:
+        raise ValueError("All active edge reports were rejected")
+    edge_audits = [auditor.audit(model, clip_update(report.aggregate, radius),
+                                 server_lr=server_lr) for report in surviving]
+    edge_risks = [item.risk for item in edge_audits]
+    edge_masses = [sum(item.sample_mass for item in report.receipts) for report in surviving]
+    cloud_update, _ = aggregate_level(
+        [report.aggregate for report in surviving], edge_masses, edge_risks, radius, settings
+    )
+    separation = [risk - edge_suggested_risks[report.edge_id]
+                  for report, risk in zip(surviving, edge_risks)]
+    metadata = {
+        "edge_anomaly_mean": float(np.mean(edge_risks)),
+        "edge_anomaly_max": float(np.max(edge_risks)),
+        "cloud_reliability_mean": float(np.mean([
+            continuous_weight(risk, settings) for risk in edge_risks])),
+        "aggregation_metadata": {
+            "mode": "two_level_continuous_weighted_mean",
+            "clip_radius": radius,
+            "challenged_edges": sorted(challenged),
+            "single_report_escape_probability": single_report_escape_probability(len(reports)),
+            "rejected_edges": sorted(rejected),
+            "challenge_raw_upload_bytes": verified_bytes,
+            "client_edge_update_bytes": sum(item.update.numel() * item.update.element_size()
+                                            for item in client_results),
+            "client_cloud_receipt_bytes": sum(
+                len(json.dumps(receipt.__dict__, sort_keys=True).encode("utf-8"))
+                for report in reports for receipt in report.receipts
+            ),
+            "edge_cloud_report_bytes": sum(
+                report.aggregate.numel() * report.aggregate.element_size()
+                + len(report.commitment.encode("ascii")) for report in reports
+            ),
+            "edge_minus_client_risk": separation,
+            "edge_risks": edge_risks,
+            "client_risks": client_risks,
+            "client_audits": client_audits,
+            "edge_audits": [
+                {
+                    "edge_id": report.edge_id,
+                    "risk": result.risk,
+                    "heldout_target_gain": result.heldout_target_gain,
+                    "clean_loss_change": result.clean_loss_change,
+                    "pattern": result.pattern,
+                    "target_class": result.target_class,
+                }
+                for report, result in zip(surviving, edge_audits)
+            ],
+        },
+    }
+    return cloud_update, metadata, client_risks
 
 
 def _run_provenance(config: dict, device: torch.device) -> dict:
@@ -86,6 +254,19 @@ def _run_provenance(config: dict, device: torch.device) -> dict:
             versions[package] = importlib.metadata.version(package)
         except importlib.metadata.PackageNotFoundError:
             versions[package] = "unavailable"
+    new_study = (
+        str(config.get("aggregation", {}).get("method", "")).lower() == "tierguard2"
+        or bool(config.get("security", {}).get("edge_challenges", False))
+    )
+    if new_study:
+        for package in ("cryptography", "cffi", "pycparser"):
+            try:
+                versions[package] = importlib.metadata.version(package)
+            except importlib.metadata.PackageNotFoundError:
+                versions[package] = "unavailable"
+    lock_path = project_root / (
+        "requirements-tierguard2-cu128.txt" if new_study else "requirements-lock-cu128.txt"
+    )
 
     canonical = json.dumps(config, sort_keys=True, separators=(",", ":"), default=str)
     return {
@@ -102,6 +283,7 @@ def _run_provenance(config: dict, device: torch.device) -> dict:
         "cuda_version": torch.version.cuda,
         "cudnn_version": torch.backends.cudnn.version(),
         "packages": versions,
+        "environment_lock_sha256": hashlib.sha256(lock_path.read_bytes()).hexdigest(),
     }
 
 
@@ -124,6 +306,19 @@ def _selected_clients(num_clients: int, clients_per_round: int, seed: int, round
     return rng.choice(num_clients, size=count, replace=False).tolist()
 
 
+def _selected_clients_per_edge(edge_mapping: dict[int, list[int]], per_edge: int,
+                               seed: int, round_idx: int) -> list[int]:
+    if per_edge <= 0:
+        raise ValueError("clients_per_edge_per_round must be positive")
+    selected = []
+    for edge_id, clients in sorted(edge_mapping.items()):
+        if len(clients) < per_edge:
+            raise ValueError(f"Edge {edge_id} has fewer than {per_edge} clients")
+        rng = np.random.default_rng(seed + round_idx * 9973 + edge_id * 104729)
+        selected.extend(int(value) for value in rng.choice(clients, size=per_edge, replace=False))
+    return selected
+
+
 def _post_process_attacks(
     results: list[ClientUpdate],
     config: dict,
@@ -144,7 +339,7 @@ def _post_process_attacks(
             item.update = base + 1e-4 * torch.randn_like(base)
 
     attack_ext = dict(attack)
-    attack_ext["clients_per_round"] = config.get("federated", {}).get("clients_per_round", 1)
+    attack_ext["clients_per_round"] = len(results)
     attack_ext["clipping_norm"] = config.get("privacy", {}).get("clipping_norm", 5.0)
     for item in malicious:
         item.update = apply_post_update_attack(
@@ -224,11 +419,19 @@ def _aggregate_round(
     config: dict,
     reference_update: torch.Tensor | None,
     model_dim: int,
+    receipt_authority=None,
+    round_idx: int | None = None,
+    model_hash: str | None = None,
+    model: torch.nn.Module | None = None,
+    audit_loader=None,
+    full_root_loader=None,
+    device: torch.device | None = None,
 ) -> tuple[torch.Tensor, dict, list[float]]:
     method = str(config.get("aggregation", {}).get("method", "fedavg")).lower()
     aggregator = build_aggregator(method, config, dimension=model_dim)
     selected_ids = [item.client_id for item in client_results]
-    sample_weights = [float(item.num_samples) for item in client_results]
+    sample_weights = [float(item.num_samples) * float(getattr(item, "audit_multiplier", 1.0))
+                      for item in client_results]
     updates = [item.update for item in client_results]
     client_suspicion = [0.0 for _ in client_results]
 
@@ -256,28 +459,139 @@ def _aggregate_round(
     for idx, item in enumerate(client_results):
         edge_to_items.setdefault(item.edge_id, []).append((idx, item))
     edge_updates: list[torch.Tensor] = []
+    edge_ids: list[int] = []
     edge_weights: list[float] = []
     reliabilities: list[float] = []
     anomalies: list[float] = []
+    edge_inputs = {}
     for edge_id in sorted(edge_to_items):
         indexed = edge_to_items[edge_id]
         local_updates = [item.update for _, item in indexed]
-        local_weights = [float(item.num_samples) for _, item in indexed]
+        local_weights = [float(item.num_samples) * float(getattr(item, "audit_multiplier", 1.0))
+                         for _, item in indexed]
         local_ids = [item.client_id for _, item in indexed]
         edge_result = aggregator.aggregate(
             local_updates,
             weights=local_weights,
             client_ids=local_ids,
             reference_update=reference_update,
+            round_idx=round_idx or 0,
+            edge_id=edge_id,
+            global_vector=flatten_model(model) if model is not None else None,
+            model=model,
+            root_loader=full_root_loader,
+            device=device,
         )
         if edge_result.suspicion is not None:
             for (original_idx, _), suspicion in zip(indexed, edge_result.suspicion.tolist()):
                 audit_suspicion = float(getattr(client_results[original_idx], "audit_suspicion", 0.0))
                 client_suspicion[original_idx] = max(float(suspicion), audit_suspicion)
         edge_updates.append(edge_result.update)
+        edge_ids.append(edge_id)
         edge_weights.append(max(1.0, sum(local_weights)) * float(edge_result.reliability))
         reliabilities.append(float(edge_result.reliability))
         anomalies.append(float(edge_result.anomaly_mass))
+        edge_inputs[edge_id] = indexed
+
+    security_metadata = {}
+    if receipt_authority is not None:
+        if round_idx is None or model_hash is None:
+            raise ValueError("Challenge protocol requires round and model hash")
+        reports = []
+        direct_receipts = {}
+        for edge_id, edge_update in zip(edge_ids, edge_updates):
+            receipts = [receipt_authority.sign(
+                round_idx=round_idx, model_hash=model_hash, client_id=item.client_id,
+                edge_id=edge_id, sample_mass=int(item.num_samples), update=item.update,
+            ) for _, item in edge_inputs[edge_id]]
+            direct_receipts[edge_id] = tuple(receipts)
+            reports.append(commit_edge(round_idx, edge_id, edge_update, receipts))
+        edge_attack = config.get("edge_attack", {})
+        if edge_attack.get("name") not in (None, "none"):
+            compromised = int(edge_attack["edge_id"])
+            from dataclasses import replace
+            for index, report in enumerate(reports):
+                if report.edge_id != compromised:
+                    continue
+                if edge_attack["name"] == "aggregate_replacement":
+                    forged = -float(edge_attack.get("scale", 2.0)) * report.aggregate
+                    reports[index] = commit_edge(round_idx, compromised, forged, list(report.receipts))
+                elif edge_attack["name"] == "report_forgery":
+                    forged = replace(report.receipts[0], sample_mass=report.receipts[0].sample_mass + 1)
+                    reports[index] = commit_edge(round_idx, compromised, report.aggregate,
+                                                 [forged, *report.receipts[1:]])
+                else:
+                    raise ValueError("Unknown edge attack")
+        challenged = choose_challenges(reports)
+        rejected = set()
+        challenge_bytes = 0
+        for report in reports:
+            try:
+                if report.receipts != direct_receipts[report.edge_id]:
+                    raise ValueError("Edge report does not match direct client receipts")
+                for receipt in report.receipts:
+                    receipt_authority.verify_signature(
+                        receipt, round_idx=round_idx, model_hash=model_hash,
+                        edge_id=report.edge_id,
+                    )
+            except ValueError:
+                rejected.add(report.edge_id)
+        for report in reports:
+            if report.edge_id not in challenged or report.edge_id in rejected:
+                continue
+            indexed = edge_inputs[report.edge_id]
+            raw = {item.client_id: item.update for _, item in indexed}
+            challenge_bytes += sum(item.update.numel() * item.update.element_size()
+                                   for _, item in indexed)
+            def recompute(updates, masses, items=indexed):
+                ids = [item.client_id for _, item in items]
+                independent = build_aggregator(method, config, dimension=model_dim)
+                if method == "tierguard":
+                    if model is None or audit_loader is None or device is None:
+                        raise ValueError("TierGuard challenge requires its audit context")
+                    multipliers, _ = _backdoor_audit_multipliers(
+                        model, updates, audit_loader, config, device,
+                    )
+                    masses = [max(1.0, mass * multiplier)
+                              for mass, multiplier in zip(masses, multipliers)]
+                return independent.aggregate(
+                    updates, weights=masses, client_ids=ids,
+                    reference_update=reference_update,
+                    round_idx=round_idx, edge_id=items[0][1].edge_id,
+                    global_vector=flatten_model(model) if model is not None else None,
+                    model=model,
+                    root_loader=full_root_loader,
+                    device=device,
+                ).update
+            try:
+                verify_challenged_report(
+                    report, raw, receipt_authority, round_idx=round_idx,
+                    model_hash=model_hash, recompute=recompute,
+                )
+            except ValueError:
+                rejected.add(report.edge_id)
+        surviving = [(report, weight) for report, weight in zip(reports, edge_weights)
+                     if report.edge_id not in rejected]
+        if not surviving:
+            raise ValueError("All active edge reports were rejected")
+        edge_updates = [report.aggregate for report, _ in surviving]
+        edge_weights = [weight for _, weight in surviving]
+        security_metadata = {
+            "challenged_edges": sorted(challenged),
+            "single_report_escape_probability": single_report_escape_probability(len(reports)),
+            "rejected_edges": sorted(rejected),
+            "challenge_raw_upload_bytes": challenge_bytes,
+            "client_edge_update_bytes": sum(item.update.numel() * item.update.element_size()
+                                            for item in client_results),
+            "client_cloud_receipt_bytes": sum(
+                len(json.dumps(receipt.__dict__, sort_keys=True).encode("utf-8"))
+                for report in reports for receipt in report.receipts
+            ),
+            "edge_cloud_report_bytes": sum(
+                report.aggregate.numel() * report.aggregate.element_size()
+                + len(report.commitment.encode("ascii")) for report in reports
+            ),
+        }
 
     if method == "tierguard":
         cloud_result = aggregator.aggregate(
@@ -288,12 +602,19 @@ def _aggregate_round(
     elif method in {"hfl_fedavg", "tapfed_sim"}:
         cloud_result = FedAvgAggregator(config).aggregate(edge_updates, weights=edge_weights)
     else:
-        cloud_result = aggregator.aggregate(edge_updates, weights=edge_weights, reference_update=reference_update)
+        cloud_result = aggregator.aggregate(
+            edge_updates, weights=edge_weights, reference_update=reference_update,
+            round_idx=round_idx or 0, edge_id=-1,
+            global_vector=flatten_model(model) if model is not None else None,
+            model=model,
+            root_loader=full_root_loader,
+            device=device,
+        )
     return cloud_result.update, {
         "edge_anomaly_mean": float(np.mean(anomalies)) if anomalies else 0.0,
         "edge_anomaly_max": float(np.max(anomalies)) if anomalies else 0.0,
         "cloud_reliability_mean": float(np.mean(reliabilities)) if reliabilities else 1.0,
-        "aggregation_metadata": cloud_result.metadata,
+        "aggregation_metadata": {**cloud_result.metadata, **security_metadata},
     }, client_suspicion
 
 
@@ -332,6 +653,8 @@ def run_experiment(config: dict, command: str | None = None, results_root: str |
     provenance = _run_provenance(config, device)
     save_json(provenance, artifacts.provenance_json)
     data = make_data_bundle(config)
+    if data.partition_indices is not None:
+        save_json(data.partition_indices, run_dir / "partition_indices.json")
     model = build_model(
         config.get("model", {}).get("name", "mnist_cnn"),
         num_classes=data.num_classes,
@@ -354,6 +677,32 @@ def run_experiment(config: dict, command: str | None = None, results_root: str |
         )
         for client_id in range(num_clients)
     ]
+    method = str(config.get("aggregation", {}).get("method", "fedavg")).lower()
+    auditor = None
+    receipt_authority = None
+    if method == "tierguard2":
+        if bool(config.get("privacy", {}).get("enabled", False)) or bool(config.get("security", {}).get("secure_sim", False)):
+            raise ValueError("TierGuard 2 is a plaintext method; disable DP and secure simulation")
+        if data.audit_search_loader is None or data.audit_eval_loader is None:
+            raise ValueError("TierGuard 2 requires disjoint search and evaluation roots")
+        auditor = CounterfactualAuditor(
+            data.audit_search_loader, data.audit_eval_loader, data.num_classes,
+            config["tierguard2"], device,
+        )
+        receipt_authority = ReceiptAuthority(list(range(num_clients)))
+        save_json({str(client_id): receipt_authority.public_key_bytes(client_id).hex()
+                   for client_id in range(num_clients)}, run_dir / "client_public_keys.json")
+    elif bool(config.get("security", {}).get("edge_challenges", False)):
+        if method not in HIERARCHICAL_METHODS:
+            raise ValueError("Edge challenges require a hierarchical method")
+        if bool(config.get("security", {}).get("secure_sim", False)):
+            raise ValueError("Edge challenges require plaintext updates")
+        receipt_authority = ReceiptAuthority(list(range(num_clients)))
+        save_json({str(client_id): receipt_authority.public_key_bytes(client_id).hex()
+                   for client_id in range(num_clients)}, run_dir / "client_public_keys.json")
+    if (config.get("edge_attack", {}).get("name") not in (None, "none")
+            and receipt_authority is None):
+        raise ValueError("Compromised-edge experiments require matched receipt challenges")
 
     rounds = int(config.get("experiment", {}).get("rounds", 1))
     eval_every = int(config.get("experiment", {}).get("eval_every", 1))
@@ -362,15 +711,23 @@ def run_experiment(config: dict, command: str | None = None, results_root: str |
     overhead_totals = {"comm_client_edge_mb": 0.0, "comm_edge_cloud_mb": 0.0, "total_comm_mb": 0.0}
     last_metrics: dict[str, float] = {}
     stability_failures = 0
+    latest_attack_trigger = None
 
     for round_idx in range(1, rounds + 1):
         start = time.time()
-        selected = _selected_clients(
-            num_clients,
-            int(config["federated"]["clients_per_round"]),
-            seed,
-            round_idx,
-        )
+        if config["federated"].get("clients_per_edge_per_round") is not None:
+            selected = _selected_clients_per_edge(
+                data.edge_mapping,
+                int(config["federated"]["clients_per_edge_per_round"]),
+                seed, round_idx,
+            )
+        else:
+            selected = _selected_clients(
+                num_clients,
+                int(config["federated"]["clients_per_round"]),
+                seed,
+                round_idx,
+            )
         reference_update = compute_reference_update(
             model,
             data.root_loader,
@@ -378,17 +735,44 @@ def run_experiment(config: dict, command: str | None = None, results_root: str |
             device,
             data.num_classes,
         )
+        round_config = config
+        if str(config.get("attack", {}).get("name", "none")) == "defence_aware_optimized_trigger":
+            malicious_selected = [client_id for client_id in selected if client_id in malicious_clients]
+            if malicious_selected:
+                latest_attack_trigger = None
+                for attacker_id in sorted(malicious_selected):
+                    try:
+                        latest_attack_trigger = optimize_trigger(
+                            model, clients[attacker_id].loader, config["attack"], device,
+                            seed=seed + round_idx * 100_003 + attacker_id * 1009,
+                        )
+                        break
+                    except ValueError as exc:
+                        if "no non-target local examples" not in str(exc):
+                            raise
+                if latest_attack_trigger is None:
+                    raise ValueError("No selected malicious client can optimize the trigger")
+                round_config = copy.deepcopy(config)
+                round_config["attack"]["trigger_tensor"] = latest_attack_trigger
         local_results = [
-            clients[client_id].train(model, config, device=device, num_classes=data.num_classes)
+            clients[client_id].train(
+                model, round_config, device=device, num_classes=data.num_classes,
+                round_idx=round_idx,
+            )
             for client_id in selected
         ]
         local_results = _post_process_attacks(local_results, config, reference_update)
+        attack_instances = {
+            str(item.client_id): item.attack_trigger.tolist()
+            for item in local_results if item.attack_trigger is not None
+        }
+        if attack_instances:
+            save_json(attack_instances, run_dir / f"attack_triggers_round_{round_idx:03d}.json")
         for item in local_results:
             item.update = _apply_privacy(item.update, config)
             if not torch.isfinite(item.update).all():
                 stability_failures += 1
                 item.update = torch.nan_to_num(item.update, nan=0.0, posinf=0.0, neginf=0.0)
-        method = str(config.get("aggregation", {}).get("method", "fedavg")).lower()
         if method == "tierguard":
             audit_multipliers, audit_risks = _backdoor_audit_multipliers(
                 model,
@@ -398,10 +782,34 @@ def run_experiment(config: dict, command: str | None = None, results_root: str |
                 device,
             )
             for item, multiplier, risk in zip(local_results, audit_multipliers, audit_risks):
-                item.num_samples = max(1.0, float(item.num_samples) * multiplier)
+                if receipt_authority is not None:
+                    setattr(item, "audit_multiplier", max(
+                        1.0 / max(1.0, float(item.num_samples)), float(multiplier)
+                    ))
+                else:
+                    item.num_samples = max(1.0, float(item.num_samples) * multiplier)
                 setattr(item, "audit_suspicion", min(1.0, float(risk)))
 
-        update, agg_meta, suspicion = _aggregate_round(local_results, config, reference_update, model_dim)
+        if method == "tierguard2":
+            auditor.begin_round(model)
+
+        if method == "tierguard2":
+            update, agg_meta, suspicion = _aggregate_tierguard2(
+                local_results, model, auditor, reference_update, config,
+                receipt_authority, round_idx,
+            )
+            save_json(agg_meta["aggregation_metadata"], run_dir / f"audit_round_{round_idx:03d}.json")
+        else:
+            update, agg_meta, suspicion = _aggregate_round(
+                local_results, config, reference_update, model_dim,
+                receipt_authority=receipt_authority, round_idx=round_idx,
+                model_hash=update_digest(flatten_model(model)) if receipt_authority is not None else None,
+                model=model, audit_loader=data.audit_loader,
+                full_root_loader=data.full_root_loader, device=device,
+            )
+            if receipt_authority is not None:
+                save_json(agg_meta["aggregation_metadata"],
+                          run_dir / f"audit_round_{round_idx:03d}.json")
         if not torch.isfinite(update).all():
             stability_failures += 1
             update = torch.nan_to_num(update, nan=0.0, posinf=0.0, neginf=0.0)
@@ -409,6 +817,18 @@ def run_experiment(config: dict, command: str | None = None, results_root: str |
         runtime = time.time() - start
         active_edges = len({item.edge_id for item in local_results})
         comm = _communication_overhead(config, len(local_results), active_edges, model_dim)
+        if receipt_authority is not None:
+            # Byte accounting for specified payloads, not measured latency or
+            # actual network transfer.  Keep legacy field names for CSV schema.
+            transport = agg_meta["aggregation_metadata"]
+            comm["comm_client_edge_mb"] = transport["client_edge_update_bytes"] / 1_000_000
+            comm["comm_edge_cloud_mb"] = (
+                transport["edge_cloud_report_bytes"]
+                + transport["client_cloud_receipt_bytes"]
+                + transport["challenge_raw_upload_bytes"]
+            ) / 1_000_000
+            comm["total_comm_mb"] = comm["comm_client_edge_mb"] + comm["comm_edge_cloud_mb"]
+            comm["challenge_raw_upload_mb"] = transport["challenge_raw_upload_bytes"] / 1_000_000
         for key in overhead_totals:
             overhead_totals[key] += comm[key]
         det = detection_scores([item.malicious for item in local_results], suspicion)
@@ -416,12 +836,26 @@ def run_experiment(config: dict, command: str | None = None, results_root: str |
 
         if round_idx % eval_every == 0 or round_idx == rounds:
             clean = evaluate_classifier(model, data.test_loader, device)
-            asr = attack_success_rate(model, data.backdoor_test_loader, device)
+            if method == "tierguard2" and str(config.get("attack", {}).get("name", "none")) == "none":
+                asr = None
+            elif (str(config.get("attack", {}).get("name", "none"))
+                  == "defence_aware_optimized_trigger" and latest_attack_trigger is not None):
+                dynamic_attack = {**config["attack"], "trigger_tensor": latest_attack_trigger}
+                dynamic_test = torch.utils.data.DataLoader(
+                    BackdoorDataset(data.test_loader.dataset,
+                                    target_label=int(config["attack"]["target_label"]),
+                                    attack_config=dynamic_attack),
+                    batch_size=int(config["federated"].get("batch_size", 64)),
+                    shuffle=False,
+                )
+                asr = attack_success_rate(model, dynamic_test, device)
+            else:
+                asr = attack_success_rate(model, data.backdoor_test_loader, device)
             privacy = privacy_accounting(config, round_idx)
             last_metrics = {
                 **clean,
-                "asr": float(asr),
-                "attack_success_rate": float(asr),
+                "asr": float(asr) if asr is not None else None,
+                "attack_success_rate": float(asr) if asr is not None else None,
                 "epsilon": float(privacy["epsilon"]) if math.isfinite(float(privacy["epsilon"])) else float("inf"),
                 "delta": float(privacy["delta"]),
             }
@@ -470,7 +904,12 @@ def run_experiment(config: dict, command: str | None = None, results_root: str |
         "seed": seed,
         "num_clients": config["federated"].get("num_clients"),
         "num_edges": config["federated"].get("num_edges"),
-        "selected_clients_per_round": config["federated"].get("clients_per_round"),
+        "selected_clients_per_round": (
+            int(config["federated"]["clients_per_edge_per_round"])
+            * int(config["federated"]["num_edges"])
+            if config["federated"].get("clients_per_edge_per_round") is not None
+            else config["federated"].get("clients_per_round")
+        ),
         "local_epochs": config["federated"].get("local_epochs"),
         "privacy_epsilon": last_metrics.get("epsilon", 0.0),
         "runtime": float(sum(row["round_runtime_sec"] for row in metrics_rows)),
@@ -487,13 +926,16 @@ def run_experiment(config: dict, command: str | None = None, results_root: str |
         "hierarchical_aggregation": method in HIERARCHICAL_METHODS,
         "git_commit": provenance["git_commit"],
         "config_sha256": provenance["config_sha256"],
-        "tierguard_score_mode": tg_cfg.get("score_mode"),
-        "tierguard_gamma": tg_cfg.get("gamma"),
-        "tierguard_adaptive_gamma": tg_cfg.get("adaptive_gamma"),
-        "tierguard_clip_multiplier": tg_cfg.get("clip_multiplier"),
-        "tierguard_tau_low": tg_cfg.get("tau_low"),
-        "tierguard_tau_high": tg_cfg.get("tau_high"),
     }
+    if method == "tierguard":
+        final.update({
+            "tierguard_score_mode": tg_cfg.get("score_mode"),
+            "tierguard_gamma": tg_cfg.get("gamma"),
+            "tierguard_adaptive_gamma": tg_cfg.get("adaptive_gamma"),
+            "tierguard_clip_multiplier": tg_cfg.get("clip_multiplier"),
+            "tierguard_tau_low": tg_cfg.get("tau_low"),
+            "tierguard_tau_high": tg_cfg.get("tau_high"),
+        })
     save_json(final, artifacts.final_metrics_json)
     save_json(
         {

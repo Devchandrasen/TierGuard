@@ -1,0 +1,43 @@
+experiment:
+  name: tierguard2_smoke_not_for_inference
+  seed: 991
+  device: cpu
+  rounds: 1
+  eval_every: 1
+federated:
+  num_clients: 10
+  num_edges: 2
+  clients_per_round: 4
+  clients_per_edge_per_round: 2
+  local_epochs: 1
+  batch_size: 10
+data:
+  dataset: mnist
+  synthetic: true
+  train_size: 100
+  test_size: 30
+  root_dataset_size: 20
+  audit_search_size: 10
+  audit_eval_size: 10
+  three_way_root_split: true
+  iid: true
+model:
+  name: mnist_cnn
+attack:
+  name: none
+  malicious_fraction: 0.0
+aggregation:
+  method: tierguard2
+privacy:
+  enabled: false
+security:
+  secure_sim: false
+tierguard2:
+  probes_per_class: 1
+  patch_sizes: [3]
+  calibrated_gain_threshold: 0.02
+  clean_improvement_credit: 0.25
+  clip_floor: 0.1
+  clip_reference_multiplier: 2.0
+  risk_gamma: 8.0
+  weight_floor: 0.05
