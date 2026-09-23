@@ -1,0 +1,10 @@
+#!/bin/sh
+#PBS -N tg2-gpu-check
+#PBS -q gpu
+#PBS -l select=1:ncpus=2:ngpus=1:mem=8gb
+#PBS -l walltime=00:10:00
+#PBS -j oe
+
+set -eu
+cd /home/chandrasen.pandey/tierguard2_env_2026_09_23/project
+../.venv/bin/python scripts/verify_tierguard2_gpu.py

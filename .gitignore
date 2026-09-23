@@ -20,6 +20,7 @@ Thumbs.db
 Makefile
 scripts/*.sh
 scripts/*.pbs
+!scripts/tierguard2_gpu_preflight.pbs
 scripts/prepare_nsl_kdd.py
 configs/ablation/
 configs/main/

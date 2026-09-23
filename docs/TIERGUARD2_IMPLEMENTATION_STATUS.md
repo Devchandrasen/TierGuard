@@ -54,12 +54,16 @@ evidence for a new method. No confirmatory outcome or superiority claim exists.
   All 30 indices were checked against an existing official CIFAR-10 copy and
   have car label 1. The new 20 attacker-only / 10 held-out split is recorded
   and excluded from normal client/root partitions; ASR uses unmodified held-out
-  images, not a synthetic patch. No semantic experiment has been run yet.
+  images, not a synthetic patch. The real-data preflight passed on the HPC copy
+  with three disjoint 200-image root splits and no semantic-source leakage.
+  No semantic attack experiment has been run yet.
 
 The synthetic one-round test is only an integration check. It is not a model
-comparison or a calibration run. The ordinary test suite is code-clean except
-for the pre-existing exact-environment test in the shared Python installation:
-the installed packages do not match the old confirmatory-v1 lock.
+comparison or a calibration run. On the separate TierGuard 2 HPC environment,
+all 56 applicable tests passed. The omitted legacy test compares the HPC v2
+environment with the old confirmatory-v1 lock and is not a v2 validity check.
+PBS GPU preflight job `38455.mgmt01` exited 0 on an NVIDIA H100, with
+PyTorch 2.11.0+cu128, torchvision 0.26.0+cu128, and cryptography 48.0.0.
 
 ## Still required before confirmation or manuscript rewriting
 
@@ -71,11 +75,12 @@ the installed packages do not match the old confirmatory-v1 lock.
    the implemented root-sensitivity panels;
    validate each against undefended FedAvg. The current distributed trigger is
    a single four-corner pattern, not the full published DBA attack.
-3. Validate the TierGuard 2 environment on a GPU compute node. A separate
+3. Run the actual study on GPU compute nodes, not on the login host. A separate
    Python 3.12.13 `uv` environment is installed on the HPC host from the v2
    lock, including Linux CUDA transitive pins. `uv pip check` passes for all
-   65 packages and a dry-run install would make no changes. The login node
-   has no GPU; no PBS GPU validation job has yet run.
+   65 packages and a dry-run install would make no changes. The minimal PBS
+   GPU/dependency preflight passed, but it is not a training run or a timing
+   benchmark.
 4. Finish a frozen development grid and tune all baselines with the same
    budget. Run three clean development seeds per dataset with provisional
    threshold 1.0, calibrate scores, and freeze configuration, code, partitions,
@@ -106,6 +111,10 @@ $env:PYTHONPATH = 'src'
 python -m pytest tests/test_tierguard2.py tests/test_tierguard2_decision.py -q
 python -m tierguard.cli run --config configs/tierguard2/smoke.yaml
 ```
+
+The HPC dataset and GPU preflight entry points are
+`scripts/verify_semantic_stress_data.py` and
+`scripts/tierguard2_gpu_preflight.pbs`. Neither runs a confirmatory seed.
 
 The prior study's lock and freeze manifest remain in the repository for its
 tagged release. Because this branch adds new source, the old source manifest

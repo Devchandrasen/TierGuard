@@ -16,7 +16,8 @@ def tierguard2_pins(repo_root: str | Path) -> dict[str, str]:
         encoding="utf-8"
     ).splitlines():
         line = line.strip()
-        if not line or line.startswith("#") or line.startswith("-r"):
+        if (not line or line.startswith("#")
+                or line.startswith(("-r ", "--extra-index-url ", "--index-url "))):
             continue
         if "==" not in line:
             raise ValueError(f"Unpinned TierGuard 2 requirement: {line}")
