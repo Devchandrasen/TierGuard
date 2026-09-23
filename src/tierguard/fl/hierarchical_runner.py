@@ -653,6 +653,12 @@ def run_experiment(config: dict, command: str | None = None, results_root: str |
     provenance = _run_provenance(config, device)
     save_json(provenance, artifacts.provenance_json)
     data = make_data_bundle(config)
+    semantic_train_images = None
+    if data.semantic_train_dataset is not None:
+        semantic_train_images = torch.stack(
+            [data.semantic_train_dataset[index][0]
+             for index in range(len(data.semantic_train_dataset))]
+        )
     if data.partition_indices is not None:
         save_json(data.partition_indices, run_dir / "partition_indices.json")
     model = build_model(
@@ -736,6 +742,9 @@ def run_experiment(config: dict, command: str | None = None, results_root: str |
             data.num_classes,
         )
         round_config = config
+        if semantic_train_images is not None:
+            round_config = copy.deepcopy(config)
+            round_config["attack"]["semantic_train_images"] = semantic_train_images
         if str(config.get("attack", {}).get("name", "none")) == "defence_aware_optimized_trigger":
             malicious_selected = [client_id for client_id in selected if client_id in malicious_clients]
             if malicious_selected:
@@ -849,6 +858,8 @@ def run_experiment(config: dict, command: str | None = None, results_root: str |
                     shuffle=False,
                 )
                 asr = attack_success_rate(model, dynamic_test, device)
+            elif data.semantic_test_loader is not None:
+                asr = attack_success_rate(model, data.semantic_test_loader, device)
             else:
                 asr = attack_success_rate(model, data.backdoor_test_loader, device)
             privacy = privacy_accounting(config, round_idx)

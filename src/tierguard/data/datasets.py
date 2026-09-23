@@ -11,6 +11,10 @@ from torch.nn import functional as F
 from tierguard.data.backdoor import BackdoorDataset, add_configured_trigger
 from tierguard.data.partition import labels_to_numpy, partition_dataset
 from tierguard.data.root_splits import stratified_root_split
+from tierguard.data.semantic_green_car import (
+    GREEN_CAR_ATTACK_TRAIN, GREEN_CAR_HELDOUT_TEST, GREEN_CAR_INDICES,
+    SemanticTargetDataset,
+)
 
 
 class SyntheticImageDataset(Dataset):
@@ -73,6 +77,24 @@ class RootContaminationDataset(Dataset):
         return image, label
 
 
+class RootAppearanceDataset(Dataset):
+    def __init__(self, base: Dataset, invert_intensity: bool):
+        self.base = base
+        self.invert_intensity = invert_intensity
+        self.targets = labels_to_numpy(base).tolist()
+
+    def __len__(self) -> int:
+        return len(self.base)
+
+    def __getitem__(self, index: int):
+        image, label = self.base[index]
+        if self.invert_intensity:
+            image = image.amin(dim=(-2, -1), keepdim=True) + image.amax(
+                dim=(-2, -1), keepdim=True
+            ) - image
+        return image, label
+
+
 def contaminate_root(base: Dataset, fraction: float, attack_config: dict,
                      seed: int) -> tuple[Dataset, list[int]]:
     if not 0 <= fraction <= 1:
@@ -103,9 +125,12 @@ class DataBundle:
     audit_eval_loader: DataLoader | None = None
     partition_indices: dict[str, Any] | None = None
     full_root_loader: DataLoader | None = None
+    semantic_train_dataset: Dataset | None = None
+    semantic_test_loader: DataLoader | None = None
 
 
-def _load_torchvision_dataset(name: str, root: str, train: bool, download: bool = False):
+def _load_torchvision_dataset(name: str, root: str, train: bool, download: bool = False,
+                              augment: bool = True):
     try:
         from torchvision import datasets, transforms
     except Exception as exc:  # pragma: no cover - depends on local torchvision install
@@ -123,7 +148,7 @@ def _load_torchvision_dataset(name: str, root: str, train: bool, download: bool 
         return cls(root=root, train=train, download=download, transform=transform)
     if key == "cifar10":
         steps = []
-        if train:
+        if train and augment:
             steps.extend(
                 [
                     transforms.RandomCrop(32, padding=4),
@@ -206,6 +231,13 @@ def maybe_subset(dataset: Dataset, size: int | None, seed: int) -> Dataset:
     return Subset(dataset, indices)
 
 
+def original_indices(dataset: Dataset) -> list[int]:
+    if isinstance(dataset, Subset):
+        parent = original_indices(dataset.dataset)
+        return [int(parent[int(index)]) for index in dataset.indices]
+    return list(range(len(dataset)))
+
+
 def make_data_bundle(config: dict[str, Any]) -> DataBundle:
     data_cfg = config["data"]
     fed_cfg = config["federated"]
@@ -216,10 +248,29 @@ def make_data_bundle(config: dict[str, Any]) -> DataBundle:
         return make_ids_data_bundle(config)
 
     train, test, num_classes, input_shape = load_vision_datasets(data_cfg, seed)
+    semantic_train_dataset = None
+    semantic_test_dataset = None
+    semantic_attack = str(config.get("attack", {}).get("name", "")) == "semantic_green_car"
+    if semantic_attack:
+        if data_cfg.get("dataset", "").lower() != "cifar10" or data_cfg.get("synthetic", False):
+            raise ValueError("Semantic green-car stress test requires real CIFAR-10")
+        if any(int(train.targets[index]) != 1 for index in GREEN_CAR_INDICES):
+            raise ValueError("Green-car source indices do not match CIFAR-10 car labels")
+        semantic_plain = _load_torchvision_dataset(
+            "cifar10", data_cfg.get("root", "./data"), True,
+            download=bool(data_cfg.get("download", False)), augment=False,
+        )
+        semantic_train_dataset = Subset(semantic_plain, GREEN_CAR_ATTACK_TRAIN)
+        semantic_test_dataset = SemanticTargetDataset(
+            Subset(semantic_plain, GREEN_CAR_HELDOUT_TEST),
+            target_label=int(config["attack"].get("target_label", 2)),
+        )
+        reserved = set(GREEN_CAR_INDICES)
+        train = Subset(train, [index for index in range(len(train)) if index not in reserved])
     train = maybe_subset(train, data_cfg.get("train_size"), seed)
     test = maybe_subset(test, data_cfg.get("test_size") or data_cfg.get("validation_size"), seed + 1)
-    train_index_map = list(train.indices) if isinstance(train, Subset) else list(range(len(train)))
-    test_index_map = list(test.indices) if isinstance(test, Subset) else list(range(len(test)))
+    train_index_map = original_indices(train)
+    test_index_map = original_indices(test)
     three_way_root = (
         str(config.get("aggregation", {}).get("method", "")).lower() == "tierguard2"
         or bool(data_cfg.get("three_way_root_split", False))
@@ -233,9 +284,24 @@ def make_data_bundle(config: dict[str, Any]) -> DataBundle:
         )
         root_indices = stratified_root_split(train, sizes, seed + 2)
         main_train = Subset(train, root_indices["clients"])
-        root_set = Subset(train, root_indices["reference"])
-        search_set = Subset(train, root_indices["search"])
-        eval_set = Subset(train, root_indices["evaluation"])
+        root_active = {name: list(root_indices[name])
+                       for name in ("reference", "search", "evaluation")}
+        allowed_labels = data_cfg.get("root_label_allowlist")
+        if allowed_labels is not None:
+            allowed = {int(value) for value in allowed_labels}
+            if not allowed:
+                raise ValueError("root_label_allowlist cannot be empty")
+            train_labels = labels_to_numpy(train)
+            root_active = {
+                name: [index for index in indices if int(train_labels[index]) in allowed]
+                for name, indices in root_active.items()
+            }
+            if any(not indices for indices in root_active.values()):
+                raise ValueError("Root label restriction emptied a root split")
+        invert = bool(data_cfg.get("root_invert_intensity", False))
+        root_set = RootAppearanceDataset(Subset(train, root_active["reference"]), invert)
+        search_set = RootAppearanceDataset(Subset(train, root_active["search"]), invert)
+        eval_set = RootAppearanceDataset(Subset(train, root_active["evaluation"]), invert)
         contamination_fraction = float(data_cfg.get("root_contamination_fraction", 0.0))
         root_sets = [root_set, search_set, eval_set]
         contamination_local = []
@@ -315,6 +381,10 @@ def make_data_bundle(config: dict[str, Any]) -> DataBundle:
         partition_indices=(
             {
                 "root": {
+                    name: [int(train_index_map[index]) for index in root_active[name]]
+                    for name in ("reference", "search", "evaluation")
+                },
+                "root_reserved": {
                     name: [int(train_index_map[index]) for index in root_indices[name]]
                     for name in ("reference", "search", "evaluation")
                 },
@@ -325,10 +395,20 @@ def make_data_bundle(config: dict[str, Any]) -> DataBundle:
                 },
                 "test": [int(index) for index in test_index_map],
                 "root_contamination": {
-                    name: [int(train_index_map[root_indices[name][index]])
+                    name: [int(train_index_map[root_active[name][index]])
                            for index in contamination_local[offset]]
                     for offset, name in enumerate(("reference", "search", "evaluation"))
                 },
+                "root_invert_intensity": invert,
+                "root_label_allowlist": sorted(allowed) if allowed_labels is not None else None,
+                "semantic_green_car": (
+                    {
+                        "reserved_original_train_indices": list(GREEN_CAR_INDICES),
+                        "attacker_train_original_indices": list(GREEN_CAR_ATTACK_TRAIN),
+                        "heldout_semantic_original_indices": list(GREEN_CAR_HELDOUT_TEST),
+                        "source_commit": "9f48fbbb496aaed4ba696494950a5d71ee82a80c",
+                    } if semantic_attack else None
+                ),
                 "note": "Train and test indices refer to their respective original loaded datasets",
             }
             if three_way_root else None
@@ -338,5 +418,10 @@ def make_data_bundle(config: dict[str, Any]) -> DataBundle:
                 ConcatDataset([root_set, search_set, eval_set]),
                 batch_size=batch_size, shuffle=False,
             ) if three_way_root else None
+        ),
+        semantic_train_dataset=semantic_train_dataset,
+        semantic_test_loader=(
+            DataLoader(semantic_test_dataset, batch_size=batch_size, shuffle=False)
+            if semantic_test_dataset is not None else None
         ),
     )

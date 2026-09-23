@@ -20,6 +20,9 @@ from tierguard.security.edge_receipts import (
     verify_challenged_report,
 )
 from tierguard.data.backdoor import add_configured_trigger
+from tierguard.data.semantic_green_car import (
+    GREEN_CAR_ATTACK_TRAIN, GREEN_CAR_HELDOUT_TEST, GREEN_CAR_INDICES,
+)
 from tierguard.attacks.optimized_trigger import optimize_trigger
 
 
@@ -69,6 +72,34 @@ def test_root_contamination_keeps_client_and_test_indices_fixed():
     assert clean["clients"] == poisoned["clients"]
     assert clean["test"] == poisoned["test"]
     assert sum(len(items) for items in poisoned["root_contamination"].values()) == 8
+
+
+def test_root_restriction_and_inversion_leave_clients_unchanged():
+    config = {
+        "experiment": {"seed": 11},
+        "federated": {"num_clients": 10, "num_edges": 2, "batch_size": 10},
+        "data": {"dataset": "mnist", "synthetic": True, "train_size": 100,
+                 "test_size": 30, "root_dataset_size": 20, "audit_search_size": 10,
+                 "audit_eval_size": 10, "three_way_root_split": True, "iid": True},
+        "attack": {"name": "none", "target_label": 0},
+        "aggregation": {"method": "tierguard2"},
+    }
+    ordinary = make_data_bundle(config)
+    config["data"]["root_label_allowlist"] = [0, 1, 2, 3, 4]
+    config["data"]["root_invert_intensity"] = True
+    restricted = make_data_bundle(config)
+    assert ordinary.partition_indices["clients"] == restricted.partition_indices["clients"]
+    assert ordinary.partition_indices["test"] == restricted.partition_indices["test"]
+    assert len(restricted.partition_indices["root"]["search"]) == 5
+    assert restricted.partition_indices["root_invert_intensity"]
+    assert all(label in range(5) for _, label in restricted.audit_search_loader.dataset)
+
+
+def test_semantic_source_split_is_small_and_disjoint():
+    assert len(GREEN_CAR_INDICES) == len(set(GREEN_CAR_INDICES)) == 30
+    assert len(GREEN_CAR_ATTACK_TRAIN) == 20
+    assert len(GREEN_CAR_HELDOUT_TEST) == 10
+    assert not set(GREEN_CAR_ATTACK_TRAIN) & set(GREEN_CAR_HELDOUT_TEST)
 
 
 def test_counterfactual_auditor_and_continuous_aggregation():

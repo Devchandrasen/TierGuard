@@ -45,7 +45,16 @@ evidence for a new method. No confirmatory outcome or superiority claim exists.
   and the clean-accuracy lower confidence bound.
 - Deterministic targeted root-contamination wrapper with the contaminated
   original indices recorded. Its paired test verifies that the client/test
-  partitions remain unchanged; full sensitivity runs have not been executed.
+  partitions remain unchanged. Root-label restriction and per-channel
+  intensity inversion are also implemented as root-only transformations with
+  unchanged clients/test and explicit active/reserved indices. Full sensitivity
+  runs have not been executed.
+- A small, explicitly out-of-family semantic green-car path using the 30
+  CIFAR-10 training indices in the attack authors' Backdoors101 configuration.
+  All 30 indices were checked against an existing official CIFAR-10 copy and
+  have car label 1. The new 20 attacker-only / 10 held-out split is recorded
+  and excluded from normal client/root partitions; ASR uses unmodified held-out
+  images, not a synthetic patch. No semantic experiment has been run yet.
 
 The synthetic one-round test is only an integration check. It is not a model
 comparison or a calibration run. The ordinary test suite is code-clean except
@@ -57,15 +66,16 @@ the installed packages do not match the old confirmatory-v1 lock.
 1. Source-check both hierarchical FLAME and FedGame adaptations. Obtain the full
    HFLMND method or official code; the publisher abstract alone is inadequate
    for a faithful baseline. Do not call a feature-clustering surrogate HFLMND.
-2. Validate the defence-aware optimized-trigger attack, implement the semantic
-   green-car stress test, sign-flip/ALIE and heterogeneity panels; run the
-   implemented root-contamination sensitivity;
+2. Validate the defence-aware optimized-trigger attack and semantic green-car
+   implementation on real CIFAR-10; run sign-flip/ALIE, stronger-heterogeneity, and
+   the implemented root-sensitivity panels;
    validate each against undefended FedAvg. The current distributed trigger is
    a single four-corner pattern, not the full published DBA attack.
-3. Establish the exact TierGuard 2 HPC environment. The login shell defaults
-   to Python 3.9, but `uv` already has Python 3.12.13 installed; the v2 target
-   is pinned separately in `.python-version-tierguard2`. PBS `gpu` queue is
-   available. The environment has not been installed or validated on a GPU node.
+3. Validate the TierGuard 2 environment on a GPU compute node. A separate
+   Python 3.12.13 `uv` environment is installed on the HPC host from the v2
+   lock, including Linux CUDA transitive pins. `uv pip check` passes for all
+   65 packages and a dry-run install would make no changes. The login node
+   has no GPU; no PBS GPU validation job has yet run.
 4. Finish a frozen development grid and tune all baselines with the same
    budget. Run three clean development seeds per dataset with provisional
    threshold 1.0, calibrate scores, and freeze configuration, code, partitions,

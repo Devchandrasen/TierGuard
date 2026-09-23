@@ -78,6 +78,7 @@ def train_local_model(
     criterion = nn.CrossEntropyLoss(label_smoothing=float(federated_config.get("label_smoothing", 0.0)))
     attack_name = (attack_config or {}).get("name", "none") if malicious else "none"
     attack_trigger = None
+    attack_generator = torch.Generator(device="cpu").manual_seed(attack_seed)
     if attack_name == "defence_aware_optimized_trigger":
         attack_trigger = attack_config.get("trigger_tensor")
         if attack_trigger is None:
@@ -105,6 +106,19 @@ def train_local_model(
                 "defence_aware_optimized_trigger",
             }:
                 inputs, targets = _poison_or_flip_batch(inputs, targets, attack_config, num_classes)
+            elif attack_name == "semantic_green_car":
+                source = attack_config.get("semantic_train_images")
+                if source is None or len(source) == 0:
+                    raise ValueError("Semantic attack requires its reserved green-car source set")
+                count = max(1, int(round(len(inputs) * float(
+                    attack_config.get("backdoor_fraction", 0.3)
+                ))))
+                count = min(count, len(inputs))
+                chosen = torch.randint(len(source), (count,), generator=attack_generator)
+                inputs = inputs.clone()
+                targets = targets.clone()
+                inputs[:count] = source[chosen].to(device)
+                targets[:count] = int(attack_config.get("target_label", 2))
 
             optimizer.zero_grad(set_to_none=True)
             logits = model(inputs)
