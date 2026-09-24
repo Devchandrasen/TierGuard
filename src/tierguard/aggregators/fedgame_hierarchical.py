@@ -1,10 +1,12 @@
-"""Two-tier defender-side adaptation of the official FedGame implementation.
+"""Budget-bounded two-tier defender-side adaptation derived from FedGame.
 
 The official NeurIPS 2023 FedGame server builds an auxiliary average model,
 reverse-engineers a mask/trigger for every class, selects the smallest mask,
 and uses one minus induced target-class success as a client weight.  This
 module applies those steps separately at each hierarchy level; it does not
-transfer the paper's flat-server theoretical guarantee.
+transfer the paper's flat-server theoretical guarantee. The root batch,
+sigmoid parameterization and finite step budget differ from the authors'
+full-clean-set tanh reconstruction; see docs/BASELINE_SOURCE_AUDIT.md.
 """
 
 from __future__ import annotations

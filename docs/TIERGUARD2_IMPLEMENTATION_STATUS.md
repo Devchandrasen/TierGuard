@@ -28,11 +28,11 @@ evidence for a new method. No confirmatory outcome or superiority claim exists.
   FLAME/FedGame defender adaptations and a paper-derived HFLMND reconstruction.
   FLAME follows the published cosine/HDBSCAN majority
   filter, median-norm clipping, equal averaging, and adaptive noise structure;
-  its two-tier application and small-edge fallback require explicit reporting
-  and source-validation before confirmation. FedGame follows the official
-  auxiliary-average model, per-class trigger reconstruction, smallest-mask
-  target selection, and genuine-score weighting, but its two-tier use and
-  reconstruction budget likewise need development validation.
+  its two-tier application and small-edge fallback require explicit reporting.
+  The FedGame-derived baseline follows the authors' defender-side sequence,
+  but its bounded reconstruction, root size and two-tier use differ materially
+  from their flat-server code. The source audit and exact differences are in
+  `docs/BASELINE_SOURCE_AUDIT.md`; neither adaptation is author-code-identical.
   Payload byte counts are recorded; these are **not** real network timings.
 - The supplied full HFLMND article has now been inspected. Its NSFE feature
   equations, binary hierarchical clustering, historical suspicion correction,
@@ -110,10 +110,12 @@ against matched FedAvg before any development or confirmatory interpretation.
 
 ## Still required before confirmation or manuscript rewriting
 
-1. Source-check both hierarchical FLAME and FedGame adaptations. Verify the
-   HFLMND reconstruction against author code if it becomes available; otherwise
-   disclose the paper's under-specified choices and keep them fixed before
-   confirmation. Do not call this reconstruction author-code-identical.
+1. Validate the source-audited FLAME and bounded FedGame adaptations in actual
+   development runs, including FLAME's small-edge fallback frequency and
+   FedGame's root/reconstruction budget. Verify HFLMND against author code if
+   it becomes available; otherwise disclose the paper's under-specified
+   choices and keep them fixed before confirmation. Do not call any of these
+   two-tier adaptations author-code-identical.
 2. Validate the defence-aware optimized-trigger attack and semantic green-car
    implementation on real CIFAR-10; run sign-flip/ALIE, stronger-heterogeneity, and
    the implemented root-sensitivity panels;
