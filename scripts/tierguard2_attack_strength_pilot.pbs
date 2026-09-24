@@ -1,0 +1,54 @@
+#!/bin/sh
+#PBS -N tg2-attack-strength
+#PBS -q gpu
+#PBS -l select=1:ncpus=4:ngpus=1:mem=24gb
+#PBS -l walltime=01:30:00
+#PBS -j oe
+
+# Prefreeze attacker-strength diagnostic against matched FedAvg. The one
+# pilot seed is excluded from development selection and confirmation.
+set -eu
+case "${TG2_ATTACK:?missing TG2_ATTACK}" in
+    distributed_backdoor|defence_aware_optimized_trigger) ;;
+    *) echo "unexpected attack" >&2; exit 2 ;;
+esac
+
+cd /home/chandrasen.pandey/tierguard2_env_2026_09_23/project_dev_18945cc
+export PYTHONPATH=./src
+export OMP_NUM_THREADS=2
+export MKL_NUM_THREADS=2
+export OPENBLAS_NUM_THREADS=2
+
+../.venv/bin/python -m tierguard.cli run \
+    --config configs/tierguard2/smoke.yaml \
+    experiment.name=tierguard2_prefreeze_attack_strength_pilot \
+    experiment.seed=1993 \
+    experiment.device=cuda \
+    experiment.rounds=10 \
+    experiment.eval_every=2 \
+    federated.num_clients=60 \
+    federated.num_edges=6 \
+    federated.clients_per_round=30 \
+    federated.clients_per_edge_per_round=5 \
+    federated.local_epochs=2 \
+    federated.batch_size=64 \
+    federated.client_lr=0.05 \
+    data.dataset=fashionmnist \
+    data.synthetic=false \
+    data.root=/home/chandrasen.pandey/tierguard2_env_2026_09_23/datasets \
+    data.train_size=null \
+    data.test_size=null \
+    data.root_dataset_size=200 \
+    data.audit_search_size=200 \
+    data.audit_eval_size=200 \
+    data.three_way_root_split=true \
+    data.partition=dirichlet \
+    data.dirichlet_alpha=0.3 \
+    data.iid=false \
+    model.name=mnist_cnn \
+    attack.name="$TG2_ATTACK" \
+    attack.instance_mode=deterministic \
+    attack.malicious_fraction=0.2 \
+    attack.backdoor_fraction=0.3 \
+    aggregation.method=hfl_fedavg \
+    security.edge_challenges=true
