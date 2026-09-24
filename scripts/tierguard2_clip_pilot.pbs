@@ -1,0 +1,51 @@
+#!/bin/sh
+#PBS -N tg2-clip-pilot
+#PBS -q gpu
+#PBS -l select=1:ncpus=4:ngpus=1:mem=24gb
+#PBS -l walltime=01:00:00
+#PBS -j oe
+
+# Two prespecified prefreeze clean-utility diagnostics at seed 1992.
+# These runs do not enter development calibration or confirmation.
+set -eu
+cd /home/chandrasen.pandey/tierguard2_env_2026_09_23/project_dev_18945cc
+export PYTHONPATH=./src
+export OMP_NUM_THREADS=2
+export MKL_NUM_THREADS=2
+export OPENBLAS_NUM_THREADS=2
+
+for multiplier in 8.0 16.0; do
+    ../.venv/bin/python -m tierguard.cli run \
+        --config configs/tierguard2/smoke.yaml \
+        experiment.name=tierguard2_prefreeze_clip_pilot \
+        experiment.seed=1992 \
+        experiment.device=cuda \
+        experiment.rounds=10 \
+        experiment.eval_every=2 \
+        federated.num_clients=60 \
+        federated.num_edges=6 \
+        federated.clients_per_round=30 \
+        federated.clients_per_edge_per_round=5 \
+        federated.local_epochs=2 \
+        federated.batch_size=64 \
+        federated.client_lr=0.05 \
+        data.dataset=fashionmnist \
+        data.synthetic=false \
+        data.root=/home/chandrasen.pandey/tierguard2_env_2026_09_23/datasets \
+        data.train_size=null \
+        data.test_size=null \
+        data.root_dataset_size=200 \
+        data.audit_search_size=200 \
+        data.audit_eval_size=200 \
+        data.three_way_root_split=true \
+        data.partition=dirichlet \
+        data.dirichlet_alpha=0.3 \
+        data.iid=false \
+        model.name=mnist_cnn \
+        attack.name=none \
+        attack.malicious_fraction=0.0 \
+        aggregation.method=tierguard2 \
+        security.edge_challenges=true \
+        tierguard2.clip_reference_multiplier="$multiplier" \
+        tierguard2.calibrated_gain_threshold=1.0
+done

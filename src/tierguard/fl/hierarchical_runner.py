@@ -79,6 +79,7 @@ def _aggregate_tierguard2(client_results, model, auditor, reference_update,
     radius = max(float(settings.get("clip_floor", 0.1)),
                  float(settings.get("clip_reference_multiplier", 2.0)) *
                  float(torch.linalg.vector_norm(reference_update)))
+    client_norms = [float(torch.linalg.vector_norm(item.update)) for item in client_results]
     model_hash = update_digest(flatten_model(model))
     server_lr = float(config["federated"].get("server_lr", 1.0))
     by_edge = {}
@@ -177,6 +178,7 @@ def _aggregate_tierguard2(client_results, model, auditor, reference_update,
         raise ValueError("All active edge reports were rejected")
     edge_audits = [auditor.audit(model, clip_update(report.aggregate, radius),
                                  server_lr=server_lr) for report in surviving]
+    edge_norms = [float(torch.linalg.vector_norm(report.aggregate)) for report in surviving]
     edge_risks = [item.risk for item in edge_audits]
     edge_masses = [sum(item.sample_mass for item in report.receipts) for report in surviving]
     cloud_update, _ = aggregate_level(
@@ -192,6 +194,13 @@ def _aggregate_tierguard2(client_results, model, auditor, reference_update,
         "aggregation_metadata": {
             "mode": "two_level_continuous_weighted_mean",
             "clip_radius": radius,
+            "client_update_norm_mean": float(np.mean(client_norms)),
+            "client_update_norm_max": float(np.max(client_norms)),
+            "client_update_clipped_fraction": float(np.mean(
+                [norm > radius for norm in client_norms])),
+            "edge_aggregate_norm_mean": float(np.mean(edge_norms)),
+            "edge_aggregate_clipped_fraction": float(np.mean(
+                [norm > radius for norm in edge_norms])),
             "challenged_edges": sorted(challenged),
             "single_report_escape_probability": single_report_escape_probability(len(reports)),
             "rejected_edges": sorted(rejected),
