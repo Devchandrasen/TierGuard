@@ -1,0 +1,50 @@
+#!/bin/sh
+#PBS -N tg2-attack-audit
+#PBS -q gpu
+#PBS -l select=1:ncpus=4:ngpus=1:mem=24gb
+#PBS -l walltime=00:20:00
+#PBS -j oe
+
+# One-round prefreeze diagnostic: log raw held-out audit scores under an
+# effective zero-risk threshold. Not an effectiveness comparison.
+set -eu
+cd /home/chandrasen.pandey/tierguard2_env_2026_09_23/project_hflmnd_9490f72
+export PYTHONPATH=./src
+export OMP_NUM_THREADS=2
+export MKL_NUM_THREADS=2
+export OPENBLAS_NUM_THREADS=2
+
+../.venv/bin/python -m tierguard.cli run \
+    --config configs/tierguard2/smoke.yaml \
+    experiment.name=tierguard2_prefreeze_attack_audit_pilot \
+    experiment.seed=1992 \
+    experiment.device=cuda \
+    experiment.rounds=1 \
+    federated.num_clients=60 \
+    federated.num_edges=6 \
+    federated.clients_per_round=30 \
+    federated.clients_per_edge_per_round=5 \
+    federated.local_epochs=2 \
+    federated.batch_size=64 \
+    federated.client_lr=0.05 \
+    data.dataset=fashionmnist \
+    data.synthetic=false \
+    data.root=/home/chandrasen.pandey/tierguard2_env_2026_09_23/datasets \
+    data.train_size=null \
+    data.test_size=null \
+    data.root_dataset_size=200 \
+    data.audit_search_size=200 \
+    data.audit_eval_size=200 \
+    data.three_way_root_split=true \
+    data.partition=dirichlet \
+    data.dirichlet_alpha=0.3 \
+    data.iid=false \
+    model.name=mnist_cnn \
+    attack.name=unknown_patch_model_replacement \
+    attack.instance_mode=deterministic \
+    attack.malicious_fraction=0.2 \
+    attack.backdoor_fraction=0.3 \
+    aggregation.method=tierguard2 \
+    security.edge_challenges=true \
+    tierguard2.clip_reference_multiplier=16.0 \
+    tierguard2.calibrated_gain_threshold=1.0

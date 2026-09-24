@@ -96,7 +96,8 @@ been created yet.
 
 The three benchmark datasets are present in a separate HPC data directory and
 a preparation manifest records 24 file hashes, expected
-train/test sizes and per-class counts. This is preparation, not a v2 freeze.
+train/test sizes and per-class counts. A read-only recheck of all 24 files,
+sizes and class counts passed. This is preparation, not a v2 freeze.
 An H100 one-round full-FashionMNIST clean pilot at the planned 60-client,
 six-edge topology exposed a 5.1-second per-candidate GPU synchronization
 bottleneck in pattern/target selection. A vectorized equivalent reduced the

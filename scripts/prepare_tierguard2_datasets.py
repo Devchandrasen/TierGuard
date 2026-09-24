@@ -36,18 +36,11 @@ def class_counts(targets: list[int]) -> dict[str, int]:
     return counts
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--root", type=Path, required=True)
-    parser.add_argument("--manifest", type=Path, required=True)
-    parser.add_argument("--download-missing", action="store_true")
-    args = parser.parse_args()
-    root = args.root.resolve()
-    root.mkdir(parents=True, exist_ok=True)
+def inspect_root(root: Path, download_missing: bool = False) -> dict:
     summary = {}
     for name, dataset_cls, train_size, test_size in DATASETS:
-        train = dataset_cls(root=str(root), train=True, download=args.download_missing)
-        test = dataset_cls(root=str(root), train=False, download=args.download_missing)
+        train = dataset_cls(root=str(root), train=True, download=download_missing)
+        test = dataset_cls(root=str(root), train=False, download=download_missing)
         if len(train) != train_size or len(test) != test_size:
             raise ValueError(f"Unexpected {name} train/test sizes")
         train_counts = class_counts(train.targets)
@@ -66,18 +59,43 @@ def main() -> None:
             files[path.relative_to(root).as_posix()] = sha256_file(path)
     if not files:
         raise ValueError("No dataset files were found")
-    payload = {"datasets": summary, "files_sha256": files}
+    return {"datasets": summary, "files_sha256": files}
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--root", type=Path, required=True)
+    parser.add_argument("--manifest", type=Path, required=True)
+    parser.add_argument("--download-missing", action="store_true")
+    parser.add_argument("--verify", action="store_true",
+                        help="Recompute every dataset file hash and class count")
+    args = parser.parse_args()
+    root = args.root.resolve()
     manifest = args.manifest.resolve()
+    if args.verify:
+        if args.download_missing:
+            raise ValueError("Verification cannot download or modify datasets")
+        if not manifest.is_file():
+            raise FileNotFoundError(manifest)
+        expected = json.loads(manifest.read_text(encoding="utf-8"))
+        actual = inspect_root(root)
+        if actual != expected:
+            raise ValueError("Dataset files, sizes, or class counts differ from manifest")
+        print(json.dumps({"manifest": str(manifest), "status": "verified",
+                          "file_count": len(actual["files_sha256"])}, sort_keys=True))
+        return
+    root.mkdir(parents=True, exist_ok=True)
     if manifest.exists():
         raise FileExistsError(f"Refusing to replace existing manifest: {manifest}")
+    payload = inspect_root(root, download_missing=args.download_missing)
     manifest.parent.mkdir(parents=True, exist_ok=True)
     manifest.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n",
                         encoding="utf-8")
     print(json.dumps({
         "manifest": str(manifest),
-        "file_count": len(files),
+        "file_count": len(payload["files_sha256"]),
         "datasets": {name: {"train": data["train_size"], "test": data["test_size"]}
-                     for name, data in summary.items()},
+                     for name, data in payload["datasets"].items()},
         "status": "pass",
     }, sort_keys=True))
 
