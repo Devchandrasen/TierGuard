@@ -12,7 +12,7 @@ def _development_run(root, seed: int, clip: float = 8.0, dirty: bool = False):
     path = root / f"seed_{seed}"
     path.mkdir()
     config = {
-        "experiment": {"name": "tierguard2_clean_development_unfrozen",
+        "experiment": {"name": "tierguard2_clean_development_source_attested",
                        "seed": seed, "rounds": 40},
         "data": {"dataset": "fashionmnist"},
         "attack": {"name": "none"},

@@ -12,17 +12,18 @@ def _write_run(root, method: str, seed: int, clip: float):
     path = root / method / str(seed) / str(clip)
     path.mkdir(parents=True)
     config = {
-        'experiment': {'name': 'tierguard2_clean_development_unfrozen',
+        'experiment': {'name': 'tierguard2_clean_development_source_attested',
                        'seed': seed, 'rounds': 40},
         'aggregation': {'method': method},
         'attack': {'name': 'none'},
-        'data': {'dataset': 'fashionmnist'},
+        'data': {'dataset': 'fashionmnist', 'test_size': 10000},
+        'provenance': {'require_clean_git': True},
         'tierguard2': {'clip_reference_multiplier': clip,
                        'probes_per_class': 2, 'calibrated_gain_threshold': 1.0},
     }
     (path / 'resolved_config.yaml').write_text(yaml.safe_dump(config), encoding='utf-8')
     (path / 'final_metrics.json').write_text(json.dumps({
-        'experiment_name': 'tierguard2_clean_development_unfrozen',
+        'experiment_name': 'tierguard2_clean_development_source_attested',
         'final_round': 40, 'clean_accuracy': 0.8, 'macro_f1': 0.79,
         'attack_success_rate': None, 'stability_failures': 0,
     }), encoding='utf-8')

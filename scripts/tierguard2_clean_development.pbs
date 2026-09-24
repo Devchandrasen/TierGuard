@@ -25,7 +25,8 @@ if [ "$TG2_METHOD" = hfl_fedavg ] && [ "$TG2_CLIP_MULT" != 8.0 ]; then
     exit 2
 fi
 
-cd /home/chandrasen.pandey/tierguard2_env_2026_09_23/project_dev_18945cc
+cd /home/chandrasen.pandey/tierguard2_env_2026_09_23/project_dev_attested
+export PATH=/home/chandrasen.pandey/tierguard2_env_2026_09_23/shared_bin:$PATH
 export PYTHONPATH=./src
 export OMP_NUM_THREADS=2
 export MKL_NUM_THREADS=2
@@ -33,7 +34,7 @@ export OPENBLAS_NUM_THREADS=2
 
 ../.venv/bin/python -m tierguard.cli run \
     --config configs/tierguard2/smoke.yaml \
-    experiment.name=tierguard2_clean_development_unfrozen \
+    experiment.name=tierguard2_clean_development_source_attested \
     experiment.seed="$TG2_SEED" \
     experiment.device=cuda \
     experiment.rounds=40 \
@@ -49,7 +50,7 @@ export OPENBLAS_NUM_THREADS=2
     data.synthetic=false \
     data.root=/home/chandrasen.pandey/tierguard2_env_2026_09_23/datasets \
     data.train_size=null \
-    data.test_size=null \
+    data.test_size=10000 \
     data.root_dataset_size=200 \
     data.audit_search_size=200 \
     data.audit_eval_size=200 \
@@ -62,6 +63,7 @@ export OPENBLAS_NUM_THREADS=2
     attack.malicious_fraction=0.0 \
     aggregation.method="$TG2_METHOD" \
     security.edge_challenges=true \
+    provenance.require_clean_git=true \
     tierguard2.probes_per_class=2 \
     tierguard2.clip_reference_multiplier="$TG2_CLIP_MULT" \
     tierguard2.calibrated_gain_threshold=1.0

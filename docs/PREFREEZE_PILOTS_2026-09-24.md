@@ -2,8 +2,12 @@
 
 All runs used one NVIDIA H100, real FashionMNIST, 60 clients, six edges,
 five selected clients per edge, two local epochs, Dirichlet alpha 0.3, a
-disjoint 200/200/200 reference/search/evaluation root, and the full 10,000
-image test set unless noted. The PBS outputs and complete run directories are
+disjoint 200/200/200 reference/search/evaluation root. The ten-round pilots
+used a fixed 5,000-image test subset: the `data.test_size=null` override
+activated the base configuration's `validation_size=5000` fallback. The
+one-round runtime profiler explicitly used 1,000 test images. These sizes
+are now recorded correctly and the attested development rerun requests all
+10,000 test images explicitly. The PBS outputs and complete run directories are
 on `arc-hpc` under the dedicated `tierguard2_env_2026_09_23` workspace.
 These pilots use seed 1991 or 1992, neither of which is a development or
 confirmatory seed. They must not enter manuscript inference.
@@ -43,3 +47,14 @@ manifest, including expected class counts. This does not freeze the v2
 protocol. The next gate is three clean development seeds with the two
 clipping candidates, followed by clean-score calibration and attack-strength
 checks across all planned datasets. No confirmatory seed has run.
+
+The first attempt at three 40-round clean development runs was not used for
+calibration: compute nodes lacked `git`, so run-level commit and clean-tree
+provenance were unavailable. Six further development jobs were cancelled
+once this was discovered, with partial logs retained. A Git 2.43.5 binary
+from the HPC login image was placed in the dedicated shared environment and
+tested on both GPU nodes (SHA-256
+`d220991337f55201c733e9ad80c11bec384680ec7b927a341a8cf03bb62d19a4`).
+The rerun requires readable, clean Git provenance
+before training starts and uses an explicit 10,000-image test set. The
+initial attempt is diagnostic only and must not be mixed with the rerun.

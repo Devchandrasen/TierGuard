@@ -1,0 +1,15 @@
+#!/bin/sh
+#PBS -N tg2-provenance
+#PBS -q gpu
+#PBS -l select=1:ncpus=1:ngpus=1:mem=4gb
+#PBS -l walltime=00:05:00
+#PBS -j oe
+
+project=/home/chandrasen.pandey/tierguard2_env_2026_09_23/project_dev_18945cc
+printf 'host=%s\n' "$(hostname)"
+printf 'path=%s\n' "$PATH"
+printf 'git_command=%s\n' "$(command -v git 2>/dev/null || true)"
+printf 'git_binary_exists='; test -x /usr/bin/git && echo yes || echo no
+printf 'git_checkout_exists='; test -d "$project/.git" && echo yes || echo no
+/usr/bin/git -C "$project" rev-parse HEAD 2>&1 || true
+/usr/bin/git -C "$project" status --porcelain --untracked-files=no 2>&1 || true

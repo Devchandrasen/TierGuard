@@ -687,6 +687,10 @@ def run_experiment(config: dict, command: str | None = None, results_root: str |
 
     device = _device_from_config(config)
     provenance = _run_provenance(config, device)
+    if config.get("provenance", {}).get("require_clean_git", False):
+        if (provenance["git_commit"] == "unavailable" or
+                provenance["git_worktree_dirty"] is not False):
+            raise ValueError("Source attestation requires a readable, clean Git checkout")
     save_json(provenance, artifacts.provenance_json)
     data = make_data_bundle(config)
     semantic_train_images = None

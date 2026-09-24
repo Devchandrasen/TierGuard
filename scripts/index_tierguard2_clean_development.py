@@ -34,7 +34,7 @@ def index_runs(results_root: Path) -> dict:
     for final_path in sorted(results_root.rglob('final_metrics.json')):
         run_dir = final_path.parent
         final = json.loads(final_path.read_text(encoding='utf-8'))
-        if final.get('experiment_name') != 'tierguard2_clean_development_unfrozen':
+        if final.get('experiment_name') != 'tierguard2_clean_development_source_attested':
             continue
         config = yaml.safe_load((run_dir / 'resolved_config.yaml').read_text(encoding='utf-8'))
         provenance = json.loads((run_dir / 'provenance.json').read_text(encoding='utf-8'))
@@ -52,6 +52,8 @@ def index_runs(results_root: Path) -> dict:
                 config['attack']['name'] != 'none' or
                 int(config['experiment']['rounds']) != 40 or
                 int(final['final_round']) != 40 or
+                int(config['data']['test_size']) != 10000 or
+                config.get('provenance', {}).get('require_clean_git') is not True or
                 int(config['tierguard2']['probes_per_class']) != 2 or
                 float(config['tierguard2']['calibrated_gain_threshold']) != 1.0):
             errors.append(f'protocol mismatch in {run_dir}')

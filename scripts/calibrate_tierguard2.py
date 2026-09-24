@@ -31,6 +31,8 @@ def calibrate(run_dirs: list[Path], quantile: float = 0.95) -> dict:
         config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
         if config["aggregation"]["method"] != "tierguard2" or config["attack"]["name"] != "none":
             raise ValueError(f"Not a clean TierGuard 2 run: {run_dir}")
+        if config["experiment"]["name"] != "tierguard2_clean_development_source_attested":
+            raise ValueError(f"Not an attested development run: {run_dir}")
         if float(config["tierguard2"]["calibrated_gain_threshold"]) != 1.0:
             raise ValueError("Development runs must use provisional threshold 1.0")
         if int(config["experiment"]["rounds"]) != 40:

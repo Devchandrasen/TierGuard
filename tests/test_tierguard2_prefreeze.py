@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+import pytest
+
 from scripts.verify_tierguard2_preflight import verify_frozen_evidence
+from tierguard.fl.hierarchical_runner import run_experiment
 
 
 def test_status_string_alone_cannot_release_confirmation(tmp_path):
@@ -40,3 +43,19 @@ def test_frozen_guard_rejects_path_escape(tmp_path):
     }
     errors = verify_frozen_evidence(protocol, tmp_path)
     assert any("escapes repository" in error for error in errors)
+
+
+def test_run_aborts_before_training_without_clean_git_attestation(tmp_path, monkeypatch):
+    monkeypatch.setattr(
+        "tierguard.fl.hierarchical_runner._run_provenance",
+        lambda config, device: {"git_commit": "unavailable", "git_worktree_dirty": None},
+    )
+    config = {
+        "experiment": {"seed": 1, "device": "cpu"},
+        "data": {"dataset": "mnist", "synthetic": True},
+        "aggregation": {"method": "tierguard2"},
+        "attack": {"name": "none"},
+        "provenance": {"require_clean_git": True},
+    }
+    with pytest.raises(ValueError, match="readable, clean Git checkout"):
+        run_experiment(config, results_root=tmp_path)
