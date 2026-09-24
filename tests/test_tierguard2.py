@@ -29,6 +29,7 @@ from tierguard.data.semantic_green_car import (
 )
 from tierguard.attacks.optimized_trigger import optimize_trigger
 from tierguard.attacks.instances import resolve_attack_instance
+from tierguard.attacks import apply_post_update_attack
 
 
 def test_attack_instance_is_paired_across_methods_and_nonmutating():
@@ -71,6 +72,15 @@ def test_batched_pattern_target_gain_matches_reference_loops():
     actual = CounterfactualAuditor._all_target_gains(base, candidate, labels)
     torch.testing.assert_close(actual, expected, atol=1e-7, rtol=1e-6)
     assert int(torch.argmax(actual.reshape(-1))) == int(torch.argmax(expected.reshape(-1)))
+
+
+def test_distributed_component_updates_use_matched_model_replacement_scale():
+    update = torch.tensor([1.0, -2.0])
+    transformed = apply_post_update_attack(
+        "distributed_backdoor", update,
+        {"clients_per_round": 30}, num_malicious_selected=6,
+    )
+    torch.testing.assert_close(transformed, 5.0 * update)
 
 
 def test_root_partitions_are_balanced_disjoint_and_repeatable():

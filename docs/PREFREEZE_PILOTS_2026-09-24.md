@@ -19,6 +19,8 @@ confirmatory seed. They must not enter manuscript inference.
 | TierGuard 2, clip multiplier 8, no attack, seed 1992 | 38537 | 10 | 0.8176 | undefined | Candidate for independent development testing |
 | TierGuard 2, clip multiplier 16, no attack, seed 1992 | 38537 | 10 | 0.8004 | undefined | Candidate for independent development testing |
 | FedAvg, deterministic unknown patch/model replacement, 20% malicious, seed 1992 | 38536 | 10 | 0.7272 | 0.9839 | One effective attack instance against undefended FedAvg; not a cross-seed result |
+| FedAvg, component-distributed backdoor, 20% malicious, seed 1993 | 38550 | 10 | 0.7692 | 0.0230 | Ineffective attack at the tested strength; cannot enter the main matrix unchanged |
+| FedAvg, attacker-local optimized patch, 20% malicious, seed 1993 | 38551 | 10 | 0.6680 | 0.9270 | Effective in this one pilot; requires cross-seed validation |
 
 At multiplier 8, 96.7% of selected client updates were clipped in round 1
 and 20% in round 10. At multiplier 16, those fractions were 90% and 0%.
@@ -47,6 +49,19 @@ manifest, including expected class counts. This does not freeze the v2
 protocol. The next gate is three clean development seeds with the two
 clipping candidates, followed by clean-score calibration and attack-strength
 checks across all planned datasets. No confirmatory seed has run.
+
+The unscaled distributed-component attack's ASR fell from 0.184 in round 2
+to 0.023 in round 10 despite clean model learning. A new, still-distributed
+component-wise version applies matched model-replacement scaling to each
+malicious update; its effectiveness against undefended FedAvg must be tested
+before it can replace the failed pilot condition. This change is prefreeze,
+not a post-confirmation alteration.
+
+One-round full-data integration/runtime checks for the source-audited
+baselines completed: FLAME 30.8 seconds, the bounded FedGame adaptation
+4.9 seconds and the HFLMND reconstruction 4.2 seconds. These are different
+algorithms with provisional settings and cannot be used as an efficiency or
+clean-utility comparison.
 
 The first attempt at three 40-round clean development runs was not used for
 calibration: compute nodes lacked `git`, so run-level commit and clean-tree

@@ -19,6 +19,7 @@ POST_UPDATE_ATTACKS = {
     "sybil_backdoor",
     "adaptive_tierguard_aware",
     "unknown_patch_model_replacement",
+    "distributed_backdoor",
     "defence_aware_optimized_trigger",
     "semantic_green_car",
 }
@@ -37,7 +38,8 @@ def apply_post_update_attack(
     if key == "gaussian":
         return gaussian_attack(update, sigma=float(config.get("sigma", 1.0)))
     if key in {"model_replacement", "backdoor_model_replacement", "sybil_backdoor",
-               "unknown_patch_model_replacement", "defence_aware_optimized_trigger",
+               "unknown_patch_model_replacement", "distributed_backdoor",
+               "defence_aware_optimized_trigger",
                "semantic_green_car"}:
         scale = config.get("scale_factor")
         if scale is None:
