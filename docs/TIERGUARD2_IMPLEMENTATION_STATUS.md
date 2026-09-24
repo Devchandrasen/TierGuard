@@ -119,7 +119,8 @@ exactly in that paired pilot. The one-round clean accuracies are not a
 meaningful effectiveness comparison. Nine 40-round, source-attested
 FashionMNIST clean development runs are complete, matched and indexed with
 no errors. A separate 27-run, three-dataset, three-attack, three-seed
-FedAvg attack-validity campaign and 18 MNIST/CIFAR-10 clean-calibration
+FedAvg attack-validity campaign, 18 MNIST/CIFAR-10 clean-calibration
+runs and nine calibrated FashionMNIST TierGuard 2 attack-development
 runs have been submitted on the HPC from fixed, separate source clones.
 The attack matrix has a fail-closed run/provenance index. No confirmatory
 seed has run.
