@@ -132,7 +132,11 @@ seed has run.
    FedGame's root/reconstruction budget. Verify HFLMND against author code if
    it becomes available; otherwise disclose the paper's under-specified
    choices and keep them fixed before confirmation. Do not call any of these
-   two-tier adaptations author-code-identical.
+   two-tier adaptations author-code-identical. The new five-clients-per-edge
+   topology also invalidates the old four-client argument for excluding
+   Krum with a one-Byzantine tolerance setting; reconsider it as a
+   prespecified secondary comparator or document a new applicability reason
+   before freezing the manuscript.
 2. Validate the defence-aware optimized-trigger attack and semantic green-car
    implementation on real CIFAR-10; run sign-flip/ALIE, stronger-heterogeneity, and
    the implemented root-sensitivity panels;
