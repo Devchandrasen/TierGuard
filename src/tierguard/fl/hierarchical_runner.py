@@ -56,6 +56,7 @@ HIERARCHICAL_METHODS = {
     "hfl_fltrust",
     "hfl_flame",
     "hfl_fedgame",
+    "hfl_hflmnd",
     "hfl_trimmed_mean",
     "hfl_rfa",
     "hfl_median",
@@ -426,6 +427,7 @@ def _aggregate_round(
     audit_loader=None,
     full_root_loader=None,
     device: torch.device | None = None,
+    hflmnd_history: dict[tuple[int, int], int] | None = None,
 ) -> tuple[torch.Tensor, dict, list[float]]:
     method = str(config.get("aggregation", {}).get("method", "fedavg")).lower()
     aggregator = build_aggregator(method, config, dimension=model_dim)
@@ -464,7 +466,13 @@ def _aggregate_round(
     reliabilities: list[float] = []
     anomalies: list[float] = []
     edge_inputs = {}
+    edge_history_before = {}
+    edge_detection_metadata = {}
     for edge_id in sorted(edge_to_items):
+        if method == "hfl_hflmnd":
+            if hflmnd_history is None:
+                raise ValueError("HFLMND requires persistent cross-round history")
+            edge_history_before[edge_id] = dict(hflmnd_history)
         indexed = edge_to_items[edge_id]
         local_updates = [item.update for _, item in indexed]
         local_weights = [float(item.num_samples) * float(getattr(item, "audit_multiplier", 1.0))
@@ -481,6 +489,7 @@ def _aggregate_round(
             model=model,
             root_loader=full_root_loader,
             device=device,
+            history=hflmnd_history,
         )
         if edge_result.suspicion is not None:
             for (original_idx, _), suspicion in zip(indexed, edge_result.suspicion.tolist()):
@@ -492,6 +501,8 @@ def _aggregate_round(
         reliabilities.append(float(edge_result.reliability))
         anomalies.append(float(edge_result.anomaly_mass))
         edge_inputs[edge_id] = indexed
+        if method == "hfl_hflmnd":
+            edge_detection_metadata[str(edge_id)] = edge_result.metadata
 
     security_metadata = {}
     if receipt_authority is not None:
@@ -562,6 +573,8 @@ def _aggregate_round(
                     model=model,
                     root_loader=full_root_loader,
                     device=device,
+                    history=(dict(edge_history_before[items[0][1].edge_id])
+                             if method == "hfl_hflmnd" else None),
                 ).update
             try:
                 verify_challenged_report(
@@ -604,17 +617,25 @@ def _aggregate_round(
     else:
         cloud_result = aggregator.aggregate(
             edge_updates, weights=edge_weights, reference_update=reference_update,
+            client_ids=[report.edge_id for report, _ in surviving]
+            if receipt_authority is not None else edge_ids,
             round_idx=round_idx or 0, edge_id=-1,
             global_vector=flatten_model(model) if model is not None else None,
             model=model,
             root_loader=full_root_loader,
             device=device,
+            history=hflmnd_history,
         )
     return cloud_result.update, {
         "edge_anomaly_mean": float(np.mean(anomalies)) if anomalies else 0.0,
         "edge_anomaly_max": float(np.max(anomalies)) if anomalies else 0.0,
         "cloud_reliability_mean": float(np.mean(reliabilities)) if reliabilities else 1.0,
-        "aggregation_metadata": {**cloud_result.metadata, **security_metadata},
+        "aggregation_metadata": {
+            **cloud_result.metadata,
+            **security_metadata,
+            **({"edge_detection": edge_detection_metadata}
+               if method == "hfl_hflmnd" else {}),
+        },
     }, client_suspicion
 
 
@@ -686,6 +707,9 @@ def run_experiment(config: dict, command: str | None = None, results_root: str |
     method = str(config.get("aggregation", {}).get("method", "fedavg")).lower()
     auditor = None
     receipt_authority = None
+    hflmnd_history: dict[tuple[int, int], int] | None = (
+        {} if method == "hfl_hflmnd" else None
+    )
     if method == "tierguard2":
         if bool(config.get("privacy", {}).get("enabled", False)) or bool(config.get("security", {}).get("secure_sim", False)):
             raise ValueError("TierGuard 2 is a plaintext method; disable DP and secure simulation")
@@ -815,6 +839,7 @@ def run_experiment(config: dict, command: str | None = None, results_root: str |
                 model_hash=update_digest(flatten_model(model)) if receipt_authority is not None else None,
                 model=model, audit_loader=data.audit_loader,
                 full_root_loader=data.full_root_loader, device=device,
+                hflmnd_history=hflmnd_history,
             )
             if receipt_authority is not None:
                 save_json(agg_meta["aggregation_metadata"],

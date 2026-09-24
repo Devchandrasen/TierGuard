@@ -9,6 +9,7 @@ from .flame_hierarchical import HierarchicalFlameAggregator
 from .fedgame_hierarchical import HierarchicalFedGameAggregator
 from .foolsgold import FoolsGoldAggregator
 from .hfl_fedavg import HFLFedAvgAggregator
+from .hflmnd_hierarchical import HFLMNDAggregator
 from .krum import KrumAggregator
 from .median import MedianAggregator
 from .multikrum import MultiKrumAggregator
@@ -28,6 +29,7 @@ def build_aggregator(method: str, config: dict, dimension: int | None = None) ->
         "hfl_fltrust": FLTrustAggregator,
         "hfl_flame": HierarchicalFlameAggregator,
         "hfl_fedgame": HierarchicalFedGameAggregator,
+        "hfl_hflmnd": HFLMNDAggregator,
         "hfl_trimmed_mean": TrimmedMeanAggregator,
         "hfl_rfa": RFAAggregator,
         "krum": KrumAggregator,

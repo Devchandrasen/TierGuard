@@ -9,11 +9,15 @@ from torch.utils.data import DataLoader, TensorDataset
 from tierguard.aggregators.tierguard2 import CounterfactualAuditor, aggregate_level
 from tierguard.aggregators.flame_hierarchical import HierarchicalFlameAggregator
 from tierguard.aggregators.fedgame_hierarchical import HierarchicalFedGameAggregator
+from tierguard.aggregators.hflmnd_hierarchical import (
+    HFLMNDAggregator, node_similarity_features,
+)
 from tierguard.data.datasets import SyntheticImageDataset
 from tierguard.data.datasets import make_data_bundle
 from tierguard.data.root_splits import stratified_root_split
 from tierguard.fl.hierarchical_runner import _selected_clients_per_edge
 from tierguard.fl.hierarchical_runner import _aggregate_tierguard2
+from tierguard.fl.hierarchical_runner import _aggregate_round
 from tierguard.fl.client import ClientUpdate
 from tierguard.security.edge_receipts import (
     ReceiptAuthority, choose_challenges, commit_edge, single_report_escape_probability,
@@ -220,6 +224,80 @@ def test_hierarchical_fedgame_defender_adapter_replays():
     )
     assert torch.equal(first.update, again.update)
     assert len(first.metadata["mask_norms"]) == 2
+
+
+def test_hflmnd_paper_derived_features_and_historical_correction():
+    superior = torch.tensor([0.0, 1.0, 2.0, 3.0])
+    updates = [torch.tensor([0.0, 0.0, 0.0, step])
+               for step in (0.01, 0.02, 0.03, 0.04)]
+    updates.append(torch.tensor([4.0, 2.0, 0.0, -2.0]))
+    features, distances = node_similarity_features(
+        torch.stack(updates) + superior, superior,
+    )
+    assert features.shape == (5, 4)
+    assert torch.isfinite(torch.from_numpy(features)).all()
+    assert (features >= 0).all() and (features <= 1).all()
+    assert distances[-1] > max(distances[:-1])
+    history = {}
+    aggregator = HFLMNDAggregator({})
+    result = aggregator.aggregate(
+        updates, client_ids=list(range(5)), global_vector=superior,
+        edge_id=2, history=history,
+    )
+    assert result.metadata["accepted_node_ids"] == [0, 1, 2, 3]
+    assert history[(2, 4)] == 1
+    assert torch.allclose(result.update, torch.stack(updates[:4]).mean(dim=0))
+    # A previously suspicious node needs more than one benign round to
+    # satisfy the paper's strict negative-score rule.
+    clean_updates = updates[:4] + [torch.tensor([0.0, 0.0, 0.0, 0.02])]
+    second = aggregator.aggregate(
+        clean_updates, client_ids=list(range(5)), global_vector=superior,
+        edge_id=2, history=history,
+    )
+    assert 4 not in second.metadata["accepted_node_ids"]
+    third = aggregator.aggregate(
+        clean_updates, client_ids=list(range(5)), global_vector=superior,
+        edge_id=2, history=history,
+    )
+    assert 4 in third.metadata["accepted_node_ids"]
+
+
+def test_hflmnd_matched_challenge_replay_does_not_advance_history_twice(monkeypatch):
+    model = torch.nn.Linear(2, 2, bias=False)
+    clients = [
+        ClientUpdate(
+            update=torch.tensor([0.0, 0.0, 0.0, 0.0001 * (client_id + 1)]),
+            client_id=client_id, edge_id=client_id % 2, num_samples=10,
+            malicious=False, local_loss=0.0, local_accuracy=0.0,
+        ) for client_id in range(6)
+    ]
+    config = {"aggregation": {"method": "hfl_hflmnd"}, "experiment": {"seed": 4}}
+    history = {}
+    monkeypatch.setattr("tierguard.fl.hierarchical_runner.choose_challenges",
+                        lambda reports: {report.edge_id for report in reports})
+    update, metadata, _ = _aggregate_round(
+        clients, config, torch.zeros(4), 4,
+        receipt_authority=ReceiptAuthority(list(range(6))), round_idx=1,
+        model_hash="modelhash", model=model, device=torch.device("cpu"),
+        hflmnd_history=history,
+    )
+    assert torch.isfinite(update).all()
+    assert metadata["aggregation_metadata"]["rejected_edges"] == []
+    assert len(history) == 8  # six clients, two edges at cloud level
+    assert set(metadata["aggregation_metadata"]["edge_detection"]) == {"0", "1"}
+
+
+def test_hflmnd_all_rejected_fallback_freezes_model():
+    superior = torch.tensor([0.0, 1.0, 2.0, 3.0])
+    updates = [torch.ones(4) * 0.01 for _ in range(3)]
+    history = {(1, node_id): 10 for node_id in range(3)}
+    result = HFLMNDAggregator({}).aggregate(
+        updates, client_ids=[0, 1, 2], global_vector=superior,
+        edge_id=1, history=history,
+    )
+    assert result.metadata["all_rejected_frozen_update"]
+    assert torch.equal(result.update, torch.zeros(4))
+    assert result.reliability == 0.0
 
 
 def test_signed_receipts_detect_forgery_replay_and_wrong_aggregate():

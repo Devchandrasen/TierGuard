@@ -25,7 +25,8 @@ evidence for a new method. No confirmatory outcome or superiority claim exists.
   3/6 = 0.5; this is not a multi-round security guarantee.
 - The same optional receipt/challenge wrapper is available to existing
   hierarchical FedAvg, FLTrust, coordinate median, RFA, PTA, and two-tier
-  FLAME/FedGame defender adaptations. FLAME follows the published cosine/HDBSCAN majority
+  FLAME/FedGame defender adaptations and a paper-derived HFLMND reconstruction.
+  FLAME follows the published cosine/HDBSCAN majority
   filter, median-norm clipping, equal averaging, and adaptive noise structure;
   its two-tier application and small-edge fallback require explicit reporting
   and source-validation before confirmation. FedGame follows the official
@@ -33,6 +34,13 @@ evidence for a new method. No confirmatory outcome or superiority claim exists.
   target selection, and genuine-score weighting, but its two-tier use and
   reconstruction budget likewise need development validation.
   Payload byte counts are recorded; these are **not** real network timings.
+- The supplied full HFLMND article has now been inspected. Its NSFE feature
+  equations, binary hierarchical clustering, historical suspicion correction,
+  and equal-average aggregation are implemented at both layers. The paper
+  omits the linkage, benign-cluster labelling and all-rejected conventions;
+  these are fixed in `docs/HFLMND_PAPER_DERIVATION.md`. This is not a claim of
+  matching unpublished author code or its reported outcomes. The one-round
+  synthetic HFLMND/challenge smoke test completed without false rejection.
 - Attack-side unknown-location patch/model-replacement, four-corner
   distributed-trigger, and attacker-local gradient-optimized patch constructors.
   The optimized patch penalizes similarity to the defender's fixed probe
@@ -60,16 +68,19 @@ evidence for a new method. No confirmatory outcome or superiority claim exists.
 
 The synthetic one-round test is only an integration check. It is not a model
 comparison or a calibration run. On the separate TierGuard 2 HPC environment,
-all 56 applicable tests passed. The omitted legacy test compares the HPC v2
+all 56 then-applicable tests passed. The current local suite has 59 applicable
+passing tests, including three HFLMND-specific tests; these new tests still
+need to be rerun in the pinned HPC environment. The omitted legacy test compares the HPC v2
 environment with the old confirmatory-v1 lock and is not a v2 validity check.
 PBS GPU preflight job `38455.mgmt01` exited 0 on an NVIDIA H100, with
 PyTorch 2.11.0+cu128, torchvision 0.26.0+cu128, and cryptography 48.0.0.
 
 ## Still required before confirmation or manuscript rewriting
 
-1. Source-check both hierarchical FLAME and FedGame adaptations. Obtain the full
-   HFLMND method or official code; the publisher abstract alone is inadequate
-   for a faithful baseline. Do not call a feature-clustering surrogate HFLMND.
+1. Source-check both hierarchical FLAME and FedGame adaptations. Verify the
+   HFLMND reconstruction against author code if it becomes available; otherwise
+   disclose the paper's under-specified choices and keep them fixed before
+   confirmation. Do not call this reconstruction author-code-identical.
 2. Validate the defence-aware optimized-trigger attack and semantic green-car
    implementation on real CIFAR-10; run sign-flip/ALIE, stronger-heterogeneity, and
    the implemented root-sensitivity panels;
@@ -101,7 +112,7 @@ The study matrix and preconfirmation gates are recorded in
 | --- | --- | --- |
 | [FedGame](https://papers.nips.cc/paper_files/paper/2023/file/a6678e2be4ce7aef9d2192e03cd586b7-Paper-Conference.pdf) | Auxiliary global model, reverse-engineered trigger/target, client genuine scores | Its published server is flat; a faithful two-tier adaptation is still needed. |
 | [FilterFL](https://ink.library.smu.edu.sg/sis_research/10634/) | Data-free trigger-image generation from old/new global-model knowledge differences | It is not a root-based client-and-edge counterfactual audit; the original study must still be discussed, not ignored. |
-| [HFLMND](https://www.sciencedirect.com/science/article/abs/pii/S0950705126000146) | Client/edge similarity features, multi-feature clustering, historical suspicion correction | It already handles two layers; two-level placement alone cannot establish novelty. Full implementation details are not yet available. |
+| [HFLMND](https://doi.org/10.1016/j.knosys.2026.115270) | Client/edge similarity features, multi-feature clustering, historical suspicion correction | It already handles two layers; two-level placement alone cannot establish novelty. Its equations and procedure are implemented as a disclosed reconstruction with unspecified choices fixed independently of confirmatory outcomes. |
 | TierGuard 2 candidate | Disjoint-root change in target-class behaviour relative to the unchanged model, with independently audited edge aggregates and signed random challenges | Novelty would require a validated complementary failure mode and improved held-out outcomes; neither is established yet. |
 
 ## Commands used for local checks
