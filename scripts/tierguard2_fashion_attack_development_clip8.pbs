@@ -1,0 +1,69 @@
+#!/bin/sh
+#PBS -N tg2-fash-t2dev
+#PBS -q gpu
+#PBS -l select=1:ncpus=4:ngpus=1:mem=24gb
+#PBS -l walltime=04:00:00
+#PBS -j oe
+
+# First full-length TierGuard 2 attack-development candidate. The two
+# level-specific thresholds came solely from three separate clean seeds.
+# This is not a confirmatory comparison or a parameter freeze.
+set -eu
+case "${TG2_SEED:?missing TG2_SEED}" in
+    2001|2002|2003) ;;
+    *) echo "development seed required" >&2; exit 2 ;;
+esac
+case "${TG2_ATTACK:?missing TG2_ATTACK}" in
+    unknown_patch_model_replacement|distributed_backdoor|defence_aware_optimized_trigger) ;;
+    *) echo "unexpected attack" >&2; exit 2 ;;
+esac
+
+cd /home/chandrasen.pandey/tierguard2_env_2026_09_23/project_t2_attack_dev
+export PATH=/home/chandrasen.pandey/tierguard2_env_2026_09_23/shared_bin:$PATH
+export PYTHONPATH=./src
+export OMP_NUM_THREADS=2
+export MKL_NUM_THREADS=2
+export OPENBLAS_NUM_THREADS=2
+
+../.venv/bin/python -m tierguard.cli run \
+    --config configs/tierguard2/smoke.yaml \
+    experiment.name=tierguard2_fashion_attack_development_clip8 \
+    experiment.seed="$TG2_SEED" \
+    experiment.device=cuda \
+    experiment.rounds=40 \
+    experiment.eval_every=5 \
+    federated.num_clients=60 \
+    federated.num_edges=6 \
+    federated.clients_per_round=30 \
+    federated.clients_per_edge_per_round=5 \
+    federated.local_epochs=2 \
+    federated.batch_size=64 \
+    federated.client_lr=0.05 \
+    data.dataset=fashionmnist \
+    data.synthetic=false \
+    data.root=/home/chandrasen.pandey/tierguard2_env_2026_09_23/datasets \
+    data.train_size=null \
+    data.test_size=10000 \
+    data.root_dataset_size=200 \
+    data.audit_search_size=200 \
+    data.audit_eval_size=200 \
+    data.three_way_root_split=true \
+    data.partition=dirichlet \
+    data.dirichlet_alpha=0.3 \
+    data.iid=false \
+    model.name=mnist_cnn \
+    attack.name="$TG2_ATTACK" \
+    attack.instance_mode=deterministic \
+    attack.instance_namespace=tierguard2-draft-v1 \
+    attack.malicious_fraction=0.2 \
+    attack.backdoor_fraction=0.3 \
+    aggregation.method=tierguard2 \
+    security.edge_challenges=true \
+    provenance.require_clean_git=true \
+    tierguard2.probes_per_class=2 \
+    tierguard2.clip_reference_multiplier=8.0 \
+    tierguard2.calibrated_gain_threshold=1.0 \
+    tierguard2.calibrated_client_gain_threshold=0.35900445729494096 \
+    tierguard2.calibrated_edge_gain_threshold=0.21499230563640584 \
+    tierguard2.risk_gamma=8.0 \
+    tierguard2.clean_improvement_credit=0.25
