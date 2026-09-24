@@ -149,6 +149,17 @@ def choose_challenges(reports: list[EdgeReport], rng=None, *,
     return set(picker.sample(edge_ids, count))
 
 
+def missing_report_ids(reports: list[EdgeReport], expected_edge_ids: set[int]) -> set[int]:
+    """Identify absent active-edge reports before any cloud aggregation."""
+    received = [report.edge_id for report in reports]
+    if len(set(received)) != len(received):
+        raise ValueError("Multiple reports from one edge")
+    unexpected = set(received) - expected_edge_ids
+    if unexpected:
+        raise ValueError(f"Report from unexpected edge: {sorted(unexpected)}")
+    return expected_edge_ids - set(received)
+
+
 def single_report_escape_probability(active_edges: int) -> float:
     """Probability that one forged aggregate is not challenged in one round."""
     if active_edges < 1:

@@ -23,6 +23,9 @@ evidence for a new method. No confirmatory outcome or superiority claim exists.
   receipt-list equality are checked for all edges. Under one forged aggregate
   and six active edges, the one-round non-challenge probability is exactly
   3/6 = 0.5; this is not a multi-round security guarantee.
+  Missing active-edge reports are recorded and excluded before aggregation,
+  with separate expected/received counts; a forged or replayed report is
+  rejected by direct receipt or challenged raw-update verification.
   For matched future edge experiments, a private 32-byte cloud key can define
   a method-independent HMAC ranking by dataset, seed and round, with only its
   hash recorded in provenance. The key is used after report commitment and
@@ -88,7 +91,7 @@ evidence for a new method. No confirmatory outcome or superiority claim exists.
   No semantic attack experiment has been run yet.
 
 The synthetic one-round test is only an integration check. It is not a model
-comparison or a calibration run. On the current local branch, 74 applicable
+comparison or a calibration run. On the current local branch, 76 applicable
 tests passed; the one omitted legacy test compares the HPC v2 environment
 with the old confirmatory-v1 lock and is not a v2 validity check.
 PBS GPU preflight job `38455.mgmt01` exited 0 on an NVIDIA H100, with

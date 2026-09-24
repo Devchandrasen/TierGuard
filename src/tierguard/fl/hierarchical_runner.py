@@ -46,6 +46,7 @@ from tierguard.security.edge_receipts import (
     ReceiptAuthority,
     choose_challenges,
     commit_edge,
+    missing_report_ids,
     update_digest,
     verify_challenged_report,
     single_report_escape_probability,
@@ -153,11 +154,15 @@ def _aggregate_tierguard2(client_results, model, auditor, reference_update,
                     round_idx, compromised, report.aggregate,
                     [forged_receipt, *report.receipts[1:]],
                 )
+            elif edge_attack["name"] == "missing_report":
+                reports.pop(index)
+                break
             else:
                 raise ValueError("Unknown edge attack")
+    missing_edges = missing_report_ids(reports, set(by_edge))
     challenged = _choose_study_challenges(reports, config, round_idx)
     verified_bytes = 0
-    rejected = set()
+    rejected = set(missing_edges)
     report_lookup = {report.edge_id: report for report in reports}
     for report in reports:
         try:
@@ -217,14 +222,17 @@ def _aggregate_tierguard2(client_results, model, auditor, reference_update,
             "edge_aggregate_clipped_fraction": float(np.mean(
                 [norm > radius for norm in edge_norms])),
             "challenged_edges": sorted(challenged),
+            "expected_edge_reports": len(by_edge),
+            "received_edge_reports": len(reports),
             "single_report_escape_probability": single_report_escape_probability(len(reports)),
             "rejected_edges": sorted(rejected),
+            "missing_edge_reports": sorted(missing_edges),
             "challenge_raw_upload_bytes": verified_bytes,
             "client_edge_update_bytes": sum(item.update.numel() * item.update.element_size()
                                             for item in client_results),
             "client_cloud_receipt_bytes": sum(
                 len(json.dumps(receipt.__dict__, sort_keys=True).encode("utf-8"))
-                for report in reports for receipt in report.receipts
+                for receipts in direct_receipts.values() for receipt in receipts
             ),
             "edge_cloud_report_bytes": sum(
                 report.aggregate.numel() * report.aggregate.element_size()
@@ -586,10 +594,14 @@ def _aggregate_round(
                     forged = replace(report.receipts[0], sample_mass=report.receipts[0].sample_mass + 1)
                     reports[index] = commit_edge(round_idx, compromised, report.aggregate,
                                                  [forged, *report.receipts[1:]])
+                elif edge_attack["name"] == "missing_report":
+                    reports.pop(index)
+                    break
                 else:
                     raise ValueError("Unknown edge attack")
+        missing_edges = missing_report_ids(reports, set(edge_ids))
         challenged = _choose_study_challenges(reports, config, int(round_idx or 0))
-        rejected = set()
+        rejected = set(missing_edges)
         challenge_bytes = 0
         for report in reports:
             try:
@@ -638,7 +650,8 @@ def _aggregate_round(
                 )
             except ValueError:
                 rejected.add(report.edge_id)
-        surviving = [(report, weight) for report, weight in zip(reports, edge_weights)
+        weights_by_edge = dict(zip(edge_ids, edge_weights))
+        surviving = [(report, weights_by_edge[report.edge_id]) for report in reports
                      if report.edge_id not in rejected]
         if not surviving:
             raise ValueError("All active edge reports were rejected")
@@ -646,14 +659,17 @@ def _aggregate_round(
         edge_weights = [weight for _, weight in surviving]
         security_metadata = {
             "challenged_edges": sorted(challenged),
+            "expected_edge_reports": len(edge_ids),
+            "received_edge_reports": len(reports),
             "single_report_escape_probability": single_report_escape_probability(len(reports)),
             "rejected_edges": sorted(rejected),
+            "missing_edge_reports": sorted(missing_edges),
             "challenge_raw_upload_bytes": challenge_bytes,
             "client_edge_update_bytes": sum(item.update.numel() * item.update.element_size()
                                             for item in client_results),
             "client_cloud_receipt_bytes": sum(
                 len(json.dumps(receipt.__dict__, sort_keys=True).encode("utf-8"))
-                for report in reports for receipt in report.receipts
+                for receipts in direct_receipts.values() for receipt in receipts
             ),
             "edge_cloud_report_bytes": sum(
                 report.aggregate.numel() * report.aggregate.element_size()

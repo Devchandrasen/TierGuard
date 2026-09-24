@@ -21,7 +21,8 @@ from tierguard.fl.hierarchical_runner import _aggregate_round
 from tierguard.fl.hierarchical_runner import _choose_study_challenges
 from tierguard.fl.client import ClientUpdate
 from tierguard.security.edge_receipts import (
-    ReceiptAuthority, choose_challenges, commit_edge, single_report_escape_probability,
+    ReceiptAuthority, choose_challenges, commit_edge, missing_report_ids,
+    single_report_escape_probability,
     verify_challenged_report,
 )
 from tierguard.data.backdoor import add_configured_trigger
@@ -418,6 +419,9 @@ def test_signed_receipts_detect_forgery_replay_and_wrong_aggregate():
                                  model_hash="abc", recompute=recompute)
     assert len(choose_challenges([report, commit_edge(1, 1, raw[1], [])])) == 1
     assert single_report_escape_probability(6) == 0.5
+    assert missing_report_ids([report], {0, 1}) == {1}
+    with pytest.raises(ValueError, match="unexpected edge"):
+        missing_report_ids([report], {1})
 
 
 def test_challenged_compromised_edge_is_rejected(monkeypatch):
@@ -445,6 +449,36 @@ def test_challenged_compromised_edge_is_rejected(monkeypatch):
         clients, model, auditor, torch.ones(130) * 0.01,
         config, ReceiptAuthority([0, 1]), 1,
     )
+    assert metadata["aggregation_metadata"]["rejected_edges"] == [0]
+    config["edge_attack"]["name"] = "missing_report"
+    monkeypatch.setattr("tierguard.fl.hierarchical_runner.choose_challenges",
+                        lambda reports: {report.edge_id for report in reports})
+    _, missing_metadata, _ = _aggregate_tierguard2(
+        clients, model, auditor, torch.ones(130) * 0.01,
+        config, ReceiptAuthority([0, 1]), 1,
+    )
+    assert missing_metadata["aggregation_metadata"]["missing_edge_reports"] == [0]
+    assert missing_metadata["aggregation_metadata"]["rejected_edges"] == [0]
+
+
+def test_missing_edge_report_is_rejected_before_challenges_for_matched_methods(monkeypatch):
+    monkeypatch.setattr("tierguard.fl.hierarchical_runner.choose_challenges",
+                        lambda reports: {report.edge_id for report in reports})
+    clients = [
+        ClientUpdate(update=torch.tensor([float(index + 1)]), client_id=index,
+                     edge_id=index, num_samples=10, malicious=False,
+                     local_loss=0.0, local_accuracy=0.0)
+        for index in range(3)
+    ]
+    config = {"aggregation": {"method": "hfl_fedavg"}, "experiment": {"seed": 4},
+              "edge_attack": {"name": "missing_report", "edge_id": 0}}
+    update, metadata, _ = _aggregate_round(
+        clients, config, torch.zeros(1), 1,
+        receipt_authority=ReceiptAuthority(list(range(3))), round_idx=1,
+        model_hash="modelhash",
+    )
+    assert float(update) == pytest.approx(2.5)
+    assert metadata["aggregation_metadata"]["missing_edge_reports"] == [0]
     assert metadata["aggregation_metadata"]["rejected_edges"] == [0]
 
 
