@@ -24,7 +24,8 @@ or what to aggregate if every node is excluded. The reconstruction fixes these
 choices before development results are viewed: average linkage; larger cluster
 is benign under the paper's less-than-50%-malicious premise, with a tie broken
 by lower mean distance to the superior model; tied features are non-separating;
-an all-rejected layer emits a zero update. The zero-update rule freezes the
+fewer than three nodes are not split into clusters; an all-rejected layer emits
+a zero update. The zero-update rule freezes the
 superior model rather than silently re-admitting rejected nodes. Each choice
 is logged in run metadata. Author code, if supplied later, should supersede
 these choices after an explicit review **before** confirmatory freezing.
