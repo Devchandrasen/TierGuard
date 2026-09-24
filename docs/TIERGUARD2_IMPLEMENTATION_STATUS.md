@@ -55,8 +55,9 @@ evidence for a new method. No confirmatory outcome or superiority claim exists.
   malicious-client/component assignment is written per run.
   The optimized patch penalizes similarity to the defender's fixed probe
   templates and is shared by selected malicious clients within a round. Its
-  actual values are saved per round. These are implementation paths, not yet
-  validated threat-strength experiments.
+  actual values are saved per round. One-seed FashionMNIST pilots indicate
+  effective attacks against FedAvg, but the full cross-dataset validity
+  campaign is still running; pilots are not inferential evidence.
 - Main-attack target class and patch location can now be drawn from a
   deterministic SHA-256 keyed instance, independent of method, for paired
   dataset/attack/seed comparisons. The location is chosen from the
@@ -64,7 +65,11 @@ evidence for a new method. No confirmatory outcome or superiority claim exists.
   auditor but this is **not** arbitrary-location generalisation. The resolved
   attack configuration and digest are saved in each run.
 - A calibration utility requiring three distinct clean development seeds and
-  complete per-round audit logs. A primary decision-rule implementation checks
+  complete per-round audit logs. It now produces separate client- and
+  edge-level thresholds because their clean score distributions differ.
+  The FashionMNIST nine-run clean development index passed and is recorded in
+  `docs/TIERGUARD2_CLEAN_CALIBRATION_2026-09-24.md`; MNIST and CIFAR-10
+  calibration remain outstanding. A primary decision-rule implementation checks
   all 12-by-9 ASR and 12-by-3 clean cells, the exact paired sign-flip test,
   and the clean-accuracy lower confidence bound.
 - Deterministic targeted root-contamination wrapper with the contaminated
@@ -83,12 +88,9 @@ evidence for a new method. No confirmatory outcome or superiority claim exists.
   No semantic attack experiment has been run yet.
 
 The synthetic one-round test is only an integration check. It is not a model
-comparison or a calibration run. On the separate TierGuard 2 HPC environment,
-59 applicable tests passed on the last committed branch. With the current
-uncommitted attack-instance and batched-audit changes, 62 local tests pass;
-the one omitted
-legacy test compares the HPC v2
-environment with the old confirmatory-v1 lock and is not a v2 validity check.
+comparison or a calibration run. On the current local branch, 74 applicable
+tests passed; the one omitted legacy test compares the HPC v2 environment
+with the old confirmatory-v1 lock and is not a v2 validity check.
 PBS GPU preflight job `38455.mgmt01` exited 0 on an NVIDIA H100, with
 PyTorch 2.11.0+cu128, torchvision 0.26.0+cu128, and cryptography 48.0.0.
 The HPC TierGuard 2 preflight now fails only because the protocol remains
@@ -111,9 +113,11 @@ bottleneck in pattern/target selection. A vectorized equivalent reduced the
 one-round TierGuard 2 runtime from 287 to 31 seconds (separate jobs) and
 preserved all 30 selected client pattern/target choices and held-out gains
 exactly in that paired pilot. The one-round clean accuracies are not a
-meaningful effectiveness comparison. A ten-round prefreeze feasibility job
-now checks clean utility and whether the unknown-patch attack succeeds
-against matched FedAvg before any development or confirmatory interpretation.
+meaningful effectiveness comparison. Nine 40-round, source-attested
+FashionMNIST clean development runs are complete, matched and indexed with
+no errors. A separate 27-run, three-dataset, three-attack, three-seed
+FedAvg attack-validity campaign has been submitted on the HPC. No
+confirmatory seed has run.
 
 ## Still required before confirmation or manuscript rewriting
 
@@ -136,9 +140,10 @@ against matched FedAvg before any development or confirmatory interpretation.
    GPU/dependency preflight passed, but it is not a training run or a timing
    benchmark.
 4. Finish a frozen development grid and tune all baselines with the same
-   budget. Run three clean development seeds per dataset with provisional
-   threshold 1.0, calibrate scores, and freeze configuration, code, partitions,
-   software, and attack instances before the first confirmatory seed.
+   budget. The three FashionMNIST clean development seeds are complete;
+   MNIST and CIFAR-10 clean calibration remains. Freeze configuration,
+   code, partitions, software, and attack instances before the first
+   confirmatory seed.
 5. Execute and validate all planned 12-seed main, clean, edge, ablation, and
    sensitivity panels. Select the strongest baseline from development ASR
    before opening confirmation. Report every adverse outcome.
