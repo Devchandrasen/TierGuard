@@ -91,8 +91,8 @@ evidence for a new method. No confirmatory outcome or superiority claim exists.
   No semantic attack experiment has been run yet.
 
 The synthetic one-round test is only an integration check. It is not a model
-comparison or a calibration run. On the current local branch, 76 applicable
-tests passed; the one omitted legacy test compares the HPC v2 environment
+comparison or a calibration run. The current local applicable test suite
+passes; the one omitted legacy test compares the HPC v2 environment
 with the old confirmatory-v1 lock and is not a v2 validity check.
 PBS GPU preflight job `38455.mgmt01` exited 0 on an NVIDIA H100, with
 PyTorch 2.11.0+cu128, torchvision 0.26.0+cu128, and cryptography 48.0.0.

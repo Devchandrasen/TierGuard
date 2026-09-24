@@ -8,7 +8,7 @@ import yaml
 from scripts.index_tierguard2_clean_development import EXPECTED, index_runs
 
 
-def _write_run(root, method: str, seed: int, clip: float):
+def _write_run(root, method: str, seed: int, clip: float, dataset: str = 'fashionmnist'):
     path = root / method / str(seed) / str(clip)
     path.mkdir(parents=True)
     config = {
@@ -16,7 +16,7 @@ def _write_run(root, method: str, seed: int, clip: float):
                        'seed': seed, 'rounds': 40},
         'aggregation': {'method': method},
         'attack': {'name': 'none'},
-        'data': {'dataset': 'fashionmnist', 'test_size': 10000},
+        'data': {'dataset': dataset, 'test_size': 10000},
         'provenance': {'require_clean_git': True},
         'tierguard2': {'clip_reference_multiplier': clip,
                        'probes_per_class': 2, 'calibrated_gain_threshold': 1.0},
@@ -59,3 +59,10 @@ def test_clean_development_index_catches_partition_mismatch(tmp_path):
     result = index_runs(tmp_path)
     assert not result['complete']
     assert 'non-identical paired partitions for seed 2001' in result['errors']
+
+
+def test_clean_development_index_accepts_prespecified_mnist_matrix(tmp_path):
+    for method, seed, clip in EXPECTED:
+        _write_run(tmp_path, method, seed, clip, dataset='mnist')
+    assert index_runs(tmp_path, dataset='mnist')['complete']
+    assert not index_runs(tmp_path, dataset='cifar10')['complete']

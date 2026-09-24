@@ -1,4 +1,4 @@
-"""Validate the nine prespecified FashionMNIST clean-development runs.
+"""Validate nine prespecified clean-development runs for one dataset.
 
 This tool reports completeness and paired clean utility; it does not select
 parameters or make a confirmatory inference.
@@ -26,7 +26,9 @@ def _digest(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def index_runs(results_root: Path) -> dict:
+def index_runs(results_root: Path, dataset: str = 'fashionmnist') -> dict:
+    if dataset not in {'mnist', 'fashionmnist', 'cifar10'}:
+        raise ValueError('Unsupported clean-development dataset')
     found = {}
     errors = []
     commits = set()
@@ -48,7 +50,7 @@ def index_runs(results_root: Path) -> dict:
         if key in found:
             errors.append(f'duplicate completed development task: {key}')
             continue
-        if (config['data']['dataset'] != 'fashionmnist' or
+        if (config['data']['dataset'] != dataset or
                 config['attack']['name'] != 'none' or
                 int(config['experiment']['rounds']) != 40 or
                 int(final['final_round']) != 40 or
@@ -110,6 +112,7 @@ def index_runs(results_root: Path) -> dict:
                     ),
                 })
     return {
+        'dataset': dataset,
         'complete': not errors,
         'expected_run_count': len(EXPECTED),
         'observed_run_count': len(found),
@@ -123,9 +126,11 @@ def index_runs(results_root: Path) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument('--results-root', required=True, type=Path)
+    parser.add_argument('--dataset', choices=('mnist', 'fashionmnist', 'cifar10'),
+                        default='fashionmnist')
     parser.add_argument('--output', type=Path)
     args = parser.parse_args()
-    result = index_runs(args.results_root)
+    result = index_runs(args.results_root, dataset=args.dataset)
     if args.output:
         if args.output.exists():
             raise FileExistsError(args.output)
