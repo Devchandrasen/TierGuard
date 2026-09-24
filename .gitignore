@@ -26,6 +26,7 @@ scripts/*.pbs
 !scripts/tierguard2_feasibility_pilot.pbs
 !scripts/tierguard2_clip_pilot.pbs
 !scripts/tierguard2_attack_audit_pilot.pbs
+!scripts/tierguard2_clean_development.pbs
 scripts/prepare_nsl_kdd.py
 configs/ablation/
 configs/main/
