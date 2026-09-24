@@ -35,6 +35,23 @@ no errors (index SHA-256
 | Four-component distributed backdoor | 1.0000 | 1.0000 | 0.9785 |
 | Attacker-local optimized trigger | 0.99996 | 0.99989 | 0.9745 |
 
-CIFAR-10 attack-validity runs remain queued/running. TierGuard 2
-attack-development runs have been submitted but have not yet produced a
-validated full panel. No confirmatory seed or superiority analysis has run.
+The CIFAR-10 attack-validity runs finished 9/9, but the fail-closed index
+**rejected the panel**. All three optimized-trigger runs recorded non-finite
+client updates (43--59 failures per run), and their round-two trigger records
+contain NaNs. The other two attack conditions did not record non-finite
+updates, but all nine attacked CIFAR-10 runs had very low final clean accuracy
+(0.1235--0.2441). Their final ASR values therefore cannot establish a useful
+backdoor challenge or defence efficacy. The rejected index is retained for
+audit at SHA-256
+`24dd56535daaac619b452833c333c29c601087ba9d1edd8528021177955bd365`.
+The original raw runs are not altered or relabelled as valid. Three-seed
+clean FedAvg learning-rate candidates (0.005, 0.01, 0.02) have been queued
+separately; the pending original-rate clean controls will also be checked.
+Only after a stable clean protocol is selected on development evidence can
+the CIFAR-10 attack panel be rerun and validated. This is an exploratory
+protocol repair before any confirmatory freeze, not a post hoc selection on
+confirmatory results.
+
+TierGuard 2 attack-development runs have been submitted but have not yet
+produced a validated full panel. No confirmatory seed or superiority analysis
+has run.

@@ -310,6 +310,21 @@ def test_defence_aware_attack_uses_only_local_images_and_global_model():
     assert torch.equal(attacked[:, :2, :2], trigger)
 
 
+def test_defence_aware_attack_fails_closed_on_nonfinite_objective():
+    images = torch.rand(4, 1, 8, 8)
+    labels = torch.tensor([0, 0, 1, 1])
+    loader = DataLoader(TensorDataset(images, labels), batch_size=4)
+    model = torch.nn.Sequential(torch.nn.Flatten(), torch.nn.Linear(64, 2))
+    with torch.no_grad():
+        model[1].weight.fill_(float("nan"))
+    with pytest.raises(FloatingPointError, match="objective"):
+        optimize_trigger(
+            model, loader,
+            {"target_label": 1, "trigger_size": 2, "optimize_steps": 2},
+            torch.device("cpu"), seed=7,
+        )
+
+
 def test_hierarchical_flame_adaptation_is_replayable_for_challenges():
     config = {"experiment": {"seed": 9}, "flame": {"noise_multiplier": 0.01}}
     aggregator = HierarchicalFlameAggregator(config)

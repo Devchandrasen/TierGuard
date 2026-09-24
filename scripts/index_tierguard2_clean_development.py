@@ -10,6 +10,7 @@ import argparse
 import csv
 import hashlib
 import json
+import math
 from pathlib import Path
 
 import yaml
@@ -80,12 +81,17 @@ def index_runs(results_root: Path, dataset: str = 'fashionmnist') -> dict:
             errors.append(f'ASR should be undefined for clean run: {run_dir}')
         if int(final['stability_failures']) != 0:
             errors.append(f'non-finite update in {run_dir}')
+        clean_accuracy = float(final['clean_accuracy'])
+        macro_f1 = float(final['macro_f1'])
+        if not (math.isfinite(clean_accuracy) and math.isfinite(macro_f1) and
+                0 <= clean_accuracy <= 1 and 0 <= macro_f1 <= 1):
+            errors.append(f'non-finite or invalid clean metric in {run_dir}')
         found[key] = {
             'method': method,
             'seed': seed,
             'clip_reference_multiplier': clip,
-            'clean_accuracy': float(final['clean_accuracy']),
-            'macro_f1': float(final['macro_f1']),
+            'clean_accuracy': clean_accuracy,
+            'macro_f1': macro_f1,
             'git_commit': provenance.get('git_commit'),
             'config_sha256': provenance.get('config_sha256'),
             'partition_sha256': _digest(partition_path) if partition_path.is_file() else None,

@@ -64,6 +64,7 @@ HIERARCHICAL_METHODS = {
     "hfl_hflmnd",
     "hfl_trimmed_mean",
     "hfl_rfa",
+    "hfl_krum",
     "hfl_median",
     "tierguard",
     "tierguard2",

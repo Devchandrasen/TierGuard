@@ -30,6 +30,8 @@ methods_required:
   - hfl_flame
   - hfl_fedgame
   - hfl_hflmnd
+secondary_methods_exploratory:
+  - hfl_krum  # f=1 is admissible at five-client edges and six-edge cloud.
 main_attacks_required:
   - unknown_patch_model_replacement
   - distributed_backdoor

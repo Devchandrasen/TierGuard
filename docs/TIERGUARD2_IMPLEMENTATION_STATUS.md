@@ -134,7 +134,13 @@ seed has run.
 The FashionMNIST and MNIST FedAvg attack-validity submatrices are now
 complete (9/9 each) and documented in
 `docs/TIERGUARD2_ATTACK_VALIDITY_2026-09-24.md`. They establish attack
-strength in development, not defence efficacy.
+strength in development, not defence efficacy. CIFAR-10 finished 9/9 but
+failed the validity gate: three optimized-trigger runs produced non-finite
+updates, and all attacked runs had poor clean utility. Its original raw runs
+remain available as invalid development evidence. A separate three-rate,
+three-seed clean CIFAR-10 repair grid is queued. The attacker-side optimizer
+now fails closed on non-finite objectives, gradients and triggers, with a
+regression test; this source change does not retroactively validate old runs.
 
 ## Still required before confirmation or manuscript rewriting
 
@@ -145,9 +151,10 @@ strength in development, not defence efficacy.
    choices and keep them fixed before confirmation. Do not call any of these
    two-tier adaptations author-code-identical. The new five-clients-per-edge
    topology also invalidates the old four-client argument for excluding
-   Krum with a one-Byzantine tolerance setting; reconsider it as a
-   prespecified secondary comparator or document a new applicability reason
-   before freezing the manuscript.
+   Krum with a one-Byzantine tolerance setting. A hierarchical Krum adapter
+   with explicit `f=1` and a fail-closed `n>2f+2` check is now available as
+   an exploratory secondary comparator; it still needs development runs
+   before any claim or confirmatory inclusion.
 2. Validate the defence-aware optimized-trigger attack and semantic green-car
    implementation on real CIFAR-10; run sign-flip/ALIE, stronger-heterogeneity, and
    the implemented root-sensitivity panels;

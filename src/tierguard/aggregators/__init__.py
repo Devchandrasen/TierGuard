@@ -10,7 +10,7 @@ from .fedgame_hierarchical import HierarchicalFedGameAggregator
 from .foolsgold import FoolsGoldAggregator
 from .hfl_fedavg import HFLFedAvgAggregator
 from .hflmnd_hierarchical import HFLMNDAggregator
-from .krum import KrumAggregator
+from .krum import HierarchicalKrumAggregator, KrumAggregator
 from .median import MedianAggregator
 from .multikrum import MultiKrumAggregator
 from .rfa import RFAAggregator
@@ -33,6 +33,7 @@ def build_aggregator(method: str, config: dict, dimension: int | None = None) ->
         "hfl_trimmed_mean": TrimmedMeanAggregator,
         "hfl_rfa": RFAAggregator,
         "krum": KrumAggregator,
+        "hfl_krum": HierarchicalKrumAggregator,
         "multikrum": MultiKrumAggregator,
         "median": MedianAggregator,
         "hfl_median": MedianAggregator,

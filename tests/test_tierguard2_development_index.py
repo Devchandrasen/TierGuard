@@ -66,3 +66,15 @@ def test_clean_development_index_accepts_prespecified_mnist_matrix(tmp_path):
         _write_run(tmp_path, method, seed, clip, dataset='mnist')
     assert index_runs(tmp_path, dataset='mnist')['complete']
     assert not index_runs(tmp_path, dataset='cifar10')['complete']
+
+
+def test_clean_development_index_rejects_nonfinite_metric(tmp_path):
+    for method, seed, clip in EXPECTED:
+        path = _write_run(tmp_path, method, seed, clip)
+        if method == 'hfl_fedavg' and seed == 2001:
+            metrics = json.loads((path / 'final_metrics.json').read_text(encoding='utf-8'))
+            metrics['clean_accuracy'] = float('nan')
+            (path / 'final_metrics.json').write_text(json.dumps(metrics), encoding='utf-8')
+    result = index_runs(tmp_path)
+    assert not result['complete']
+    assert any('non-finite or invalid clean metric' in error for error in result['errors'])

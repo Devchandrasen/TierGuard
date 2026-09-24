@@ -27,6 +27,8 @@ def optimize_trigger(model, loader, attack_config: dict, device: torch.device,
         raise ValueError("Invalid adaptive trigger dimensions or location")
     low = images.amin(dim=(0, 2, 3), keepdim=True)
     high = images.amax(dim=(0, 2, 3), keepdim=True)
+    if not torch.isfinite(images).all():
+        raise FloatingPointError("Adaptive trigger received non-finite local images")
     generator = torch.Generator(device="cpu").manual_seed(seed)
     raw = torch.randn((1, channels, size, size), generator=generator)
     raw = raw.to(device).requires_grad_(True)
@@ -51,6 +53,13 @@ def optimize_trigger(model, loader, attack_config: dict, device: torch.device,
         diversity = torch.min(similarities)
         loss = F.cross_entropy(frozen_model(probed), targets)
         loss = loss - float(attack_config.get("probe_avoidance_weight", 0.1)) * diversity
+        if not torch.isfinite(loss):
+            raise FloatingPointError("Adaptive trigger objective became non-finite")
         loss.backward()
+        if raw.grad is None or not torch.isfinite(raw.grad).all():
+            raise FloatingPointError("Adaptive trigger gradient became non-finite")
         optimizer.step()
-    return (low + (high - low) * torch.sigmoid(raw)).detach().cpu().squeeze(0)
+    trigger = low + (high - low) * torch.sigmoid(raw)
+    if not torch.isfinite(trigger).all():
+        raise FloatingPointError("Adaptive trigger became non-finite")
+    return trigger.detach().cpu().squeeze(0)

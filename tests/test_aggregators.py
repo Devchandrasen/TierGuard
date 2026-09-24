@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 import torch
+import pytest
 
 from tierguard.aggregators import build_aggregator
 from tierguard.aggregators.fedavg import FedAvgAggregator
 from tierguard.aggregators.fltrust import FLTrustAggregator
-from tierguard.aggregators.krum import KrumAggregator
+from tierguard.aggregators.krum import HierarchicalKrumAggregator, KrumAggregator
 from tierguard.aggregators.median import MedianAggregator
 from tierguard.aggregators.rfa import RFAAggregator
 from tierguard.aggregators.tierguard import TierGuardAggregator
@@ -56,6 +57,36 @@ def test_krum_selects_honest_cluster():
     updates = [torch.tensor([1.0, 1.0]), torch.tensor([1.1, 0.9]), torch.tensor([0.9, 1.1]), torch.tensor([100.0, 100.0])]
     result = KrumAggregator(_cfg()).aggregate(updates)
     assert torch.linalg.vector_norm(result.update - torch.tensor([1.0, 1.0])) < 0.25
+
+
+def test_hierarchical_krum_requires_valid_f_and_group_size():
+    updates = [torch.tensor([1.0, 0.0])] * 4
+    cfg = _cfg()
+    cfg["aggregation"]["krum_f"] = 1
+    comparator = HierarchicalKrumAggregator(cfg)
+    with pytest.raises(ValueError, match="n > 2f \\+ 2"):
+        comparator.aggregate(updates)
+    result = comparator.aggregate(updates + [torch.tensor([100.0, 0.0])])
+    assert torch.equal(result.update, torch.tensor([1.0, 0.0]))
+    assert result.metadata["group_size"] == 5
+
+
+def test_hierarchical_krum_executes_both_layers():
+    cfg = _cfg()
+    cfg["aggregation"].update({"method": "hfl_krum", "krum_f": 1})
+    assert "hfl_krum" in HIERARCHICAL_METHODS
+    assert isinstance(build_aggregator("hfl_krum", cfg), HierarchicalKrumAggregator)
+    updates = [
+        ClientUpdate(torch.tensor([1.0 + 0.01 * client, 0.0]), client, edge,
+                     2, False, 0.0, 1.0)
+        for edge in range(6) for client in range(edge * 5, edge * 5 + 5)
+    ]
+    value, metadata, suspicion = _aggregate_round(
+        updates, cfg, reference_update=None, model_dim=2,
+    )
+    assert torch.isfinite(value).all()
+    assert len(suspicion) == 30
+    assert metadata["aggregation_metadata"]["group_size"] == 6
 
 
 def test_rfa_close_to_honest_cluster():
