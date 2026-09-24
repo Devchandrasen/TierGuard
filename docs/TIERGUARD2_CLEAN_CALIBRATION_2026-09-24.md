@@ -41,7 +41,7 @@ edges would privilege the more numerous client scores (5:1) and set a
 much higher-than-edge-specific cutoff at the cloud. Before any
 confirmatory run, the method therefore uses separate frozen 95th-percentile
 thresholds at the client and edge levels. The same clean-only calibration
-rule must be applied on MNIST and CIFAR-10 development runs. The legacy
+has now been applied on MNIST; CIFAR-10 remains outstanding. The legacy
 single threshold remains a provisional fallback for smoke/pilot configs;
 it is not the intended confirmatory configuration.
 
@@ -50,3 +50,32 @@ quantiles alone. Clean utility must be compared with matched FedAvg on
 all three development seeds, and attack-side parameter selection must
 follow the declared development grid and baseline budget. No positive
 superiority conclusion follows from these clean runs.
+
+## MNIST completed clean calibration
+
+The nine 40-round MNIST clean development runs passed the strengthened
+fail-closed index with one clean source commit, matched per-seed partitions,
+complete round/audit records, finite metrics and no non-finite updates.
+The fixed training source commit was
+`9f396ccd2a71de79967729eaa71e3d1759420755`.
+The index SHA-256 is
+`0d49266854445f136672e330eebf2b5783719e2228ccd73360a4282e34737f09`;
+the strengthened index script SHA-256 is
+`e4683292f9e7aea3d65a95e98e473f56f8b6c9a01110b0567b4f832685ac0724`.
+FedAvg clean accuracies were 0.9865, 0.9859 and 0.9857 for development
+seeds 2001--2003. The matched TierGuard 2 minus FedAvg differences were
+`[+0.0003, +0.0002, 0.0000]` at clip 8 and
+`[+0.0002, +0.0001, +0.0004]` at clip 16. These are descriptive
+development results, not evidence of superiority.
+
+| MNIST clip multiplier | Client 95th percentile | Edge 95th percentile | Calibration JSON SHA-256 |
+| ---: | ---: | ---: | --- |
+| 8 | 0.239614 | 0.071889 | `a3ce46e3ec5545c5cc4eb3044c4e14f1a135da5539efe28d295ea6a2c4f378f9` |
+| 16 | 0.245875 | 0.088684 | `525254c60584838f8d76b71be2ec8529557d5431485e20b40c00d4868da755ba` |
+
+Each MNIST calibration contains 3,600 client and 720 edge scores from the
+three clean runs. The stricter finite-gain calibrator was executed outside
+the immutable training clone (script SHA-256
+`510cbc4def22a3b51e8f6a68cf6cfd89d9b9d604e9f6ce2466e7bb8bd465b70c`).
+The thresholds remain candidates until the attack-development and baseline
+budget checks determine the final configuration before confirmation.

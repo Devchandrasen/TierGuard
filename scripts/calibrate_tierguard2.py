@@ -11,6 +11,7 @@ import argparse
 import copy
 import hashlib
 import json
+import math
 from pathlib import Path
 
 import numpy as np
@@ -59,6 +60,8 @@ def calibrate(run_dirs: list[Path], quantile: float = 0.95) -> dict:
             record = json.loads(payload)
             for level, field in (("client", "client_audits"), ("edge", "edge_audits")):
                 values = [float(item["heldout_target_gain"]) for item in record[field]]
+                if any(not math.isfinite(value) or not -1 <= value <= 1 for value in values):
+                    raise ValueError(f"Invalid {level} held-out gain in {path}")
                 gains_by_level[level].extend(values)
                 gains.extend(values)
     if (seeds != {2001, 2002, 2003} or len(datasets) != 1 or

@@ -59,3 +59,13 @@ def test_calibration_rejects_dirty_source(tmp_path):
              _development_run(tmp_path, 2003, dirty=True)]
     with pytest.raises(ValueError, match="dirty"):
         calibrate(paths)
+
+
+def test_calibration_rejects_nonfinite_heldout_gain(tmp_path):
+    paths = [_development_run(tmp_path, seed) for seed in (2001, 2002, 2003)]
+    record_path = paths[0] / "audit_round_001.json"
+    record = json.loads(record_path.read_text(encoding="utf-8"))
+    record["edge_audits"][0]["heldout_target_gain"] = float("nan")
+    record_path.write_text(json.dumps(record), encoding="utf-8")
+    with pytest.raises(ValueError, match="Invalid edge held-out gain"):
+        calibrate(paths)

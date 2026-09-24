@@ -77,9 +77,9 @@ evidence for a new method. No confirmatory outcome or superiority claim exists.
 - A calibration utility requiring three distinct clean development seeds and
   complete per-round audit logs. It now produces separate client- and
   edge-level thresholds because their clean score distributions differ.
-  The FashionMNIST nine-run clean development index passed and is recorded in
-  `docs/TIERGUARD2_CLEAN_CALIBRATION_2026-09-24.md`; MNIST and CIFAR-10
-  calibration remain outstanding. A primary decision-rule implementation checks
+  The FashionMNIST and MNIST nine-run clean development indices passed and are
+  recorded in `docs/TIERGUARD2_CLEAN_CALIBRATION_2026-09-24.md`; CIFAR-10
+  calibration remains outstanding. A primary decision-rule implementation checks
   all 12-by-9 ASR and 12-by-3 clean cells, the exact paired sign-flip test,
   and the clean-accuracy lower confidence bound.
 - Deterministic targeted root-contamination wrapper with the contaminated
@@ -138,9 +138,11 @@ strength in development, not defence efficacy. CIFAR-10 finished 9/9 but
 failed the validity gate: three optimized-trigger runs produced non-finite
 updates, and all attacked runs had poor clean utility. Its original raw runs
 remain available as invalid development evidence. A separate three-rate,
-three-seed clean CIFAR-10 repair grid is queued. The attacker-side optimizer
-now fails closed on non-finite objectives, gradients and triggers, with a
-regression test; this source change does not retroactively validate old runs.
+three-seed clean CIFAR-10 repair grid is queued. Nine clean-calibrated MNIST
+TierGuard 2 attack-development jobs have also been submitted. The
+attacker-side optimizer now fails closed on non-finite objectives, gradients
+and triggers, with a regression test; this source change does not
+retroactively validate old runs.
 
 ## Still required before confirmation or manuscript rewriting
 
@@ -168,8 +170,8 @@ regression test; this source change does not retroactively validate old runs.
    GPU/dependency preflight passed, but it is not a training run or a timing
    benchmark.
 4. Finish a frozen development grid and tune all baselines with the same
-   budget. The three FashionMNIST clean development seeds are complete;
-   MNIST and CIFAR-10 clean calibration remains. Freeze configuration,
+   budget. The three FashionMNIST and MNIST clean development seeds are complete;
+   CIFAR-10 clean calibration remains. Freeze configuration,
    code, partitions, software, and attack instances before the first
    confirmatory seed.
 5. Execute and validate all planned 12-seed main, clean, edge, ablation, and
