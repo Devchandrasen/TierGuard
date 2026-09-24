@@ -28,6 +28,49 @@ from tierguard.data.semantic_green_car import (
     GREEN_CAR_ATTACK_TRAIN, GREEN_CAR_HELDOUT_TEST, GREEN_CAR_INDICES,
 )
 from tierguard.attacks.optimized_trigger import optimize_trigger
+from tierguard.attacks.instances import resolve_attack_instance
+
+
+def test_attack_instance_is_paired_across_methods_and_nonmutating():
+    config = {
+        "experiment": {"seed": 3001},
+        "data": {"dataset": "fashionmnist"},
+        "aggregation": {"method": "tierguard2"},
+        "attack": {"name": "unknown_patch_model_replacement",
+                   "instance_mode": "deterministic", "trigger_size": 3},
+    }
+    first = resolve_attack_instance(config)
+    config["aggregation"]["method"] = "hfl_fedavg"
+    second = resolve_attack_instance(config)
+    assert first["attack"] == second["attack"]
+    assert "target_label" not in config["attack"]
+    assert first["attack"]["trigger_top"] in (0, 12, 25)
+    assert first["attack"]["trigger_left"] in (0, 12, 25)
+    assert first["attack"]["instance_sha256"] == resolve_attack_instance(config)["attack"]["instance_sha256"]
+
+
+def test_distributed_instance_has_target_but_no_unused_patch_location():
+    config = {
+        "experiment": {"seed": 3001}, "data": {"dataset": "cifar10"},
+        "attack": {"name": "distributed_backdoor", "instance_mode": "deterministic"},
+    }
+    attack = resolve_attack_instance(config)["attack"]
+    assert 0 <= attack["target_label"] < 10
+    assert "trigger_top" not in attack and "trigger_left" not in attack
+
+
+def test_batched_pattern_target_gain_matches_reference_loops():
+    torch.manual_seed(15)
+    base = torch.rand(7, 11, 5)
+    candidate = torch.rand(7, 11, 5)
+    labels = torch.tensor([0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0])
+    expected = torch.stack([
+        CounterfactualAuditor._target_gain(base[index], candidate[index], labels)
+        for index in range(base.shape[0])
+    ])
+    actual = CounterfactualAuditor._all_target_gains(base, candidate, labels)
+    torch.testing.assert_close(actual, expected, atol=1e-7, rtol=1e-6)
+    assert int(torch.argmax(actual.reshape(-1))) == int(torch.argmax(expected.reshape(-1)))
 
 
 def test_root_partitions_are_balanced_disjoint_and_repeatable():
@@ -170,6 +213,17 @@ def test_configured_patch_and_distributed_attack_patterns():
     )
     assert sum(float(distributed[:, row, col]) for row, col in
                ((0, 0), (0, 7), (7, 0), (7, 7))) == 4.0
+    components = [add_configured_trigger(
+        image, {"name": "distributed_backdoor", "trigger_size": 2,
+                "distributed_component": index},
+    ) for index in range(4)]
+    assert all(int(component.sum().item()) == 1 for component in components)
+    assert torch.equal(torch.stack(components).amax(dim=0), distributed)
+    with pytest.raises(ValueError, match="component"):
+        add_configured_trigger(
+            image, {"name": "distributed_backdoor", "trigger_size": 2,
+                    "distributed_component": 4},
+        )
 
 
 def test_defence_aware_attack_uses_only_local_images_and_global_model():

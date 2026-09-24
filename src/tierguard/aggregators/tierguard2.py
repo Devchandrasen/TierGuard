@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import copy
 import math
+import time
 from dataclasses import dataclass
 
 import torch
@@ -106,6 +107,13 @@ class CounterfactualAuditor:
              for pattern in self.patterns], dim=0
         )
         self._prepared = False
+        self.profile_records: list[dict[str, float]] = []
+        self.begin_round_seconds = 0.0
+
+    def _profile_clock(self) -> float:
+        if self.device.type == "cuda":
+            torch.cuda.synchronize(self.device)
+        return time.perf_counter()
 
     @staticmethod
     def _target_gain(base: torch.Tensor, candidate: torch.Tensor,
@@ -119,6 +127,24 @@ class CounterfactualAuditor:
                 gains.append(torch.tensor(float("-inf"), device=base.device))
         return torch.stack(gains)
 
+    @staticmethod
+    def _all_target_gains(base: torch.Tensor, candidate: torch.Tensor,
+                          labels: torch.Tensor) -> torch.Tensor:
+        """Compute pattern-by-target gains with one device synchronization.
+
+        Inputs have shape (patterns, examples, classes); source examples of
+        the proposed target class are excluded exactly as in ``_target_gain``.
+        """
+        classes = torch.arange(base.shape[-1], device=base.device)
+        mask = labels[:, None] != classes[None, :]
+        counts = mask.sum(dim=0)
+        sums = ((candidate - base) * mask.unsqueeze(0)).sum(dim=1)
+        return torch.where(
+            counts.unsqueeze(0) > 0,
+            sums / counts.clamp_min(1).unsqueeze(0),
+            torch.full_like(sums, float("-inf")),
+        )
+
     def _probabilities(self, model: torch.nn.Module, images: torch.Tensor) -> torch.Tensor:
         with torch.no_grad():
             chunk_size = int(self.settings.get("probe_forward_batch_size", 128))
@@ -128,6 +154,9 @@ class CounterfactualAuditor:
 
     def begin_round(self, model: torch.nn.Module) -> None:
         """Cache the unchanged-model counterfactuals once per FL round."""
+        profiling = int(self.settings.get("profile_audit_samples", 0)) > 0
+        start = self._profile_clock() if profiling else 0.0
+        self.profile_records = []
         base = model.to(self.device).eval()
         search_size = self.search_images.shape[0]
         eval_size = self.eval_images.shape[0]
@@ -140,35 +169,31 @@ class CounterfactualAuditor:
         with torch.no_grad():
             self._base_clean_loss = F.cross_entropy(base(self.eval_images), self.eval_labels)
         self._prepared = True
+        self.begin_round_seconds = self._profile_clock() - start if profiling else 0.0
 
     def audit(self, model: torch.nn.Module, update: torch.Tensor,
               server_lr: float = 1.0) -> AuditResult:
+        profiling = len(self.profile_records) < int(self.settings.get("profile_audit_samples", 0))
+        start = self._profile_clock() if profiling else 0.0
         base = model.to(self.device).eval()
         if not self._prepared:
             self.begin_round(base)
         candidate = copy.deepcopy(base)
         apply_update(candidate, update, server_lr=server_lr)
         candidate = candidate.to(self.device).eval()
-        best_gain = float("-inf")
-        best_pattern = self.patterns[0]
-        best_target = 0
+        candidate_ready = self._profile_clock() if profiling else 0.0
         search_size = self.search_images.shape[0]
         candidate_search = self._probabilities(candidate, self.search_probes).view(
             len(self.patterns), search_size, self.num_classes
         )
-        best_index = 0
-        for index, pattern in enumerate(self.patterns):
-            gains = self._target_gain(
-                self._base_search[index],
-                candidate_search[index],
-                self.search_labels,
-            )
-            value, target = torch.max(gains, dim=0)
-            if float(value) > best_gain:
-                best_gain = float(value)
-                best_pattern = pattern
-                best_target = int(target)
-                best_index = index
+        search_ready = self._profile_clock() if profiling else 0.0
+        all_gains = self._all_target_gains(
+            self._base_search, candidate_search, self.search_labels,
+        )
+        chosen = int(torch.argmax(all_gains.reshape(-1)))
+        best_index, best_target = divmod(chosen, self.num_classes)
+        best_pattern = self.patterns[best_index]
+        selected = self._profile_clock() if profiling else 0.0
         eval_size = self.eval_images.shape[0]
         heldout = self.eval_probes[best_index * eval_size:(best_index + 1) * eval_size]
         with torch.no_grad():
@@ -181,10 +206,19 @@ class CounterfactualAuditor:
                 F.cross_entropy(candidate(self.eval_images), self.eval_labels)
                 - self._base_clean_loss
             )
+        evaluated = self._profile_clock() if profiling else 0.0
         # The threshold and credit must be frozen using clean development runs.
         threshold = float(self.settings["calibrated_gain_threshold"])
         clean_credit = float(self.settings.get("clean_improvement_credit", 0.25))
         risk = max(0.0, gain - threshold - clean_credit * max(0.0, -loss_change))
+        if profiling:
+            self.profile_records.append({
+                "candidate_build_seconds": candidate_ready - start,
+                "search_forward_seconds": search_ready - candidate_ready,
+                "search_selection_seconds": selected - search_ready,
+                "heldout_and_clean_seconds": evaluated - selected,
+                "total_seconds": evaluated - start,
+            })
         return AuditResult(
             risk=risk,
             heldout_target_gain=gain,

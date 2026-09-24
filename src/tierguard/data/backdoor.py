@@ -39,8 +39,15 @@ def add_configured_trigger(inputs: torch.Tensor, attack_config: dict) -> torch.T
         raise ValueError("Invalid trigger size")
     if name == "distributed_backdoor":
         span = max(1, size // 2)
-        for top, left in ((0, 0), (0, width - span), (height - span, 0),
-                          (height - span, width - span)):
+        corners = ((0, 0), (0, width - span), (height - span, 0),
+                   (height - span, width - span))
+        component = attack_config.get("distributed_component")
+        if component is not None:
+            component = int(component)
+            if component not in range(4):
+                raise ValueError("Distributed trigger component must be 0, 1, 2 or 3")
+            corners = (corners[component],)
+        for top, left in corners:
             view[:, :, top:top + span, left:left + span] = value
     else:
         top = int(attack_config.get("trigger_top", height - size))

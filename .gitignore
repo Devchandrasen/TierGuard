@@ -21,6 +21,9 @@ Makefile
 scripts/*.sh
 scripts/*.pbs
 !scripts/tierguard2_gpu_preflight.pbs
+!scripts/tierguard2_fashion_runtime_pilot.pbs
+!scripts/tierguard2_audit_profile.pbs
+!scripts/tierguard2_feasibility_pilot.pbs
 scripts/prepare_nsl_kdd.py
 configs/ablation/
 configs/main/

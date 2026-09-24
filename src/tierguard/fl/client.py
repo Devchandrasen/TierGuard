@@ -21,20 +21,27 @@ class ClientUpdate:
 
 
 class FederatedClient:
-    def __init__(self, client_id: int, edge_id: int, loader: DataLoader, malicious: bool = False):
+    def __init__(self, client_id: int, edge_id: int, loader: DataLoader,
+                 malicious: bool = False, distributed_component: int | None = None):
         self.client_id = client_id
         self.edge_id = edge_id
         self.loader = loader
         self.malicious = malicious
+        self.distributed_component = distributed_component
 
     def train(self, model, config: dict, device: torch.device, num_classes: int,
               round_idx: int = 0) -> ClientUpdate:
+        attack_config = config.get("attack", {})
+        if (self.malicious and attack_config.get("name") == "distributed_backdoor"
+                and self.distributed_component is not None):
+            attack_config = {**attack_config,
+                             "distributed_component": self.distributed_component}
         result = train_local_model(
             model,
             self.loader,
             config["federated"],
             device,
-            attack_config=config.get("attack", {}),
+            attack_config=attack_config,
             malicious=self.malicious,
             num_classes=num_classes,
             attack_seed=int(config.get("experiment", {}).get("seed", 1))

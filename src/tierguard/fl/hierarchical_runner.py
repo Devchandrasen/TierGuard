@@ -21,6 +21,7 @@ from tierguard.aggregators import build_aggregator
 from tierguard.aggregators.fedavg import FedAvgAggregator
 from tierguard.aggregators.tierguard2 import CounterfactualAuditor, aggregate_level, continuous_weight
 from tierguard.attacks import apply_post_update_attack
+from tierguard.attacks.instances import resolve_attack_instance
 from tierguard.attacks.alie import alie_attack
 from tierguard.attacks.optimized_trigger import optimize_trigger
 from tierguard.config import artifact_paths, make_run_dir, save_json, save_resolved_config
@@ -220,6 +221,10 @@ def _aggregate_tierguard2(client_results, model, auditor, reference_update,
                 }
                 for report, result in zip(surviving, edge_audits)
             ],
+            **({"audit_profile": {
+                "base_cache_seconds": auditor.begin_round_seconds,
+                "sampled_calls": auditor.profile_records,
+            }} if auditor.profile_records else {}),
         },
     }
     return cloud_update, metadata, client_risks
@@ -662,6 +667,7 @@ def _communication_overhead(config: dict, selected_clients: int, num_edges_activ
 
 
 def run_experiment(config: dict, command: str | None = None, results_root: str | Path = "results") -> Path:
+    config = resolve_attack_instance(config)
     seed = int(config.get("experiment", {}).get("seed", 1))
     seed_everything(seed)
     run_dir = make_run_dir(config, results_root)
@@ -695,12 +701,23 @@ def run_experiment(config: dict, command: str | None = None, results_root: str |
         float(config.get("attack", {}).get("malicious_fraction", 0.0)),
         seed + 17,
     )
+    distributed_components = (
+        {client_id: index % 4 for index, client_id in enumerate(sorted(malicious_clients))}
+        if str(config.get("attack", {}).get("name", "")) == "distributed_backdoor"
+        else {}
+    )
+    save_json({
+        "malicious_client_ids": sorted(malicious_clients),
+        "distributed_components": {str(key): value for key, value in
+                                   distributed_components.items()},
+    }, run_dir / "attack_assignment.json")
     clients = [
         FederatedClient(
             client_id=client_id,
             edge_id=edge_lookup[client_id],
             loader=data.client_loaders[client_id],
             malicious=client_id in malicious_clients,
+            distributed_component=distributed_components.get(client_id),
         )
         for client_id in range(num_clients)
     ]
@@ -870,7 +887,7 @@ def run_experiment(config: dict, command: str | None = None, results_root: str |
 
         if round_idx % eval_every == 0 or round_idx == rounds:
             clean = evaluate_classifier(model, data.test_loader, device)
-            if method == "tierguard2" and str(config.get("attack", {}).get("name", "none")) == "none":
+            if str(config.get("attack", {}).get("name", "none")) == "none":
                 asr = None
             elif (str(config.get("attack", {}).get("name", "none"))
                   == "defence_aware_optimized_trigger" and latest_attack_trigger is not None):

@@ -42,11 +42,20 @@ evidence for a new method. No confirmatory outcome or superiority claim exists.
   matching unpublished author code or its reported outcomes. The one-round
   synthetic HFLMND/challenge smoke test completed without false rejection.
 - Attack-side unknown-location patch/model-replacement, four-corner
-  distributed-trigger, and attacker-local gradient-optimized patch constructors.
+  component-distributed trigger, and attacker-local gradient-optimized patch
+  constructors. Each malicious client is assigned one deterministic corner
+  component; the held-out ASR test uses all four components. The complete
+  malicious-client/component assignment is written per run.
   The optimized patch penalizes similarity to the defender's fixed probe
   templates and is shared by selected malicious clients within a round. Its
   actual values are saved per round. These are implementation paths, not yet
   validated threat-strength experiments.
+- Main-attack target class and patch location can now be drawn from a
+  deterministic SHA-256 keyed instance, independent of method, for paired
+  dataset/attack/seed comparisons. The location is chosen from the
+  prespecified nine-position bounded search family; it is hidden from the
+  auditor but this is **not** arbitrary-location generalisation. The resolved
+  attack configuration and digest are saved in each run.
 - A calibration utility requiring three distinct clean development seeds and
   complete per-round audit logs. A primary decision-rule implementation checks
   all 12-by-9 ASR and 12-by-3 clean cells, the exact paired sign-flip test,
@@ -68,8 +77,9 @@ evidence for a new method. No confirmatory outcome or superiority claim exists.
 
 The synthetic one-round test is only an integration check. It is not a model
 comparison or a calibration run. On the separate TierGuard 2 HPC environment,
-all 59 applicable tests now pass, including three HFLMND-specific tests, both
-locally and in the pinned HPC environment on the committed branch. The omitted
+59 applicable tests passed on the last committed branch. With the current
+uncommitted attack-instance and batched-audit changes, 62 local tests pass;
+the one omitted
 legacy test compares the HPC v2
 environment with the old confirmatory-v1 lock and is not a v2 validity check.
 PBS GPU preflight job `38455.mgmt01` exited 0 on an NVIDIA H100, with
@@ -78,6 +88,19 @@ The HPC TierGuard 2 preflight now fails only because the protocol remains
 explicitly unfrozen; all nine method names resolve and the environment check
 passes. This is the correct state before development calibration and attack
 validation, not permission to start confirmatory seeds.
+
+The three benchmark datasets are present in a separate HPC data directory and
+a preparation manifest records 24 file hashes, expected
+train/test sizes and per-class counts. This is preparation, not a v2 freeze.
+An H100 one-round full-FashionMNIST clean pilot at the planned 60-client,
+six-edge topology exposed a 5.1-second per-candidate GPU synchronization
+bottleneck in pattern/target selection. A vectorized equivalent reduced the
+one-round TierGuard 2 runtime from 287 to 31 seconds (separate jobs) and
+preserved all 30 selected client pattern/target choices and held-out gains
+exactly in that paired pilot. The one-round clean accuracies are not a
+meaningful effectiveness comparison. A ten-round prefreeze feasibility job
+now checks clean utility and whether the unknown-patch attack succeeds
+against matched FedAvg before any development or confirmatory interpretation.
 
 ## Still required before confirmation or manuscript rewriting
 
@@ -88,8 +111,9 @@ validation, not permission to start confirmatory seeds.
 2. Validate the defence-aware optimized-trigger attack and semantic green-car
    implementation on real CIFAR-10; run sign-flip/ALIE, stronger-heterogeneity, and
    the implemented root-sensitivity panels;
-   validate each against undefended FedAvg. The current distributed trigger is
-   a single four-corner pattern, not the full published DBA attack.
+   validate each against undefended FedAvg. The current distributed attack
+   uses four coordinated corner components; it is not a complete reproduction
+   of the published DBA attack family.
 3. Run the actual study on GPU compute nodes, not on the login host. A separate
    Python 3.12.13 `uv` environment is installed on the HPC host from the v2
    lock, including Linux CUDA transitive pins. `uv pip check` passes for all
