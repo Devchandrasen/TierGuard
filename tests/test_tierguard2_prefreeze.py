@@ -12,6 +12,7 @@ def test_status_string_alone_cannot_release_confirmation(tmp_path):
     errors = verify_frozen_evidence(protocol, tmp_path)
     assert "missing freeze_manifest" in errors
     assert "missing freeze_tag" in errors
+    assert "missing frozen cloud challenge key hash" in errors
     assert any("missing hashed evidence for gate" in error for error in errors)
 
 

@@ -43,6 +43,10 @@ vectorized selection preserved all 30 client-selected patterns, target
 classes and held-out gains exactly in that paired run, reducing one-round
 runtime from 287 to 31 seconds. The runtime observation is not a
 hardware-normalized comparison of algorithms.
+The queue placed jobs on two H100 nodes with different NVIDIA drivers
+(gpu01: 570.124.06; gpu02: 580.126.16), and observed wall times varied
+materially. Later runs record hostname, device and driver; confirmatory
+comparisons must control or stratify node assignment.
 
 The three real dataset snapshots were checked against a 24-file SHA-256
 manifest, including expected class counts. This does not freeze the v2

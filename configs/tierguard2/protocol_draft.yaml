@@ -13,6 +13,7 @@ topology:
   local_epochs: 2
   malicious_fraction: 0.20
   dirichlet_alpha: 0.30
+  test_size: 10000
 root:
   reference_per_dataset: 200
   search_per_dataset: 200
@@ -36,9 +37,15 @@ main_attacks_required:
 development_grid_draft:
   patch_sizes: [[2, 3], [3, 4]]
   risk_gamma: [4.0, 8.0]
-  clip_reference_multiplier: [1.5, 2.0]
+  clip_reference_multiplier: [8.0, 16.0]
   clean_improvement_credit: [0.0, 0.25]
   calibration_quantile: [0.95]
+cloud_challenges:
+  active_edge_fraction: 0.50
+  secret_bytes: 32
+  hmac_context: dataset_seed_round_edge
+  method_independent_schedule: true
+  secret_sha256: null  # Fill and freeze before edge confirmation; never commit the key.
 primary_decision:
   baseline_selection: lowest_aggregate_development_asr
   asr_reduction_absolute_minimum: 0.05
@@ -54,6 +61,7 @@ preconfirmation_gates:
   - baseline_development_budget_matched
   - client_and_edge_audit_separation_tested
   - edge_receipt_failure_tests_pass
+  - matched_secret_challenge_schedule_tested
   - exact_python_and_package_lock_verified_on_hpc
   - all_partitions_and_attack_instances_frozen
   - source_and_configuration_sha256_manifest_committed

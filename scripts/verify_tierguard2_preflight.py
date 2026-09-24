@@ -47,6 +47,10 @@ def verify_frozen_evidence(config: dict, root: Path) -> list[str]:
     manifest_name = config.get("freeze_manifest")
     freeze_tag = config.get("freeze_tag")
     gate_artifacts = config.get("gate_artifacts", {})
+    challenge_hash = config.get("cloud_challenges", {}).get("secret_sha256")
+    if (not isinstance(challenge_hash, str) or len(challenge_hash) != 64 or
+            any(char not in "0123456789abcdef" for char in challenge_hash)):
+        errors.append("missing frozen cloud challenge key hash")
     if not isinstance(manifest_name, str) or not manifest_name:
         errors.append("missing freeze_manifest")
     else:

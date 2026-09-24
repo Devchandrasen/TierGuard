@@ -300,6 +300,17 @@ def _run_provenance(config: dict, device: torch.device) -> dict:
         hashlib.sha256(Path(challenge_secret_path).read_bytes()).hexdigest()
         if challenge_secret_path else None
     )
+    driver = None
+    if device.type == "cuda":
+        try:
+            queried = subprocess.run(
+                ["nvidia-smi", "--query-gpu=driver_version", "--format=csv,noheader"],
+                capture_output=True, text=True, check=False,
+            )
+            if queried.returncode == 0:
+                driver = queried.stdout.splitlines()[0].strip()
+        except (FileNotFoundError, IndexError):
+            pass
 
     canonical = json.dumps(config, sort_keys=True, separators=(",", ":"), default=str)
     return {
@@ -316,6 +327,7 @@ def _run_provenance(config: dict, device: torch.device) -> dict:
         "device_name": (
             torch.cuda.get_device_name(device) if device.type == "cuda" else "cpu"
         ),
+        "gpu_driver_version": driver,
         "pbs_job_id": os.environ.get("PBS_JOBID"),
         "torch_num_threads": torch.get_num_threads(),
         "omp_num_threads": os.environ.get("OMP_NUM_THREADS"),
