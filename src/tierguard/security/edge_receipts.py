@@ -160,6 +160,16 @@ def missing_report_ids(reports: list[EdgeReport], expected_edge_ids: set[int]) -
     return expected_edge_ids - set(received)
 
 
+def verify_report_envelope(report: EdgeReport, *, round_idx: int) -> None:
+    """Check round and committed fields even when an edge is not challenged."""
+    if report.round != round_idx:
+        raise ValueError("Replayed or stale edge report round")
+    if report.commitment != report_commitment(
+        report.round, report.edge_id, report.aggregate, report.receipts
+    ):
+        raise ValueError("Inconsistent edge report commitment")
+
+
 def single_report_escape_probability(active_edges: int) -> float:
     """Probability that one forged aggregate is not challenged in one round."""
     if active_edges < 1:
@@ -177,10 +187,7 @@ def verify_challenged_report(
     recompute: Callable[[list[torch.Tensor], list[int]], torch.Tensor],
     atol: float = 1e-6,
 ) -> int:
-    if report.round != round_idx or report.commitment != report_commitment(
-        report.round, report.edge_id, report.aggregate, report.receipts
-    ):
-        raise ValueError("Missing, replayed or inconsistent edge commitment")
+    verify_report_envelope(report, round_idx=round_idx)
     if set(raw_updates) != {item.client_id for item in report.receipts}:
         raise ValueError("Challenged edge did not reveal exactly the receipted updates")
     updates = []

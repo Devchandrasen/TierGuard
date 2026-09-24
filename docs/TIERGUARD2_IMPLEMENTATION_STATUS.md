@@ -24,15 +24,20 @@ evidence for a new method. No confirmatory outcome or superiority claim exists.
   and six active edges, the one-round non-challenge probability is exactly
   3/6 = 0.5; this is not a multi-round security guarantee.
   Missing active-edge reports are recorded and excluded before aggregation,
-  with separate expected/received counts; a forged or replayed report is
-  rejected by direct receipt or challenged raw-update verification.
+  with separate expected/received counts. The round and report commitment
+  are checked for **every** received edge, including unchallenged edges;
+  forged receipts and challenged aggregate inconsistencies are also rejected.
   For matched future edge experiments, a private 32-byte cloud key can define
   a method-independent HMAC ranking by dataset, seed and round, with only its
   hash recorded in provenance. The key is used after report commitment and
   is never supplied to the attack constructor. A write-once key-creation
   utility exists; no final-study key or freeze has been issued yet. Because
   this is one-process simulation, client private-key custody is modelled, not
-  independently deployed on client devices.
+  independently deployed on client devices. Client training receives a
+  reduced configuration without the cloud key path, and the simulated
+  compromised-edge transformation has no key/path parameter. This narrows
+  the simulation's information interface but is not process isolation or a
+  deployment-grade secrecy proof.
 - The same optional receipt/challenge wrapper is available to existing
   hierarchical FedAvg, FLTrust, coordinate median, RFA, PTA, and two-tier
   FLAME/FedGame defender adaptations and a paper-derived HFLMND reconstruction.

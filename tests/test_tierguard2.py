@@ -19,11 +19,12 @@ from tierguard.fl.hierarchical_runner import _selected_clients_per_edge
 from tierguard.fl.hierarchical_runner import _aggregate_tierguard2
 from tierguard.fl.hierarchical_runner import _aggregate_round
 from tierguard.fl.hierarchical_runner import _choose_study_challenges
+from tierguard.fl.hierarchical_runner import _client_visible_config
 from tierguard.fl.client import ClientUpdate
 from tierguard.security.edge_receipts import (
     ReceiptAuthority, choose_challenges, commit_edge, missing_report_ids,
     single_report_escape_probability,
-    verify_challenged_report,
+    verify_challenged_report, verify_report_envelope,
 )
 from tierguard.data.backdoor import add_configured_trigger
 from tierguard.data.semantic_green_car import (
@@ -102,6 +103,19 @@ def test_private_keyed_edge_challenges_are_paired_and_commitment_blind(tmp_path)
     assert chosen == _choose_study_challenges(second, config, round_idx=1)
     with pytest.raises(ValueError, match="32-byte"):
         choose_challenges(first, secret=b"short", context="one")
+
+
+def test_client_training_input_excludes_cloud_challenge_material():
+    config = {
+        "federated": {"batch_size": 16},
+        "attack": {"name": "distributed_backdoor"},
+        "experiment": {"seed": 2001},
+        "security": {"challenge_secret_path": "/private/cloud-key"},
+    }
+    visible = _client_visible_config(config, config, 2001)
+    assert set(visible) == {"federated", "attack", "experiment"}
+    assert "security" not in visible
+    assert "/private/cloud-key" not in str(visible)
 
 
 def test_root_partitions_are_balanced_disjoint_and_repeatable():
@@ -422,6 +436,10 @@ def test_signed_receipts_detect_forgery_replay_and_wrong_aggregate():
     assert missing_report_ids([report], {0, 1}) == {1}
     with pytest.raises(ValueError, match="unexpected edge"):
         missing_report_ids([report], {1})
+    with pytest.raises(ValueError, match="stale edge report round"):
+        verify_report_envelope(commit_edge(0, 0, report.aggregate, receipts), round_idx=1)
+    with pytest.raises(ValueError, match="Inconsistent edge report commitment"):
+        verify_report_envelope(replace(report, aggregate=torch.ones(2)), round_idx=1)
 
 
 def test_challenged_compromised_edge_is_rejected(monkeypatch):
@@ -459,6 +477,14 @@ def test_challenged_compromised_edge_is_rejected(monkeypatch):
     )
     assert missing_metadata["aggregation_metadata"]["missing_edge_reports"] == [0]
     assert missing_metadata["aggregation_metadata"]["rejected_edges"] == [0]
+    config["edge_attack"]["name"] = "replay_report"
+    monkeypatch.setattr("tierguard.fl.hierarchical_runner.choose_challenges",
+                        lambda reports: {1})
+    _, replay_metadata, _ = _aggregate_tierguard2(
+        clients, model, auditor, torch.ones(130) * 0.01,
+        config, ReceiptAuthority([0, 1]), 1,
+    )
+    assert replay_metadata["aggregation_metadata"]["rejected_edges"] == [0]
 
 
 def test_missing_edge_report_is_rejected_before_challenges_for_matched_methods(monkeypatch):
@@ -480,6 +506,16 @@ def test_missing_edge_report_is_rejected_before_challenges_for_matched_methods(m
     assert float(update) == pytest.approx(2.5)
     assert metadata["aggregation_metadata"]["missing_edge_reports"] == [0]
     assert metadata["aggregation_metadata"]["rejected_edges"] == [0]
+    config["edge_attack"]["name"] = "replay_report"
+    monkeypatch.setattr("tierguard.fl.hierarchical_runner.choose_challenges",
+                        lambda reports: {1, 2})
+    replay_update, replay_metadata, _ = _aggregate_round(
+        clients, config, torch.zeros(1), 1,
+        receipt_authority=ReceiptAuthority(list(range(3))), round_idx=1,
+        model_hash="modelhash",
+    )
+    assert float(replay_update) == pytest.approx(2.5)
+    assert replay_metadata["aggregation_metadata"]["rejected_edges"] == [0]
 
 
 class ReceiptAuthorityProxy:

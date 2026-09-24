@@ -24,6 +24,7 @@ from tierguard.aggregators.tierguard2 import CounterfactualAuditor, aggregate_le
 from tierguard.attacks import apply_post_update_attack
 from tierguard.attacks.instances import resolve_attack_instance
 from tierguard.attacks.alie import alie_attack
+from tierguard.attacks.edge_attacks import alter_edge_reports
 from tierguard.attacks.optimized_trigger import optimize_trigger
 from tierguard.config import artifact_paths, make_run_dir, save_json, save_resolved_config
 from tierguard.data.backdoor import BackdoorDataset, add_bottom_right_square
@@ -49,6 +50,7 @@ from tierguard.security.edge_receipts import (
     missing_report_ids,
     update_digest,
     verify_challenged_report,
+    verify_report_envelope,
     single_report_escape_probability,
 )
 from tierguard.seed import seed_everything
@@ -84,6 +86,15 @@ def _choose_study_challenges(reports, config: dict, round_idx: int) -> set[int]:
         f"{int(config['experiment']['seed'])}|{int(round_idx)}"
     )
     return choose_challenges(reports, secret=secret, context=context)
+
+
+def _client_visible_config(config: dict, round_config: dict, seed: int) -> dict:
+    """Expose only client training inputs, never cloud challenge material."""
+    return {
+        "federated": config["federated"],
+        "attack": round_config.get("attack", {}),
+        "experiment": {"seed": seed},
+    }
 
 
 def _aggregate_tierguard2(client_results, model, auditor, reference_update,
@@ -137,28 +148,7 @@ def _aggregate_tierguard2(client_results, model, auditor, reference_update,
     # The report is committed before the cloud samples challenges.  A
     # compromised edge can alter its aggregate or receipt, but cannot produce
     # valid client signatures for altered raw updates.
-    edge_attack = config.get("edge_attack", {})
-    if edge_attack.get("name") not in (None, "none"):
-        compromised = int(edge_attack["edge_id"])
-        for index, report in enumerate(reports):
-            if report.edge_id != compromised:
-                continue
-            if edge_attack["name"] == "aggregate_replacement":
-                forged = -float(edge_attack.get("scale", 2.0)) * report.aggregate
-                reports[index] = commit_edge(round_idx, compromised, forged, list(report.receipts))
-            elif edge_attack["name"] == "report_forgery":
-                forged_receipt = copy.copy(report.receipts[0])
-                from dataclasses import replace
-                forged_receipt = replace(forged_receipt, sample_mass=forged_receipt.sample_mass + 1)
-                reports[index] = commit_edge(
-                    round_idx, compromised, report.aggregate,
-                    [forged_receipt, *report.receipts[1:]],
-                )
-            elif edge_attack["name"] == "missing_report":
-                reports.pop(index)
-                break
-            else:
-                raise ValueError("Unknown edge attack")
+    reports = alter_edge_reports(reports, config.get("edge_attack", {}), round_idx=round_idx)
     missing_edges = missing_report_ids(reports, set(by_edge))
     challenged = _choose_study_challenges(reports, config, round_idx)
     verified_bytes = 0
@@ -166,6 +156,7 @@ def _aggregate_tierguard2(client_results, model, auditor, reference_update,
     report_lookup = {report.edge_id: report for report in reports}
     for report in reports:
         try:
+            verify_report_envelope(report, round_idx=round_idx)
             if report.receipts != direct_receipts[report.edge_id]:
                 raise ValueError("Edge receipt list differs from direct client receipts")
             for receipt in report.receipts:
@@ -580,31 +571,14 @@ def _aggregate_round(
             ) for _, item in edge_inputs[edge_id]]
             direct_receipts[edge_id] = tuple(receipts)
             reports.append(commit_edge(round_idx, edge_id, edge_update, receipts))
-        edge_attack = config.get("edge_attack", {})
-        if edge_attack.get("name") not in (None, "none"):
-            compromised = int(edge_attack["edge_id"])
-            from dataclasses import replace
-            for index, report in enumerate(reports):
-                if report.edge_id != compromised:
-                    continue
-                if edge_attack["name"] == "aggregate_replacement":
-                    forged = -float(edge_attack.get("scale", 2.0)) * report.aggregate
-                    reports[index] = commit_edge(round_idx, compromised, forged, list(report.receipts))
-                elif edge_attack["name"] == "report_forgery":
-                    forged = replace(report.receipts[0], sample_mass=report.receipts[0].sample_mass + 1)
-                    reports[index] = commit_edge(round_idx, compromised, report.aggregate,
-                                                 [forged, *report.receipts[1:]])
-                elif edge_attack["name"] == "missing_report":
-                    reports.pop(index)
-                    break
-                else:
-                    raise ValueError("Unknown edge attack")
+        reports = alter_edge_reports(reports, config.get("edge_attack", {}), round_idx=round_idx)
         missing_edges = missing_report_ids(reports, set(edge_ids))
         challenged = _choose_study_challenges(reports, config, int(round_idx or 0))
         rejected = set(missing_edges)
         challenge_bytes = 0
         for report in reports:
             try:
+                verify_report_envelope(report, round_idx=round_idx)
                 if report.receipts != direct_receipts[report.edge_id]:
                     raise ValueError("Edge report does not match direct client receipts")
                 for receipt in report.receipts:
@@ -877,9 +851,12 @@ def run_experiment(config: dict, command: str | None = None, results_root: str |
                     raise ValueError("No selected malicious client can optimize the trigger")
                 round_config = copy.deepcopy(config)
                 round_config["attack"]["trigger_tensor"] = latest_attack_trigger
+        # A client receives only its training/attack inputs, never the cloud
+        # challenge key path or the complete server configuration.
+        client_visible_config = _client_visible_config(config, round_config, seed)
         local_results = [
             clients[client_id].train(
-                model, round_config, device=device, num_classes=data.num_classes,
+                model, client_visible_config, device=device, num_classes=data.num_classes,
                 round_idx=round_idx,
             )
             for client_id in selected
