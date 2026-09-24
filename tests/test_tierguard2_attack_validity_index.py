@@ -58,6 +58,9 @@ def test_attack_validity_index_requires_all_clean_attested_cells(tmp_path):
     assert result["observed_run_count"] == 27
     assert len(result["cell_summary"]) == 9
     assert all(cell["asr_mean"] == pytest.approx(0.7) for cell in result["cell_summary"])
+    fashion = index_runs(tmp_path, datasets=("fashionmnist",))
+    assert fashion["complete"]
+    assert fashion["observed_run_count"] == 9
 
     corrupt = tmp_path / "mnist" / ATTACKS[0] / "seed_2001" / "provenance.json"
     corrupt.write_text(json.dumps({

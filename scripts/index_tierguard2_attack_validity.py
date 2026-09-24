@@ -31,7 +31,10 @@ def _digest(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def index_runs(results_root: Path) -> dict:
+def index_runs(results_root: Path, datasets: tuple[str, ...] = DATASETS) -> dict:
+    if not datasets or len(set(datasets)) != len(datasets) or set(datasets) - set(DATASETS):
+        raise ValueError("Choose one or more distinct prespecified datasets")
+    expected = {key for key in EXPECTED if key[0] in datasets}
     found = {}
     errors = []
     commits = set()
@@ -47,10 +50,12 @@ def index_runs(results_root: Path) -> dict:
         config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
         provenance = json.loads(provenance_path.read_text(encoding="utf-8"))
         dataset = str(config["data"]["dataset"])
+        if dataset not in datasets:
+            continue
         attack = str(config["attack"]["name"])
         seed = int(config["experiment"]["seed"])
         key = (dataset, attack, seed)
-        if key not in EXPECTED:
+        if key not in expected:
             errors.append(f"unexpected attack-validity task: {key}")
             continue
         if key in found:
@@ -106,13 +111,13 @@ def index_runs(results_root: Path) -> dict:
             "final_metrics_sha256": _digest(final_path),
             "run_dir": str(run_dir),
         }
-    missing = sorted(EXPECTED - found.keys())
+    missing = sorted(expected - found.keys())
     if missing:
         errors.append(f"missing completed tasks: {missing}")
     if len(commits) != 1:
         errors.append(f"mixed source commits: {sorted(commits)}")
     summary = []
-    for dataset in DATASETS:
+    for dataset in datasets:
         for attack in ATTACKS:
             rows = [found[(dataset, attack, seed)] for seed in SEEDS
                     if (dataset, attack, seed) in found]
@@ -127,7 +132,7 @@ def index_runs(results_root: Path) -> dict:
                 })
     return {
         "complete": not errors,
-        "expected_run_count": len(EXPECTED),
+        "expected_run_count": len(expected),
         "observed_run_count": len(found),
         "errors": errors,
         "cell_summary": summary,
@@ -139,9 +144,11 @@ def index_runs(results_root: Path) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--results-root", required=True, type=Path)
+    parser.add_argument("--dataset", choices=DATASETS, action="append",
+                        help="Optional subset; omit to require all three datasets")
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
-    result = index_runs(args.results_root)
+    result = index_runs(args.results_root, datasets=tuple(args.dataset or DATASETS))
     if args.output:
         if args.output.exists():
             raise FileExistsError(args.output)
