@@ -26,3 +26,11 @@ archive of raw run records is still required before manuscript preparation.
 The CIFAR-10 clean-rate index was likewise copied outside the training clone;
 its SHA-256 is
 `5fc74c6b2c13df71d744f1516405904b1980151e51754fb95d032f3b2fe5d5a2`.
+The nine-run TierGuard 2 attack-development index was also copied outside
+the active clones (SHA-256
+`7c19cb2a58055394f05b9cd821483927282a164e9228e7d1221981a4de0cabce`).
+It checks exact paired partitions and attack instances against the validated
+FedAvg index, clean-calibrated thresholds, 40-round audit completeness,
+source attestation and numerical stability before reporting descriptive
+ASR differences or client/edge risk separation. It is not a confirmatory
+analysis.
