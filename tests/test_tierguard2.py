@@ -18,6 +18,7 @@ from tierguard.data.root_splits import stratified_root_split
 from tierguard.fl.hierarchical_runner import _selected_clients_per_edge
 from tierguard.fl.hierarchical_runner import _aggregate_tierguard2
 from tierguard.fl.hierarchical_runner import _aggregate_round
+from tierguard.fl.hierarchical_runner import _choose_study_challenges
 from tierguard.fl.client import ClientUpdate
 from tierguard.security.edge_receipts import (
     ReceiptAuthority, choose_challenges, commit_edge, single_report_escape_probability,
@@ -81,6 +82,25 @@ def test_distributed_component_updates_use_matched_model_replacement_scale():
         {"clients_per_round": 30}, num_malicious_selected=6,
     )
     torch.testing.assert_close(transformed, 5.0 * update)
+
+
+def test_private_keyed_edge_challenges_are_paired_and_commitment_blind(tmp_path):
+    secret_path = tmp_path / "cloud-secret.bin"
+    secret_path.write_bytes(bytes(range(32)))
+    first = [commit_edge(1, edge_id, torch.tensor([float(edge_id)]), [])
+             for edge_id in range(6)]
+    second = [commit_edge(1, edge_id, torch.tensor([float(edge_id + 100)]), [])
+              for edge_id in range(6)]
+    config = {
+        "experiment": {"seed": 3001},
+        "data": {"dataset": "mnist"},
+        "security": {"challenge_secret_path": str(secret_path)},
+    }
+    chosen = _choose_study_challenges(first, config, round_idx=1)
+    assert len(chosen) == 3
+    assert chosen == _choose_study_challenges(second, config, round_idx=1)
+    with pytest.raises(ValueError, match="32-byte"):
+        choose_challenges(first, secret=b"short", context="one")
 
 
 def test_root_partitions_are_balanced_disjoint_and_repeatable():

@@ -4,6 +4,7 @@ import json
 import math
 import hashlib
 import importlib.metadata
+import os
 import platform
 import random
 import subprocess
@@ -70,6 +71,18 @@ HIERARCHICAL_METHODS = {
     "tapfed_sim",
     "brea_sim",
 }
+
+
+def _choose_study_challenges(reports, config: dict, round_idx: int) -> set[int]:
+    secret_path = config.get("security", {}).get("challenge_secret_path")
+    if not secret_path:
+        return choose_challenges(reports)
+    secret = Path(secret_path).read_bytes()
+    context = (
+        f"tierguard2|{config['data']['dataset']}|"
+        f"{int(config['experiment']['seed'])}|{int(round_idx)}"
+    )
+    return choose_challenges(reports, secret=secret, context=context)
 
 
 def _aggregate_tierguard2(client_results, model, auditor, reference_update,
@@ -142,7 +155,7 @@ def _aggregate_tierguard2(client_results, model, auditor, reference_update,
                 )
             else:
                 raise ValueError("Unknown edge attack")
-    challenged = choose_challenges(reports)
+    challenged = _choose_study_challenges(reports, config, round_idx)
     verified_bytes = 0
     rejected = set()
     report_lookup = {report.edge_id: report for report in reports}
@@ -282,6 +295,11 @@ def _run_provenance(config: dict, device: torch.device) -> dict:
     lock_path = project_root / (
         "requirements-tierguard2-cu128.txt" if new_study else "requirements-lock-cu128.txt"
     )
+    challenge_secret_path = config.get("security", {}).get("challenge_secret_path")
+    challenge_secret_sha256 = (
+        hashlib.sha256(Path(challenge_secret_path).read_bytes()).hexdigest()
+        if challenge_secret_path else None
+    )
 
     canonical = json.dumps(config, sort_keys=True, separators=(",", ":"), default=str)
     return {
@@ -293,12 +311,21 @@ def _run_provenance(config: dict, device: torch.device) -> dict:
         ),
         "python": sys.version,
         "platform": platform.platform(),
+        "hostname": platform.node(),
         "device": str(device),
+        "device_name": (
+            torch.cuda.get_device_name(device) if device.type == "cuda" else "cpu"
+        ),
+        "pbs_job_id": os.environ.get("PBS_JOBID"),
+        "torch_num_threads": torch.get_num_threads(),
+        "omp_num_threads": os.environ.get("OMP_NUM_THREADS"),
+        "mkl_num_threads": os.environ.get("MKL_NUM_THREADS"),
         "cuda_available": bool(torch.cuda.is_available()),
         "cuda_version": torch.version.cuda,
         "cudnn_version": torch.backends.cudnn.version(),
         "packages": versions,
         "environment_lock_sha256": hashlib.sha256(lock_path.read_bytes()).hexdigest(),
+        "challenge_secret_sha256": challenge_secret_sha256,
     }
 
 
@@ -547,7 +574,7 @@ def _aggregate_round(
                                                  [forged, *report.receipts[1:]])
                 else:
                     raise ValueError("Unknown edge attack")
-        challenged = choose_challenges(reports)
+        challenged = _choose_study_challenges(reports, config, int(round_idx or 0))
         rejected = set()
         challenge_bytes = 0
         for report in reports:
@@ -691,6 +718,9 @@ def run_experiment(config: dict, command: str | None = None, results_root: str |
         if (provenance["git_commit"] == "unavailable" or
                 provenance["git_worktree_dirty"] is not False):
             raise ValueError("Source attestation requires a readable, clean Git checkout")
+    challenge_secret_path = config.get("security", {}).get("challenge_secret_path")
+    if challenge_secret_path and len(Path(challenge_secret_path).read_bytes()) < 32:
+        raise ValueError("Cloud challenge secret must contain at least 32 bytes")
     save_json(provenance, artifacts.provenance_json)
     data = make_data_bundle(config)
     semantic_train_images = None

@@ -23,6 +23,13 @@ evidence for a new method. No confirmatory outcome or superiority claim exists.
   receipt-list equality are checked for all edges. Under one forged aggregate
   and six active edges, the one-round non-challenge probability is exactly
   3/6 = 0.5; this is not a multi-round security guarantee.
+  For matched future edge experiments, a private 32-byte cloud key can define
+  a method-independent HMAC ranking by dataset, seed and round, with only its
+  hash recorded in provenance. The key is used after report commitment and
+  is never supplied to the attack constructor. A write-once key-creation
+  utility exists; no final-study key or freeze has been issued yet. Because
+  this is one-process simulation, client private-key custody is modelled, not
+  independently deployed on client devices.
 - The same optional receipt/challenge wrapper is available to existing
   hierarchical FedAvg, FLTrust, coordinate median, RFA, PTA, and two-tier
   FLAME/FedGame defender adaptations and a paper-derived HFLMND reconstruction.

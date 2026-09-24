@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import base64
 import hashlib
+import hmac
 import json
 import math
 import secrets
@@ -128,11 +129,22 @@ def commit_edge(round_idx: int, edge_id: int, aggregate: torch.Tensor,
                       report_commitment(round_idx, edge_id, aggregate, items))
 
 
-def choose_challenges(reports: list[EdgeReport], rng=None) -> set[int]:
+def choose_challenges(reports: list[EdgeReport], rng=None, *,
+                      secret: bytes | None = None, context: str | None = None) -> set[int]:
     edge_ids = sorted({report.edge_id for report in reports})
     if len(edge_ids) != len(reports):
         raise ValueError("Multiple reports from one edge")
     count = math.ceil(len(edge_ids) / 2)
+    if secret is not None:
+        if rng is not None or context is None or len(secret) < 32:
+            raise ValueError("Keyed challenges need a private 32-byte key and context")
+        # HMAC defines a secret, reproducible random ranking. Its context is
+        # method-independent, so paired algorithms receive identical edge
+        # challenges. The key is never passed to the attacker implementation.
+        ranking = sorted(edge_ids, key=lambda edge_id: hmac.new(
+            secret, f"{context}|edge={edge_id}".encode("utf-8"), hashlib.sha256,
+        ).digest())
+        return set(ranking[:count])
     picker = rng if rng is not None else secrets.SystemRandom()
     return set(picker.sample(edge_ids, count))
 

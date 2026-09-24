@@ -3,6 +3,7 @@ from __future__ import annotations
 import pytest
 
 from scripts.verify_tierguard2_preflight import verify_frozen_evidence
+from scripts.create_cloud_challenge_secret import create_secret
 from tierguard.fl.hierarchical_runner import run_experiment
 
 
@@ -59,3 +60,12 @@ def test_run_aborts_before_training_without_clean_git_attestation(tmp_path, monk
     }
     with pytest.raises(ValueError, match="readable, clean Git checkout"):
         run_experiment(config, results_root=tmp_path)
+
+
+def test_cloud_challenge_key_is_write_once(tmp_path):
+    path = tmp_path / "cloud-secret.bin"
+    digest = create_secret(path)
+    assert len(path.read_bytes()) == 32
+    assert len(digest) == 64
+    with pytest.raises(FileExistsError):
+        create_secret(path)
