@@ -25,6 +25,16 @@ qualification. The scaled distributed attack should be described as a
 strong distributed model-poisoning/backdoor stress condition, not as a
 replication of the published DBA attack or as evidence of stealth.
 
-MNIST and CIFAR-10 attack-validity runs remain queued/running. TierGuard 2
+The MNIST panel also completed 9/9 runs and passed the same validator with
+no errors (index SHA-256
+`c98d8c943bc0fd89d5b775d2a5c733021fbeeb62b17e8cd1da73e4625ee3fa8c`).
+
+| MNIST attack | Mean final ASR, 3 seeds | Lowest seed ASR | Mean final clean accuracy |
+| --- | ---: | ---: | ---: |
+| Unknown patch and model replacement | 1.0000 | 1.0000 | 0.9829 |
+| Four-component distributed backdoor | 1.0000 | 1.0000 | 0.9785 |
+| Attacker-local optimized trigger | 0.99996 | 0.99989 | 0.9745 |
+
+CIFAR-10 attack-validity runs remain queued/running. TierGuard 2
 attack-development runs have been submitted but have not yet produced a
 validated full panel. No confirmatory seed or superiority analysis has run.

@@ -131,9 +131,10 @@ runs and nine calibrated FashionMNIST TierGuard 2 attack-development
 runs have been submitted on the HPC from fixed, separate source clones.
 The attack matrix has a fail-closed run/provenance index. No confirmatory
 seed has run.
-The FashionMNIST FedAvg attack-validity submatrix is now complete (9/9)
-and is documented in `docs/TIERGUARD2_ATTACK_VALIDITY_2026-09-24.md`.
-It establishes attack strength in development, not defence efficacy.
+The FashionMNIST and MNIST FedAvg attack-validity submatrices are now
+complete (9/9 each) and documented in
+`docs/TIERGUARD2_ATTACK_VALIDITY_2026-09-24.md`. They establish attack
+strength in development, not defence efficacy.
 
 ## Still required before confirmation or manuscript rewriting
 
