@@ -88,6 +88,11 @@ The HPC TierGuard 2 preflight now fails only because the protocol remains
 explicitly unfrozen; all nine method names resolve and the environment check
 passes. This is the correct state before development calibration and attack
 validation, not permission to start confirmatory seeds.
+The preflight now also requires, if status is ever changed to `frozen`, a
+complete source/configuration hash manifest, a matching clean Git freeze tag,
+and a hashed evidence artifact for every listed gate. Changing the status
+word alone cannot unlock confirmation. None of these v2 freeze artifacts has
+been created yet.
 
 The three benchmark datasets are present in a separate HPC data directory and
 a preparation manifest records 24 file hashes, expected
