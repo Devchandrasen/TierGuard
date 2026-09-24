@@ -40,6 +40,7 @@ development_grid_draft:
   clip_reference_multiplier: [8.0, 16.0]
   clean_improvement_credit: [0.0, 0.25]
   calibration_quantile: [0.95]
+  calibration_levels: [client, edge]
 cloud_challenges:
   active_edge_fraction: 0.50
   secret_bytes: 32

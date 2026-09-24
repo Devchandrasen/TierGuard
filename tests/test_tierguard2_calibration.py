@@ -29,7 +29,7 @@ def _development_run(root, seed: int, clip: float = 8.0, dirty: bool = False):
     for round_idx in range(1, 41):
         (path / f"audit_round_{round_idx:03d}.json").write_text(json.dumps({
             "client_audits": [{"heldout_target_gain": seed / 100_000}],
-            "edge_audits": [{"heldout_target_gain": seed / 100_000}],
+            "edge_audits": [{"heldout_target_gain": seed / 100_000 + 0.2}],
         }), encoding="utf-8")
     return path
 
@@ -39,6 +39,11 @@ def test_calibration_requires_one_clean_configuration_and_source(tmp_path):
     result = calibrate(paths)
     assert result["development_seeds"] == [2001, 2002, 2003]
     assert result["number_of_scores"] == 240
+    assert result["number_of_client_scores"] == 120
+    assert result["number_of_edge_scores"] == 120
+    assert result["calibrated_edge_gain_threshold"] - result[
+        "calibrated_client_gain_threshold"
+    ] == pytest.approx(0.2)
     assert result["git_commit"] == "a" * 40
 
 

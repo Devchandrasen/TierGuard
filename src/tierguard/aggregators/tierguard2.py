@@ -172,7 +172,9 @@ class CounterfactualAuditor:
         self.begin_round_seconds = self._profile_clock() - start if profiling else 0.0
 
     def audit(self, model: torch.nn.Module, update: torch.Tensor,
-              server_lr: float = 1.0) -> AuditResult:
+              server_lr: float = 1.0, *, level: str = "client") -> AuditResult:
+        if level not in {"client", "edge"}:
+            raise ValueError("Counterfactual audit level must be client or edge")
         profiling = len(self.profile_records) < int(self.settings.get("profile_audit_samples", 0))
         start = self._profile_clock() if profiling else 0.0
         base = model.to(self.device).eval()
@@ -208,7 +210,11 @@ class CounterfactualAuditor:
             )
         evaluated = self._profile_clock() if profiling else 0.0
         # The threshold and credit must be frozen using clean development runs.
-        threshold = float(self.settings["calibrated_gain_threshold"])
+        threshold_key = f"calibrated_{level}_gain_threshold"
+        threshold = float(
+            self.settings[threshold_key] if threshold_key in self.settings
+            else self.settings["calibrated_gain_threshold"]
+        )
         clean_credit = float(self.settings.get("clean_improvement_credit", 0.25))
         risk = max(0.0, gain - threshold - clean_credit * max(0.0, -loss_change))
         if profiling:

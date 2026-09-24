@@ -26,6 +26,7 @@ def calibrate(run_dirs: list[Path], quantile: float = 0.95) -> dict:
     commits = set()
     source_hashes = {}
     gains = []
+    gains_by_level: dict[str, list[float]] = {"client": [], "edge": []}
     for run_dir in run_dirs:
         config_path = run_dir / "resolved_config.yaml"
         config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
@@ -56,10 +57,13 @@ def calibrate(run_dirs: list[Path], quantile: float = 0.95) -> dict:
             payload = path.read_bytes()
             source_hashes[str(path)] = hashlib.sha256(payload).hexdigest()
             record = json.loads(payload)
-            for level in ("client_audits", "edge_audits"):
-                gains.extend(float(item["heldout_target_gain"]) for item in record[level])
+            for level, field in (("client", "client_audits"), ("edge", "edge_audits")):
+                values = [float(item["heldout_target_gain"]) for item in record[field]]
+                gains_by_level[level].extend(values)
+                gains.extend(values)
     if (seeds != {2001, 2002, 2003} or len(datasets) != 1 or
-            len(configurations) != 1 or len(commits) != 1 or not gains):
+            len(configurations) != 1 or len(commits) != 1 or
+            any(not values for values in gains_by_level.values())):
         raise ValueError("Calibration requires seeds 2001-2003, one dataset, "
                          "one source commit, one configuration and nonempty audit data")
     return {
@@ -67,8 +71,17 @@ def calibrate(run_dirs: list[Path], quantile: float = 0.95) -> dict:
         "development_seeds": sorted(seeds),
         "quantile": quantile,
         "calibrated_gain_threshold": max(0.0, float(np.quantile(gains, quantile))),
+        "calibrated_client_gain_threshold": max(
+            0.0, float(np.quantile(gains_by_level["client"], quantile))
+        ),
+        "calibrated_edge_gain_threshold": max(
+            0.0, float(np.quantile(gains_by_level["edge"], quantile))
+        ),
         "number_of_scores": len(gains),
+        "number_of_client_scores": len(gains_by_level["client"]),
+        "number_of_edge_scores": len(gains_by_level["edge"]),
         "git_commit": next(iter(commits)),
+        "calibration_script_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         "configuration_sha256": hashlib.sha256(
             next(iter(configurations)).encode("utf-8")
         ).hexdigest(),

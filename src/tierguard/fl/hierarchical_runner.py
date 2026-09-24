@@ -111,7 +111,7 @@ def _aggregate_tierguard2(client_results, model, auditor, reference_update,
         receipts = []
         for (index, item), update in zip(indexed, updates):
             clipped = clip_update(update, radius)
-            result = auditor.audit(model, clipped, server_lr=server_lr)
+            result = auditor.audit(model, clipped, server_lr=server_lr, level="client")
             client_risks[index] = result.risk
             client_audits[index] = {
                 "client_id": item.client_id,
@@ -175,7 +175,8 @@ def _aggregate_tierguard2(client_results, model, auditor, reference_update,
         verified_bytes += sum(update.numel() * update.element_size()
                               for update in raw_by_edge[edge_id].values())
         def recompute(updates, masses):
-            risks = [auditor.audit(model, clip_update(update, radius), server_lr=server_lr).risk
+            risks = [auditor.audit(model, clip_update(update, radius), server_lr=server_lr,
+                                   level="client").risk
                      for update in updates]
             return aggregate_level(updates, masses, risks, radius, settings)[0]
         try:
@@ -190,7 +191,8 @@ def _aggregate_tierguard2(client_results, model, auditor, reference_update,
     if not surviving:
         raise ValueError("All active edge reports were rejected")
     edge_audits = [auditor.audit(model, clip_update(report.aggregate, radius),
-                                 server_lr=server_lr) for report in surviving]
+                                 server_lr=server_lr, level="edge")
+                   for report in surviving]
     edge_norms = [float(torch.linalg.vector_norm(report.aggregate)) for report in surviving]
     edge_risks = [item.risk for item in edge_audits]
     edge_masses = [sum(item.sample_mass for item in report.receipts) for report in surviving]

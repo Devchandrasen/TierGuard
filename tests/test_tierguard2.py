@@ -206,7 +206,9 @@ def test_counterfactual_audit_detects_heldout_functional_change():
     images[:, :, 0, 0] = 1.0
     labels = torch.tensor([0, 1] * 4)
     settings = {"probes_per_class": 2, "patch_sizes": [2],
-                "calibrated_gain_threshold": 0.0}
+                "calibrated_gain_threshold": 0.0,
+                "calibrated_client_gain_threshold": 0.0,
+                "calibrated_edge_gain_threshold": 1.0}
     auditor = CounterfactualAuditor(
         DataLoader(TensorDataset(images[:4], labels[:4]), batch_size=4),
         DataLoader(TensorDataset(images[4:], labels[4:]), batch_size=4),
@@ -220,6 +222,9 @@ def test_counterfactual_audit_detects_heldout_functional_change():
     assert detected.target_class == 1
     assert detected.heldout_target_gain > 0.45
     assert detected.risk > 0.45
+    assert auditor.audit(model, update, level="edge").risk == 0.0
+    with pytest.raises(ValueError, match="level"):
+        auditor.audit(model, update, level="cloud")
 
 
 def test_per_edge_selection_is_balanced_and_deterministic():
