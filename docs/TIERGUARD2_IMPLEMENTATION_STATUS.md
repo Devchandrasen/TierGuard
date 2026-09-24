@@ -68,12 +68,16 @@ evidence for a new method. No confirmatory outcome or superiority claim exists.
 
 The synthetic one-round test is only an integration check. It is not a model
 comparison or a calibration run. On the separate TierGuard 2 HPC environment,
-all 56 then-applicable tests passed. The current local suite has 59 applicable
-passing tests, including three HFLMND-specific tests; these new tests still
-need to be rerun in the pinned HPC environment. The omitted legacy test compares the HPC v2
+all 59 applicable tests now pass, including three HFLMND-specific tests, both
+locally and in the pinned HPC environment on the committed branch. The omitted
+legacy test compares the HPC v2
 environment with the old confirmatory-v1 lock and is not a v2 validity check.
 PBS GPU preflight job `38455.mgmt01` exited 0 on an NVIDIA H100, with
 PyTorch 2.11.0+cu128, torchvision 0.26.0+cu128, and cryptography 48.0.0.
+The HPC TierGuard 2 preflight now fails only because the protocol remains
+explicitly unfrozen; all nine method names resolve and the environment check
+passes. This is the correct state before development calibration and attack
+validation, not permission to start confirmatory seeds.
 
 ## Still required before confirmation or manuscript rewriting
 
