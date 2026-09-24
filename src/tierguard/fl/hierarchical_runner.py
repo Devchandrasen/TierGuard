@@ -433,7 +433,9 @@ def _backdoor_audit_multipliers(
         images, labels = next(iter(root_loader))
     except StopIteration:
         return [1.0 for _ in updates], [0.0 for _ in updates]
-    target_label = int(config.get("attack", {}).get("target_label", 0))
+    # PTA's frozen predefined audit knows target 0, not the new study's
+    # method-independent hidden attack target. Never read attack config here.
+    target_label = int(tier_cfg.get("audit_target_label", 0))
     max_items = int(tier_cfg.get("audit_batch_size", 64))
     mask = labels != target_label
     if mask.any():

@@ -41,6 +41,8 @@ evidence for a new method. No confirmatory outcome or superiority claim exists.
 - The same optional receipt/challenge wrapper is available to existing
   hierarchical FedAvg, FLTrust, coordinate median, RFA, PTA, and two-tier
   FLAME/FedGame defender adaptations and a paper-derived HFLMND reconstruction.
+  PTA retains its predefined bottom-right trigger and target label 0; it is
+  not given the new attack instance's hidden target class.
   FLAME follows the published cosine/HDBSCAN majority
   filter, median-norm clipping, equal averaging, and adaptive noise structure;
   its two-tier application and small-edge fallback require explicit reporting.

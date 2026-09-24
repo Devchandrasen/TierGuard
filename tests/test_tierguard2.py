@@ -20,6 +20,7 @@ from tierguard.fl.hierarchical_runner import _aggregate_tierguard2
 from tierguard.fl.hierarchical_runner import _aggregate_round
 from tierguard.fl.hierarchical_runner import _choose_study_challenges
 from tierguard.fl.hierarchical_runner import _client_visible_config
+from tierguard.fl.hierarchical_runner import _backdoor_audit_multipliers
 from tierguard.fl.client import ClientUpdate
 from tierguard.security.edge_receipts import (
     ReceiptAuthority, choose_challenges, commit_edge, missing_report_ids,
@@ -116,6 +117,22 @@ def test_client_training_input_excludes_cloud_challenge_material():
     assert set(visible) == {"federated", "attack", "experiment"}
     assert "security" not in visible
     assert "/private/cloud-key" not in str(visible)
+
+
+def test_predefined_tierguard_baseline_does_not_receive_hidden_attack_target():
+    images = torch.rand(4, 1, 8, 8)
+    labels = torch.tensor([0, 1, 0, 1])
+    loader = DataLoader(TensorDataset(images, labels), batch_size=4)
+    model = torch.nn.Sequential(torch.nn.Flatten(), torch.nn.Linear(64, 2))
+    update = torch.ones(sum(parameter.numel() for parameter in model.parameters())) * 0.001
+    config = {"tierguard": {"use_backdoor_audit": True, "audit_batch_size": 4},
+              "federated": {"server_lr": 1.0}, "attack": {"target_label": 0}}
+    first = _backdoor_audit_multipliers(model, [update], loader, config,
+                                        torch.device("cpu"))
+    config["attack"]["target_label"] = 1
+    second = _backdoor_audit_multipliers(model, [update], loader, config,
+                                         torch.device("cpu"))
+    assert first == second
 
 
 def test_root_partitions_are_balanced_disjoint_and_repeatable():
