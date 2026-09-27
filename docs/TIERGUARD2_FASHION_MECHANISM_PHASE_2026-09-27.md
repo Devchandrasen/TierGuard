@@ -226,3 +226,25 @@ only account job. Evidence is saved under
 `Rajanmani/output/TierGuard2_Mechanism_2026-09-27T190016Z`.
 The median clean subset is complete; method comparisons await the full
 bounded screen. No tuning, confirmation, retries or clone edits occurred.
+
+## Checkpoint: 27 September 2026, 20:00 UTC
+
+The first median unknown-patch/model-replacement cell (seed 2001, job 39405)
+completed F/exit 0. The frozen guard validates 4/96 cells without errors.
+Its accuracy is 0.8614, macro-F1 0.8619156723420935 and ASR
+0.8787777777777778. The high ASR is retained as an adverse outcome, not used
+for tuning or exclusion. Forty rounds, complete audits, zero stability
+failures, frozen inputs and exact paired partitions pass validation.
+All 51 newly copied files are hash-verified. A supplemental local checker
+was corrected to respect the already-frozen five-round evaluation schedule;
+the original checker and diagnostic remain preserved. The frozen guard,
+training source and evidence were not changed.
+
+Both new indices have SHA-256
+`8d956f59c90f7582ac1f10f5156f12bf6559de1c93de5e56f1d9bc6327644bb4`.
+After validation and an empty-account check, the guard submitted
+**39406.mgmt01** once at 20:04:42 UTC for median /
+unknown_patch_model_replacement / seed 2002, verified R and the sole account
+job. Evidence is in
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-27T200017Z`.
+No method superiority, tuning, confirmation or next campaign is inferred.

@@ -22,16 +22,18 @@ FedAvg, each under clean training and three attacks with three development
 seeds. Its 96 cells use a new source snapshot and never permit more than one
 outstanding account job. Later source-audited baselines and confirmation
 remain outside this screen. The original panel is not overwritten or pooled.
-At the 19:00 UTC checkpoint on 27 September, **39399.mgmt01**,
-**39403.mgmt01** and **39404.mgmt01** (median / clean / seeds 2001--2003)
-had completed with exit 0,
-40 rounds each, complete audits and zero stability failures. The validated
-partial index contains 3/96 cells and no errors. Clean accuracies are 85.56%,
-86.15% and 83.80%; these descriptive values are not a method comparison.
-After an empty-account check, **39405.mgmt01** was submitted once at
-19:03:35 UTC for median / unknown_patch_model_replacement / seed 2001,
-and verified as the sole running
-account job. Each completed run's 51 files were copied and hash-verified locally.
+At the 20:00 UTC checkpoint on 27 September, 4/96 cells had completed
+F/exit 0 and passed the frozen guard with no errors: three median clean seeds
+and median unknown-patch/model-replacement seed 2001. Each has 40 rounds,
+complete audits and zero stability failures. The first attack cell (39405)
+has clean accuracy 86.14% and adverse ASR 87.88%, retained unchanged.
+These descriptive values do not establish a method comparison.
+After an empty-account check, **39406.mgmt01** was submitted once at
+20:04:42 UTC for median / unknown_patch_model_replacement / seed 2002
+and verified as the sole running account job. Each completed run's 51 files
+were copied and hash-verified locally. The local attack-copy checker was
+corrected to respect the already-frozen five-round evaluation cadence;
+the unchanged frozen guard and the corrected local check both passed.
 The hourly follow-up now targets only this 96-cell
 phase; it was resumed after freezing the protocol and checking the account.
 The [serial execution policy](TIERGUARD2_SERIAL_EXECUTION.md) governs subsequent
