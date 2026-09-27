@@ -164,3 +164,28 @@ The startup manifest, empty validated index, ledger and submission record
 are copied to `Rajanmani/output/TierGuard2_Fashion_Mechanism_Phase_2026-09-27`.
 The first cell is not a completed result at startup. Later documentation
 commits must not be pulled into the frozen HPC clone.
+
+## Checkpoint: 27 September 2026, 16:58 UTC
+
+The first cell (median / none / 2001, job 39399) completed with exit 0.
+The partial-panel index validates 1/96 cells, has no errors and reports
+only unattempted cells as missing. It verifies all 40 rounds, complete
+audits, zero stability failures, exact frozen source/configuration/environment
+and paired partitions. All 51 raw files were copied locally and independently
+hash-checked, with CSV/final metric agreement.
+
+Final clean accuracy is 0.8556 and macro-F1 is 0.8565363973966267. ASR is
+null because no backdoor is installed. No comparison or inference is made
+from this single clean development seed.
+
+The dry-run index at 17:00:00 UTC and submission-time index at 17:02:15 UTC
+share SHA-256
+`f1dd8018b0b8dc5574cfb59d32cddf5c6c90d0138ccc8e4ca3f460e69c017916`.
+After verifying an empty account and the approved manifest/guard hashes,
+the guard submitted **39403.mgmt01** once at 17:02:16 UTC for median /
+none / seed 2002. It was verified R and the sole account job.
+
+The checkpoint evidence is saved under
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-27T165844Z`.
+No source changes, retries, additional submissions, tuning or confirmatory
+runs were made. The frozen 96-cell order is unchanged.

@@ -23,8 +23,14 @@ seeds. Its 96 cells use a new source snapshot and never permit more than one
 outstanding account job. Later source-audited baselines and confirmation
 remain outside this screen. The original panel is not overwritten or pooled.
 The new source-pinned guard subsequently submitted **39399.mgmt01** at
-15:56:21 UTC for median / clean / seed 2001. It was verified running and
-the sole account job. The hourly follow-up now targets only this 96-cell
+15:56:21 UTC for median / clean / seed 2001. At the 16:58 UTC checkpoint
+it had finished with exit 0, all 40 rounds, complete audits and zero stability
+failures. The validated partial index contains 1/96 cells and no errors.
+Its clean accuracy is 85.56%; this one seed is not a method comparison.
+After an empty-account check, **39403.mgmt01** was submitted once at
+17:02:16 UTC for median / clean / seed 2002 and verified as the sole running
+account job. All 51 completed-run files were copied and hash-verified locally.
+The hourly follow-up now targets only this 96-cell
 phase; it was resumed after freezing the protocol and checking the account.
 The [serial execution policy](TIERGUARD2_SERIAL_EXECUTION.md) governs subsequent
 submissions; no batch or array is allowed. Previously completed evidence is audited in

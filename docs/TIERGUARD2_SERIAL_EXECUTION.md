@@ -214,3 +214,26 @@ for median / none / seed 2001 and verified as the sole running account job.
 Source commit, manifest hash and guard hash are recorded in the new phase
 document. The existing hourly heartbeat was updated and resumed for only
 that 96-cell phase. Do not call the old nine-cell guard for further work.
+
+## Mechanism checkpoint: 27 September 2026, 16:58 UTC
+
+39399 completed with exit 0 and walltime 00:09:44. The new guard validated
+1/96 cells with no errors: all 40 rounds, complete audits, zero stability
+failures, finite populated metrics, frozen source/configuration/environment,
+exact paired partitions and a consistent ledger. The local copy independently
+passed all 51 file hashes and CSV/final metric checks. Median / none / seed
+2001 has clean accuracy 0.8556 and macro-F1 0.8565363973966267; clean ASR is
+undefined. This is one development seed, not a method comparison.
+
+The dry-run and submission-time indices are
+`fashion_mechanism_index_2026_09_27T170000_721239Z.json` and
+`fashion_mechanism_index_2026_09_27T170215_999575Z.json`, both SHA-256
+`f1dd8018b0b8dc5574cfb59d32cddf5c6c90d0138ccc8e4ca3f460e69c017916`.
+Only genuinely unattempted cells are missing from this partial index.
+
+With the account empty and both manifest/guard hashes verified, the guard
+submitted **39403.mgmt01** at 17:02:16 UTC for median / none / seed 2002.
+It was verified R and the sole account job. No second submission, retry,
+tuning or confirmation was made. The new evidence, ledger and scheduler
+snapshots are in `Rajanmani/output/TierGuard2_Mechanism_2026-09-27T165844Z`.
+All frozen training clones and previous evidence remain unchanged.
