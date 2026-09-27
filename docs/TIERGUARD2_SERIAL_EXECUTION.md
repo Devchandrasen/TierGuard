@@ -75,3 +75,19 @@ After the queue was verified empty, the guard submitted **39266.mgmt01** at
 the sole account job. No other submission was made. Evidence and validation
 are saved separately in the Rajanmani output folder
 `TierGuard2_Serial_2026-09-27T040743Z`; the previous 56-run archive is unchanged.
+
+## Checkpoint: 27 September 2026, 05:07 UTC
+
+Job 39266 completed with exit 0, 40 rounds, complete audits and zero stability
+failures. The paired index now contains 4/9 records; only the five expected
+unattempted cells are missing. The new index is
+`fashion_t2_attack_development_index_2026_09_27T050744Z.json`, SHA-256
+`8f67d3d7ce92c51f3ee5ed6f6ff2f8ad672f95d164eaa9998ddcc212afe8dd01`.
+Source, partitions, attacks, copied-record hashes and finite populated
+per-round fields pass verification.
+
+After the queue was verified empty, the guard submitted **39286.mgmt01** at
+05:10:14 UTC, distributed backdoor seed 2002. It was verified state R and
+the sole account job. No other submission was made. The new evidence folder
+is `TierGuard2_Serial_2026-09-27T050744Z` under Rajanmani/output. Earlier
+evidence and the training checkout remain unchanged.
