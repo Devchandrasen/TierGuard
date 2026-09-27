@@ -22,14 +22,14 @@ FedAvg, each under clean training and three attacks with three development
 seeds. Its 96 cells use a new source snapshot and never permit more than one
 outstanding account job. Later source-audited baselines and confirmation
 remain outside this screen. The original panel is not overwritten or pooled.
-The new source-pinned guard subsequently submitted **39399.mgmt01** at
-15:56:21 UTC for median / clean / seed 2001. At the 16:58 UTC checkpoint
-it had finished with exit 0, all 40 rounds, complete audits and zero stability
-failures. The validated partial index contains 1/96 cells and no errors.
-Its clean accuracy is 85.56%; this one seed is not a method comparison.
-After an empty-account check, **39403.mgmt01** was submitted once at
-17:02:16 UTC for median / clean / seed 2002 and verified as the sole running
-account job. All 51 completed-run files were copied and hash-verified locally.
+At the 17:59 UTC checkpoint, **39399.mgmt01** and **39403.mgmt01**
+(median / clean / seeds 2001 and 2002) had completed with exit 0,
+40 rounds each, complete audits and zero stability failures. The validated
+partial index contains 2/96 cells and no errors. Clean accuracies are 85.56%
+and 86.15%; this incomplete clean panel is not a method comparison.
+After an empty-account check, **39404.mgmt01** was submitted once at
+18:02:41 UTC for median / clean / seed 2003 and verified as the sole running
+account job. Each completed run's 51 files were copied and hash-verified locally.
 The hourly follow-up now targets only this 96-cell
 phase; it was resumed after freezing the protocol and checking the account.
 The [serial execution policy](TIERGUARD2_SERIAL_EXECUTION.md) governs subsequent

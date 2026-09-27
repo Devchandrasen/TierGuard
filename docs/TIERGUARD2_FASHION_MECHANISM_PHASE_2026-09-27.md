@@ -189,3 +189,21 @@ The checkpoint evidence is saved under
 `Rajanmani/output/TierGuard2_Mechanism_2026-09-27T165844Z`.
 No source changes, retries, additional submissions, tuning or confirmatory
 runs were made. The frozen 96-cell order is unchanged.
+
+## Checkpoint: 27 September 2026, 17:59 UTC
+
+The second cell (median / none / 2002, job 39403) completed F/exit 0.
+The partial index contains 2/96 cells with no errors: 40 rounds per cell,
+complete audits, zero stability failures, frozen source/configuration/
+environment and exact paired partitions. All 51 newly completed run files
+were copied and independently hash-checked. Accuracy is 0.8615 and macro-F1
+is 0.860873189628035; clean ASR is undefined. This partial clean panel
+supports no method comparison or confirmatory inference.
+
+The new dry-run/submission indices share SHA-256
+`2d43a448e5fd1c624855447089c2977784a1bcc1e4704385e9b049806a501c6a`.
+Following hash verification and an empty-account check, the frozen guard
+submitted **39404.mgmt01** once at 18:02:41 UTC for median / none / seed
+2003. It was verified R and the only account job. Evidence is preserved in
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-27T175915Z`.
+No training retry, tuning, confirmation, clone edit or other campaign occurred.

@@ -13,13 +13,14 @@ wall times are not an algorithmic efficiency comparison.
 
 **New authorized phase:** after the completed nine-run panel was reviewed,
 the user approved the [bounded matched-baseline/ablation screen](TIERGUARD2_FASHION_MECHANISM_PHASE_2026-09-27.md).
-Its first job, **39399.mgmt01** (median / clean / seed 2001), was submitted
-at 15:56:21 UTC and completed with exit 0. At the 16:58 UTC checkpoint,
-1/96 cells passed validation with no errors: 40 rounds, 40 complete audits
-and zero stability failures. Clean accuracy was 85.56% (one seed only;
-clean ASR is undefined). All 51 raw files were copied and hash-verified.
-After an empty-account check, **39403.mgmt01** (median / clean / seed 2002)
-was submitted once at 17:02:16 UTC and verified as the sole running account
+At the 17:59 UTC checkpoint, jobs **39399.mgmt01** and **39403.mgmt01**
+(median / clean / seeds 2001 and 2002) had completed with exit 0.
+2/96 cells passed validation with no errors: each has 40 rounds,
+40 complete audits and zero stability failures. Clean accuracies are 85.56%
+and 86.15%; clean ASR is undefined and this is not a comparative result.
+All 51 files per completed run were copied and hash-verified.
+After an empty-account check, **39404.mgmt01** (median / clean / seed 2003)
+was submitted once at 18:02:41 UTC and verified as the sole running account
 job. The 96-cell
 development matrix is frozen in a new isolated clone; it is NOT a submitted
 batch. Hourly continuation permits at most one next job after validation.
