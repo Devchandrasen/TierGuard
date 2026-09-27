@@ -13,17 +13,17 @@ wall times are not an algorithmic efficiency comparison.
 
 **New authorized phase:** after the completed nine-run panel was reviewed,
 the user approved the [bounded matched-baseline/ablation screen](TIERGUARD2_FASHION_MECHANISM_PHASE_2026-09-27.md).
-At the 21:01 UTC checkpoint, the three median clean seeds and median
-unknown-patch/model-replacement seeds 2001 and 2002 had completed
-with exit 0. The frozen guard validates 5/96 cells with no errors:
+At the 22:02 UTC checkpoint, the three median clean seeds and all three
+median unknown-patch/model-replacement seeds had completed
+with exit 0. The frozen guard validates 6/96 cells with no errors:
 40 rounds, 40 complete audits and zero stability failures per run.
-The latest attack cell (**39406.mgmt01**) has 86.30% clean accuracy and
-adverse 70.78% ASR, retained without tuning or exclusion alongside seed
-2001's 87.88% ASR. This is not a comparative result.
+The latest attack cell (**39407.mgmt01**) has 85.20% clean accuracy and
+33.40% ASR, retained without tuning or exclusion alongside seeds 2001 and
+2002's ASRs of 87.88% and 70.78%. This is not a comparative result.
 All 51 files per completed run were copied and hash-verified.
-After an empty-account check, **39407.mgmt01** (median /
-unknown_patch_model_replacement / seed 2003)
-was submitted once at 21:05:07 UTC and verified as the sole running account
+After an empty-account check, **39408.mgmt01** (median /
+distributed_backdoor / seed 2001)
+was submitted once at 22:06:24 UTC and verified as the sole running account
 job. The 96-cell
 development matrix is frozen in a new isolated clone; it is NOT a submitted
 batch. Hourly continuation permits at most one next job after validation.

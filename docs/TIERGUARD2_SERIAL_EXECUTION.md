@@ -340,3 +340,26 @@ sole account job. Evidence is preserved in
 `Rajanmani/output/TierGuard2_Mechanism_2026-09-27T210148Z`.
 No retry, replacement, tuning, confirmation, clone edit or other submission
 occurred. Both completed attack seeds' adverse outcomes remain in the record.
+
+## Mechanism checkpoint: 27 September 2026, 22:02 UTC
+
+39407 completed F/exit 0, walltime 00:09:44. The frozen guard validates
+6/96 cells with no errors and only 90 genuinely unattempted cells missing.
+Median / unknown_patch_model_replacement / seed 2003 has accuracy 0.8520,
+macro-F1 0.8487135668567335 and ASR 0.3340. All three unknown-patch
+seeds are complete; the earlier adverse ASRs remain unchanged. Forty rounds,
+complete audits, zero stability failures, frozen inputs and exact paired
+partitions pass validation. All 51 newly copied files pass SHA-256 checks;
+local metrics match the final/index record and frozen evaluation cadence.
+
+Indices `fashion_mechanism_index_2026_09_27T220417_761990Z.json` (dry-run)
+and `fashion_mechanism_index_2026_09_27T220623_984832Z.json` (submission)
+share SHA-256
+`459d4c2df1c49e0f3e9cdea280736475d710f232bd3e58e09facc6db28f97418`.
+After approved hash checks, successful validation and an empty account,
+the guard submitted **39408.mgmt01** once at 22:06:24 UTC for median /
+distributed_backdoor / seed 2001, the next cell in this same bounded screen.
+It was verified R and the sole account job. Evidence is preserved under
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-27T220249Z`.
+No comparative inference, retry, tuning, confirmation, clone edit or other
+submission occurred.
