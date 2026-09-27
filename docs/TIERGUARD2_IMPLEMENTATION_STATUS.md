@@ -6,8 +6,9 @@ evidence for a new method. No confirmatory outcome or superiority claim exists.
 
 As of 27 September 2026, the 25 queued development jobs were cancelled at
 the administrator's request. After the queue emptied, the user approved
-strictly one-at-a-time continuation. Job 39247.mgmt01 is the sole submitted
-job, completing the missing FashionMNIST unknown-patch development seed.
+strictly one-at-a-time continuation. Job 39247.mgmt01 completed and passed
+validation, bringing FashionMNIST attack development to 3/9. The next job,
+39266.mgmt01 (distributed backdoor seed 2001), is the sole submitted job.
 The [serial execution policy](TIERGUARD2_SERIAL_EXECUTION.md) governs subsequent
 submissions; no batch or array is allowed. Previously completed evidence is audited in
 [the September 27 evidence review](TIERGUARD2_EVIDENCE_REVIEW_2026-09-27.md).

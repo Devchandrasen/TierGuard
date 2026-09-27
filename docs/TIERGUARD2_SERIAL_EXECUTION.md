@@ -59,3 +59,19 @@ from submitting directly to the scheduler.
 
 Hourly follow-up may carry out these steps, remaining quiet on unchanged
 state and notifying only for meaningful completion, failure or a decision.
+
+## Checkpoint: 27 September 2026, 04:07 UTC
+
+Job 39247 finished with exit 0, 40 rounds, complete audits and zero stability
+failures. The paired index now contains 3/9 records; its only error is the six
+expected unattempted distributed/optimized-trigger cells. The new timestamped
+index is `fashion_t2_attack_development_index_2026_09_27T040743Z.json`, SHA-256
+`76d3bdc92534afb3c504979b64d7597e4eca8c4e2af6fcf5732a81d7f1ebda44`.
+The source, partitions and attack instances match; copied seed-2003 records
+were hash-checked and all populated per-round numeric fields are finite.
+
+After the queue was verified empty, the guard submitted **39266.mgmt01** at
+04:10:32 UTC, distributed backdoor seed 2001. It was verified state R and
+the sole account job. No other submission was made. Evidence and validation
+are saved separately in the Rajanmani output folder
+`TierGuard2_Serial_2026-09-27T040743Z`; the previous 56-run archive is unchanged.
