@@ -122,3 +122,19 @@ at 11:58:56 UTC for defence-aware optimized-trigger seed 2001. It was verified
 state R and the sole account job. No other submission was made. New evidence
 is in `TierGuard2_Serial_2026-09-27T115639Z` under Rajanmani/output. Earlier
 evidence and training checkouts remain unchanged.
+
+## Checkpoint: 27 September 2026, 12:56 UTC
+
+39367 completed with exit 0 and walltime 00:11:16. Its 40 rounds, complete
+audits, zero stability failures, source/partition/attack pairing and finite
+populated metrics pass verification. Local copies match the recorded hashes.
+The paired index contains 7/9 records; only optimized-trigger seeds 2002 and
+2003 are missing. Index:
+`fashion_t2_attack_development_index_2026_09_27T125640Z.json`, SHA-256
+`264b9ecd0c47b0be7b8f2b0f917a978789d5c1cf49b9149c5ad2e60be8c5b8ab`.
+
+After validation and an empty-account check, the guard submitted
+**39385.mgmt01** at 12:59:48 UTC for optimized-trigger seed 2002. It was
+verified state R and the sole account job. No other submission was made.
+New evidence is in `TierGuard2_Serial_2026-09-27T125640Z` under
+Rajanmani/output; prior evidence and training checkouts remain unchanged.
