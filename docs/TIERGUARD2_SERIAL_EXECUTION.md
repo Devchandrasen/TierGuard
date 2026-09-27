@@ -262,3 +262,29 @@ Evidence is preserved under
 ledger copies, scheduler snapshots, indices and all newly completed files.
 No training retry, tuning, confirmation or second submission occurred.
 Every frozen training clone and prior evidence remains unchanged.
+
+## Mechanism checkpoint: 27 September 2026, 19:00 UTC
+
+39404 completed F/exit 0, walltime 00:09:45. The new guarded index validates
+3/96 cells with no errors and only 93 genuinely unattempted cells missing.
+Median / none / seed 2003 has accuracy 0.8380 and macro-F1
+0.8354947465848456; clean ASR is undefined. All 40 rounds, complete audits,
+zero stability failures, finite populated metrics, frozen source/configuration/
+environment/data and exact paired partitions pass validation. Local checks
+cover all 153 raw-file hashes across the three completed clean runs, as well
+as CSV/final/index agreement and round/audit completeness.
+
+Indices `fashion_mechanism_index_2026_09_27T190144_320082Z.json` (dry-run)
+and `fashion_mechanism_index_2026_09_27T190335_492676Z.json` (submission)
+share SHA-256
+`58d9bfedbd451e0e9a20afd9700a71ecc8c234e793080eb84bb1c67d6e302997`.
+Following approved hash checks and an empty account, the guard submitted
+**39405.mgmt01** once at 19:03:35 UTC for median /
+unknown_patch_model_replacement / seed 2001. It was verified R and the
+sole account job.
+
+Evidence is preserved in
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-27T190016Z`.
+The median clean subset is complete, but no comparative inference is made
+from this partial screen. No retry, tuning, confirmation, clone edit or
+additional submission occurred.

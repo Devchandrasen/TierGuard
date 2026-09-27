@@ -22,13 +22,15 @@ FedAvg, each under clean training and three attacks with three development
 seeds. Its 96 cells use a new source snapshot and never permit more than one
 outstanding account job. Later source-audited baselines and confirmation
 remain outside this screen. The original panel is not overwritten or pooled.
-At the 17:59 UTC checkpoint, **39399.mgmt01** and **39403.mgmt01**
-(median / clean / seeds 2001 and 2002) had completed with exit 0,
+At the 19:00 UTC checkpoint on 27 September, **39399.mgmt01**,
+**39403.mgmt01** and **39404.mgmt01** (median / clean / seeds 2001--2003)
+had completed with exit 0,
 40 rounds each, complete audits and zero stability failures. The validated
-partial index contains 2/96 cells and no errors. Clean accuracies are 85.56%
-and 86.15%; this incomplete clean panel is not a method comparison.
-After an empty-account check, **39404.mgmt01** was submitted once at
-18:02:41 UTC for median / clean / seed 2003 and verified as the sole running
+partial index contains 3/96 cells and no errors. Clean accuracies are 85.56%,
+86.15% and 83.80%; these descriptive values are not a method comparison.
+After an empty-account check, **39405.mgmt01** was submitted once at
+19:03:35 UTC for median / unknown_patch_model_replacement / seed 2001,
+and verified as the sole running
 account job. Each completed run's 51 files were copied and hash-verified locally.
 The hourly follow-up now targets only this 96-cell
 phase; it was resumed after freezing the protocol and checking the account.

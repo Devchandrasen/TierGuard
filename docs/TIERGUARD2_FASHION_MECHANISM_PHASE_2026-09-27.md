@@ -207,3 +207,22 @@ submitted **39404.mgmt01** once at 18:02:41 UTC for median / none / seed
 2003. It was verified R and the only account job. Evidence is preserved in
 `Rajanmani/output/TierGuard2_Mechanism_2026-09-27T175915Z`.
 No training retry, tuning, confirmation, clone edit or other campaign occurred.
+
+## Checkpoint: 27 September 2026, 19:00 UTC
+
+The third clean cell (median / none / 2003, job 39404) completed F/exit 0.
+The partial index validates 3/96 cells with no errors. Each has 40 rounds,
+complete audits and zero stability failures, with frozen inputs and exact
+paired partitions. The local checks verify all 153 files across the three
+completed clean cells. Seed 2003 accuracy is 0.8380 and macro-F1 is
+0.8354947465848456; clean ASR remains undefined.
+
+Both new indices have SHA-256
+`58d9bfedbd451e0e9a20afd9700a71ecc8c234e793080eb84bb1c67d6e302997`.
+After successful validation, approved hash checks and an empty account,
+the guard submitted **39405.mgmt01** once at 19:03:35 UTC for median /
+unknown_patch_model_replacement / seed 2001. It was verified R and the
+only account job. Evidence is saved under
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-27T190016Z`.
+The median clean subset is complete; method comparisons await the full
+bounded screen. No tuning, confirmation, retries or clone edits occurred.
