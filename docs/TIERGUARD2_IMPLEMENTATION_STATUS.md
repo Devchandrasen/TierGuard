@@ -6,11 +6,13 @@ evidence for a new method. No confirmatory outcome or superiority claim exists.
 
 As of 27 September 2026, the 25 queued development jobs were cancelled at
 the administrator's request. After the queue emptied, the user approved
-strictly one-at-a-time continuation. Resumed jobs 39247.mgmt01, 39266.mgmt01,
-39286.mgmt01, 39366.mgmt01 and 39367.mgmt01 completed and passed validation,
-bringing FashionMNIST attack development to 7/9. Job 39385.mgmt01
-(defence-aware optimized-trigger seed 2002) was verified as the sole
-submitted job at the 12:56 UTC checkpoint. These are development results only.
+strictly one-at-a-time continuation. Resumed jobs through 39385.mgmt01
+completed and passed validation, bringing FashionMNIST attack development
+to 8/9. Job 39388.mgmt01 (the final optimized-trigger seed 2003) was verified
+as the sole submitted job at the 13:57 UTC checkpoint. Seed 2002's 52.98%
+ASR is retained as an adverse result, not hidden by the validation status.
+Review all nine cells after completion before any further campaign. These
+are development results only.
 The [serial execution policy](TIERGUARD2_SERIAL_EXECUTION.md) governs subsequent
 submissions; no batch or array is allowed. Previously completed evidence is audited in
 [the September 27 evidence review](TIERGUARD2_EVIDENCE_REVIEW_2026-09-27.md).

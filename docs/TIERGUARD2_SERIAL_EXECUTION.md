@@ -138,3 +138,24 @@ After validation and an empty-account check, the guard submitted
 verified state R and the sole account job. No other submission was made.
 New evidence is in `TierGuard2_Serial_2026-09-27T125640Z` under
 Rajanmani/output; prior evidence and training checkouts remain unchanged.
+
+## Checkpoint: 27 September 2026, 13:57 UTC
+
+39385 completed with exit 0 and walltime 00:11:32. Forty rounds, complete
+audits, zero stability failures, matched source/partitions/attacks, finite
+populated metrics and copied-record hashes pass validation. The index has
+8/9 records; only optimized-trigger seed 2003 is missing. Index:
+`fashion_t2_attack_development_index_2026_09_27T135711Z.json`, SHA-256
+`ad5ec2e18a9168b9c1332f7f8a243b4e7d1c945221852918c46ab87030b81e11`.
+
+Adverse performance is retained: optimized-trigger seed 2002 has ASR
+0.5297777778, versus 0.0935555556 in seed 2001. No rerun, exclusion or
+parameter change is made. Data validity does not establish defence efficacy.
+
+After validation and an empty-account check, the guard submitted
+**39388.mgmt01** at 14:00:50 UTC for the final optimized-trigger seed 2003.
+It was verified state R and the sole account job. No other submission was
+made. New evidence is in `TierGuard2_Serial_2026-09-27T135711Z` under
+Rajanmani/output. Validate this last run and review all nine cells before
+any further campaign; do not submit confirmation. Earlier evidence and
+training checkouts remain unchanged.
