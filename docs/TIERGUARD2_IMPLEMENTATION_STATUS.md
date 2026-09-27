@@ -15,6 +15,13 @@ The [complete panel review](TIERGUARD2_FASHIONMNIST_PANEL_REVIEW_2026-09-27.md)
 reports every seed and distinguishes validated execution from defence efficacy.
 These are development results only, not robust-baseline superiority or
 confirmation. Review this completed panel before any further campaign.
+Following that review, the user approved the
+[bounded mechanism screen](TIERGUARD2_FASHION_MECHANISM_PHASE_2026-09-27.md):
+three basic robust baselines, three TG2 weighting ablations, full TG2 and
+FedAvg, each under clean training and three attacks with three development
+seeds. Its 96 cells use a new source snapshot and never permit more than one
+outstanding account job. Later source-audited baselines and confirmation
+remain outside this screen. The original panel is not overwritten or pooled.
 The [serial execution policy](TIERGUARD2_SERIAL_EXECUTION.md) governs subsequent
 submissions; no batch or array is allowed. Previously completed evidence is audited in
 [the September 27 evidence review](TIERGUARD2_EVIDENCE_REVIEW_2026-09-27.md).

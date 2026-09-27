@@ -1,8 +1,9 @@
 # TierGuard 2 serial HPC execution
 
-**Bounded panel complete (27 September 2026): 9/9 validated. The account
-queue is empty and the hourly workflow is paused. Do not submit another
-campaign automatically.** See the final checkpoint below and the
+**Original bounded panel complete (27 September 2026): 9/9 validated.**
+It stopped as required. The user subsequently approved the separately bounded
+[mechanism screen](TIERGUARD2_FASHION_MECHANISM_PHASE_2026-09-27.md).
+The one-outstanding-account-job limit remains in force. See the final checkpoint below and the
 [complete panel review](TIERGUARD2_FASHIONMNIST_PANEL_REVIEW_2026-09-27.md).
 
 The user approved "yes one at time" on 27 September 2026 after the
@@ -192,3 +193,18 @@ the independent local check covers 1,080 round records, 360 TG2 attack
 audits and 192 index/calibration-referenced file hashes. Source capsules
 and a per-file SHA-256 manifest accompany the evidence. Earlier archives,
 the original frozen study, HARP-DP and all training clones are unchanged.
+
+## User-authorized next phase: 27 September 2026
+
+After the nine-run panel and adverse outcomes were reported, the user approved
+the proposed matched robust-baseline and risk-weighting ablation phase with
+"ok karo". The separate mechanism-screen policy fixes 96 development cells,
+three reused development seeds, no confirmation, one outstanding account job,
+and mandatory successful completion/validation between submissions. This is
+not permission to restore the cancelled batch queue.
+
+The original v2 guard and ledger remain unchanged and cannot launch the new
+phase. A new source-pinned guard and write-once manifest govern only
+`project_fashion_mechanism_v1`. The original frozen study and all previous
+training clones remain unchanged. Stop after the 96-cell screen for review;
+any execution/provenance/validation uncertainty stops submission earlier.

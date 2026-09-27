@@ -242,6 +242,20 @@ def continuous_weight(risk: float, settings: dict) -> float:
     return max(floor, math.exp(-gamma * max(0.0, risk)))
 
 
+def weighting_enabled(settings: dict, level: str) -> bool:
+    """Ablate weighting, not score measurement or the receipt interface."""
+    if level not in {"client", "edge"}:
+        raise ValueError("Weighting level must be client or edge")
+    enabled = settings.get(f"{level}_risk_weighting", True)
+    if not isinstance(enabled, bool):
+        raise ValueError("Risk-weighting switches must be booleans")
+    return enabled
+
+
+def applied_risks(risks: list[float], settings: dict, level: str) -> list[float]:
+    return list(risks) if weighting_enabled(settings, level) else [0.0] * len(risks)
+
+
 def aggregate_level(updates: list[torch.Tensor], masses: list[float], risks: list[float],
                     clip_radius: float, settings: dict) -> tuple[torch.Tensor, list[float]]:
     if not (len(updates) == len(masses) == len(risks)) or not updates:

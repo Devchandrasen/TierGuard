@@ -1,0 +1,18 @@
+#!/bin/sh
+#PBS -N tg2-fash-mech
+#PBS -q gpu
+#PBS -l select=1:ncpus=4:ngpus=1:mem=24gb
+#PBS -l walltime=04:00:00
+#PBS -j oe
+#PBS -r n
+set -eu
+cd /home/chandrasen.pandey/tierguard2_env_2026_09_23/project_fashion_mechanism_v1
+export PATH=/home/chandrasen.pandey/tierguard2_env_2026_09_23/shared_bin:$PATH
+export PYTHONPATH=./src
+export OMP_NUM_THREADS=2
+export MKL_NUM_THREADS=2
+export OPENBLAS_NUM_THREADS=2
+../.venv/bin/python scripts/run_tierguard2_fashion_mechanism.py \
+    --manifest ../fashion_mechanism_v1_manifest.json \
+    --manifest-sha256 "${TG2_MANIFEST_SHA256:?missing manifest hash}" \
+    --cell-id "${TG2_CELL_ID:?missing TG2_CELL_ID}"

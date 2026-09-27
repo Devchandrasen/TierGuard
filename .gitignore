@@ -10,6 +10,7 @@ dist/
 *.egg-info/
 /data/
 /results/
+/results_fashion_mechanism_v1/
 /outputs/
 *.log
 .DS_Store
@@ -31,6 +32,7 @@ scripts/*.pbs
 !scripts/tierguard2_baseline_runtime_pilot.pbs
 !scripts/tierguard2_gpu_provenance_probe.pbs
 !scripts/tierguard2_distributed_scaled_pilot.pbs
+!scripts/tierguard2_fashion_mechanism_v1.pbs
 scripts/prepare_nsl_kdd.py
 configs/ablation/
 configs/main/

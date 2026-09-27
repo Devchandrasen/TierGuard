@@ -1,0 +1,60 @@
+# Fixed development screen, not the final confirmatory protocol.
+experiment:
+  name: tierguard2_fashion_mechanism_v1
+  device: cuda
+  rounds: 40
+  eval_every: 5
+  save_every: 10
+  fast_dev_run: false
+federated:
+  num_clients: 60
+  num_edges: 6
+  clients_per_round: 30
+  clients_per_edge_per_round: 5
+  local_epochs: 2
+  batch_size: 64
+  client_lr: 0.05
+  server_lr: 1.0
+  client_optimizer: sgd
+  momentum: 0.9
+  weight_decay: 0.0001
+data:
+  dataset: fashionmnist
+  synthetic: false
+  root: /home/chandrasen.pandey/tierguard2_env_2026_09_23/datasets
+  partition: dirichlet
+  dirichlet_alpha: 0.3
+  iid: false
+  root_dataset_size: 200
+  audit_search_size: 200
+  audit_eval_size: 200
+  three_way_root_split: true
+  train_size: null
+  test_size: 10000
+model:
+  name: mnist_cnn
+attack:
+  name: none
+  malicious_fraction: 0.0
+  instance_namespace: tierguard2-draft-v1
+  backdoor_fraction: 0.3
+privacy:
+  enabled: false
+security:
+  secure_sim: false
+  edge_challenges: true
+tierguard2:
+  probes_per_class: 2
+  patch_sizes: [3]
+  calibrated_gain_threshold: 1.0
+  calibrated_client_gain_threshold: 0.35900445729494096
+  calibrated_edge_gain_threshold: 0.21499230563640584
+  clean_improvement_credit: 0.25
+  clip_floor: 0.1
+  clip_reference_multiplier: 8.0
+  risk_gamma: 8.0
+  weight_floor: 0.05
+  client_risk_weighting: true
+  edge_risk_weighting: true
+provenance:
+  require_clean_git: true

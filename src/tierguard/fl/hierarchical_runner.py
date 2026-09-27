@@ -20,7 +20,10 @@ from torch.nn import functional as F
 
 from tierguard.aggregators import build_aggregator
 from tierguard.aggregators.fedavg import FedAvgAggregator
-from tierguard.aggregators.tierguard2 import CounterfactualAuditor, aggregate_level, continuous_weight
+from tierguard.aggregators.tierguard2 import (
+    CounterfactualAuditor, aggregate_level, continuous_weight, applied_risks,
+    weighting_enabled,
+)
 from tierguard.attacks import apply_post_update_attack
 from tierguard.attacks.instances import resolve_attack_instance
 from tierguard.attacks.alie import alie_attack
@@ -140,7 +143,9 @@ def _aggregate_tierguard2(client_results, model, auditor, reference_update,
                 client_id=item.client_id, edge_id=edge_id,
                 sample_mass=int(item.num_samples), update=update,
             ))
-        aggregate, effective = aggregate_level(updates, masses, local_risks, radius, settings)
+        aggregate, effective = aggregate_level(
+            updates, masses, applied_risks(local_risks, settings, "client"), radius, settings
+        )
         edge_suggested_risks[edge_id] = sum(risk * mass for risk, mass in zip(local_risks, masses)) / sum(masses)
         raw_by_edge[edge_id] = {item.client_id: item.update for _, item in indexed}
         direct_receipts[edge_id] = tuple(receipts)
@@ -175,7 +180,9 @@ def _aggregate_tierguard2(client_results, model, auditor, reference_update,
             risks = [auditor.audit(model, clip_update(update, radius), server_lr=server_lr,
                                    level="client").risk
                      for update in updates]
-            return aggregate_level(updates, masses, risks, radius, settings)[0]
+            return aggregate_level(
+                updates, masses, applied_risks(risks, settings, "client"), radius, settings
+            )[0]
         try:
             verify_challenged_report(
                 report, raw_by_edge[edge_id], authority,
@@ -192,9 +199,10 @@ def _aggregate_tierguard2(client_results, model, auditor, reference_update,
                    for report in surviving]
     edge_norms = [float(torch.linalg.vector_norm(report.aggregate)) for report in surviving]
     edge_risks = [item.risk for item in edge_audits]
+    effective_edge_risks = applied_risks(edge_risks, settings, "edge")
     edge_masses = [sum(item.sample_mass for item in report.receipts) for report in surviving]
     cloud_update, _ = aggregate_level(
-        [report.aggregate for report in surviving], edge_masses, edge_risks, radius, settings
+        [report.aggregate for report in surviving], edge_masses, effective_edge_risks, radius, settings
     )
     separation = [risk - edge_suggested_risks[report.edge_id]
                   for report, risk in zip(surviving, edge_risks)]
@@ -202,9 +210,13 @@ def _aggregate_tierguard2(client_results, model, auditor, reference_update,
         "edge_anomaly_mean": float(np.mean(edge_risks)),
         "edge_anomaly_max": float(np.max(edge_risks)),
         "cloud_reliability_mean": float(np.mean([
-            continuous_weight(risk, settings) for risk in edge_risks])),
+            continuous_weight(risk, settings) for risk in effective_edge_risks])),
         "aggregation_metadata": {
             "mode": "two_level_continuous_weighted_mean",
+            "client_risk_weighting": weighting_enabled(settings, "client"),
+            "edge_risk_weighting": weighting_enabled(settings, "edge"),
+            "client_applied_risks": applied_risks(client_risks, settings, "client"),
+            "edge_applied_risks": effective_edge_risks,
             "clip_radius": radius,
             "client_update_norm_mean": float(np.mean(client_norms)),
             "client_update_norm_max": float(np.max(client_norms)),
