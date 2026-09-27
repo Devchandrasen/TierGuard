@@ -139,3 +139,28 @@ test was deselected because this is a v2 development environment; the complete
 v2 package/Python lock is independently checked on the HPC before freezing
 and again before submission and training. Synthetic tests are implementation
 checks, not FashionMNIST effectiveness results.
+
+## Frozen deployment and first job
+
+The new HPC clone is detached at
+`731fda036f6cd7b2af3eb62413b3e6b33f557311`. The v2 Python/package check
+returned no errors. FashionMNIST dataset hashes were verified before issuing
+the write-once manifest; the full lock and dataset hashes are checked again
+before submission and before training.
+
+| Artifact | SHA-256 |
+| --- | --- |
+| `fashion_mechanism_v1_manifest.json` | `b7f73df20b534317e33cf01bdec4eb3790c563251c2e8b3f20d25e3c81ebccd5` |
+| `scripts/submit_tierguard2_fashion_mechanism_one_job.py` | `134afa8f7b6a13836ad390a34ac177a20b4d632d6ca3802d0212367f0b4802f0` |
+| `scripts/tierguard2_fashion_mechanism_v1.pbs` | `56a4611b71b61ba3fb687a9bdb5b73d6e62cdb940ccc109f261f4c1b87dfd5a9` |
+
+After an empty-account dry-run, the guard submitted **39399.mgmt01** at
+2026-09-27T15:56:21 UTC for **median / none / seed 2001**. It was verified
+running and the only selected account job. No second job was submitted in
+this startup turn. The existing hourly heartbeat was updated to this exact
+bounded phase and resumed; it cannot authorize another campaign.
+
+The startup manifest, empty validated index, ledger and submission record
+are copied to `Rajanmani/output/TierGuard2_Fashion_Mechanism_Phase_2026-09-27`.
+The first cell is not a completed result at startup. Later documentation
+commits must not be pulled into the frozen HPC clone.

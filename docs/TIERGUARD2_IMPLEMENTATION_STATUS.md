@@ -9,7 +9,7 @@ the administrator's request. After the queue emptied, the user approved
 strictly one-at-a-time continuation. All resumed jobs through 39388.mgmt01
 completed with exit 0 and passed validation, bringing FashionMNIST attack
 development to 9/9. The final index is complete with zero errors. The account
-queue is empty and the hourly follow-up is paused; no further job was submitted.
+queue was empty and the hourly follow-up was paused at that panel's completion.
 Optimized-trigger seeds 2002 and 2003 retain 52.98% and 54.37% ASR, respectively.
 The [complete panel review](TIERGUARD2_FASHIONMNIST_PANEL_REVIEW_2026-09-27.md)
 reports every seed and distinguishes validated execution from defence efficacy.
@@ -22,6 +22,10 @@ FedAvg, each under clean training and three attacks with three development
 seeds. Its 96 cells use a new source snapshot and never permit more than one
 outstanding account job. Later source-audited baselines and confirmation
 remain outside this screen. The original panel is not overwritten or pooled.
+The new source-pinned guard subsequently submitted **39399.mgmt01** at
+15:56:21 UTC for median / clean / seed 2001. It was verified running and
+the sole account job. The hourly follow-up now targets only this 96-cell
+phase; it was resumed after freezing the protocol and checking the account.
 The [serial execution policy](TIERGUARD2_SERIAL_EXECUTION.md) governs subsequent
 submissions; no batch or array is allowed. Previously completed evidence is audited in
 [the September 27 evidence review](TIERGUARD2_EVIDENCE_REVIEW_2026-09-27.md).

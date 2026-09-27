@@ -11,6 +11,14 @@ wall times are not an algorithmic efficiency comparison.
 
 ## Current execution state (checked 27 September 2026)
 
+**New authorized phase:** after the completed nine-run panel was reviewed,
+the user approved the [bounded matched-baseline/ablation screen](TIERGUARD2_FASHION_MECHANISM_PHASE_2026-09-27.md).
+Its first job, **39399.mgmt01** (median / clean / seed 2001), was submitted
+at 15:56:21 UTC and verified as the sole running account job. The 96-cell
+development matrix is frozen in a new isolated clone; it is NOT a submitted
+batch. Hourly continuation permits at most one next job after validation.
+The following paragraphs record the preceding panel's completion history.
+
 All 25 queued jobs (38624--38630 and 38663--38680) were cancelled following
 the administrator's request. Jobs 38619 and 38623, which were already running,
 finished with exit code 0, 40 rounds and zero recorded numerical-stability

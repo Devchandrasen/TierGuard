@@ -208,3 +208,9 @@ phase. A new source-pinned guard and write-once manifest govern only
 `project_fashion_mechanism_v1`. The original frozen study and all previous
 training clones remain unchanged. Stop after the 96-cell screen for review;
 any execution/provenance/validation uncertainty stops submission earlier.
+
+The first new-phase job is **39399.mgmt01**, submitted at 15:56:21 UTC
+for median / none / seed 2001 and verified as the sole running account job.
+Source commit, manifest hash and guard hash are recorded in the new phase
+document. The existing hourly heartbeat was updated and resumed for only
+that 96-cell phase. Do not call the old nine-cell guard for further work.
