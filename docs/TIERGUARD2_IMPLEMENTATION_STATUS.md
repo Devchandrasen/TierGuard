@@ -4,6 +4,13 @@ This branch is a new, unfinished study. It does **not** change the published
 `protocol-v1-freeze` Git tag or convert the earlier six-seed results into
 evidence for a new method. No confirmatory outcome or superiority claim exists.
 
+As of 27 September 2026, the HPC queue is empty. The 25 queued development
+jobs were cancelled at the administrator's request and automatic continuation
+is paused. Completed evidence is audited in
+[the September 27 evidence review](TIERGUARD2_EVIDENCE_REVIEW_2026-09-27.md).
+Resuming compute requires an agreed resource limit; this status file does
+not authorize resubmission.
+
 ## Implemented and smoke-tested
 
 - Disjoint, class-balanced reference, probe-search, and probe-evaluation roots;
@@ -79,7 +86,9 @@ evidence for a new method. No confirmatory outcome or superiority claim exists.
   edge-level thresholds because their clean score distributions differ.
   The FashionMNIST and MNIST nine-run clean development indices passed and are
   recorded in `docs/TIERGUARD2_CLEAN_CALIBRATION_2026-09-24.md`; CIFAR-10
-  calibration remains outstanding. A primary decision-rule implementation checks
+  clean indexing and candidate calibration are now complete at the original
+  development training settings, as recorded in the September 27 evidence
+  review. A primary decision-rule implementation checks
   all 12-by-9 ASR and 12-by-3 clean cells, the exact paired sign-flip test,
   and the clean-accuracy lower confidence bound.
 - Deterministic targeted root-contamination wrapper with the contaminated
@@ -137,9 +146,11 @@ complete (9/9 each) and documented in
 strength in development, not defence efficacy. CIFAR-10 finished 9/9 but
 failed the validity gate: three optimized-trigger runs produced non-finite
 updates, and all attacked runs had poor clean utility. Its original raw runs
-remain available as invalid development evidence. A separate three-rate,
-three-seed clean CIFAR-10 repair grid is queued. Nine clean-calibrated MNIST
-TierGuard 2 attack-development jobs have also been submitted. The
+remain available as invalid development evidence. The separate three-rate,
+three-seed clean CIFAR-10 repair grid and all nine MNIST TierGuard 2
+attack-development jobs were cancelled before running. Only two of nine
+FashionMNIST TierGuard 2 attack-development jobs completed; the remaining
+seven were also cancelled. The
 attacker-side optimizer now fails closed on non-finite objectives, gradients
 and triggers, with a regression test; this source change does not
 retroactively validate old runs.
@@ -170,8 +181,9 @@ retroactively validate old runs.
    GPU/dependency preflight passed, but it is not a training run or a timing
    benchmark.
 4. Finish a frozen development grid and tune all baselines with the same
-   budget. The three FashionMNIST and MNIST clean development seeds are complete;
-   CIFAR-10 clean calibration remains. Freeze configuration,
+   budget. Three-seed clean calibration is complete on all datasets at the
+   original development settings, but CIFAR-10 protocol repair would require
+   recalibration. Freeze configuration,
    code, partitions, software, and attack instances before the first
    confirmatory seed.
 5. Execute and validate all planned 12-seed main, clean, edge, ablation, and

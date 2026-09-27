@@ -41,7 +41,8 @@ edges would privilege the more numerous client scores (5:1) and set a
 much higher-than-edge-specific cutoff at the cloud. Before any
 confirmatory run, the method therefore uses separate frozen 95th-percentile
 thresholds at the client and edge levels. The same clean-only calibration
-has now been applied on MNIST; CIFAR-10 remains outstanding. The legacy
+has now been applied on MNIST and, on 27 September, CIFAR-10 at the original
+development training settings (see the September 27 evidence review). The legacy
 single threshold remains a provisional fallback for smoke/pilot configs;
 it is not the intended confirmatory configuration.
 

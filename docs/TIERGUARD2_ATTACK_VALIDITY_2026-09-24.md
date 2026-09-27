@@ -45,13 +45,15 @@ backdoor challenge or defence efficacy. The rejected index is retained for
 audit at SHA-256
 `24dd56535daaac619b452833c333c29c601087ba9d1edd8528021177955bd365`.
 The original raw runs are not altered or relabelled as valid. Three-seed
-clean FedAvg learning-rate candidates (0.005, 0.01, 0.02) have been queued
-separately; the pending original-rate clean controls will also be checked.
+clean FedAvg learning-rate candidates (0.005, 0.01, 0.02) were queued
+separately but were cancelled at the administrator's request before running.
+The original-rate clean controls have now passed the completeness/integrity
+checks, as recorded in the September 27 evidence review.
 Only after a stable clean protocol is selected on development evidence can
 the CIFAR-10 attack panel be rerun and validated. This is an exploratory
 protocol repair before any confirmatory freeze, not a post hoc selection on
 confirmatory results.
 
-TierGuard 2 attack-development runs have been submitted but have not yet
-produced a validated full panel. No confirmatory seed or superiority analysis
-has run.
+Only two TierGuard 2 FashionMNIST attack-development runs completed before
+the remaining queue was cancelled. The partial index correctly reports 2/9,
+not a complete panel. No confirmatory seed or superiority analysis has run.
