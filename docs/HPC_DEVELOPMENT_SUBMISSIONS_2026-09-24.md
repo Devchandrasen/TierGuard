@@ -14,17 +14,22 @@ wall times are not an algorithmic efficiency comparison.
 All 25 queued jobs (38624--38630 and 38663--38680) were cancelled following
 the administrator's request. Jobs 38619 and 38623, which were already running,
 finished with exit code 0, 40 rounds and zero recorded numerical-stability
-failures. The account queue is empty and automatic continuation is paused.
-No resubmission is authorized by this ledger. Obtain an agreed resource limit
-before resuming; do not replace the cancelled jobs with a hidden array or
-an unbounded chained job.
+failures. The account queue was then verified empty and automatic continuation
+was paused. On 27 September the user approved continuation with **one job at a
+time**, counting every submitted job on the account, not just running jobs.
+Job **39247.mgmt01** was submitted at 02:59:34 UTC for the missing FashionMNIST
+unknown-patch seed 2003 and was verified running as the sole account job.
+No batch, array or chained submission replaces the cancelled queue. The
+[serial execution policy](TIERGUARD2_SERIAL_EXECUTION.md) limits the next
+automatic steps to the remaining FashionMNIST development cells and requires
+validation before another job can be submitted.
 
 | Campaign | Source clone and commit | PBS job IDs | Purpose |
 | --- | --- | --- | --- |
 | FashionMNIST clean, 3 seeds × (FedAvg + 2 clipping candidates) | `project_dev_attested`, `950d8a7f6f27622ceaabdec1d64cea881c636d4e` | 38557--38565 | Completed; nine-run index passed. Calibration JSON and index SHA-256 values are in `docs/TIERGUARD2_CLEAN_CALIBRATION_2026-09-24.md`. |
 | FedAvg attack validity, 3 datasets × 3 attacks × 3 seeds | `project_attack_dev`, `aba8ac7b135ac342597a76bd25353c906a40eddc` | FashionMNIST 38567--38575; MNIST 38579--38587; CIFAR-10 38588--38596 | FashionMNIST and MNIST 9/9 each validated. CIFAR-10 9/9 finished but the index rejected three non-finite optimized-trigger runs; all nine CIFAR runs have low clean accuracy. The raw evidence is retained, not treated as valid. |
 | MNIST and CIFAR-10 clean, 2 datasets × 3 seeds × (FedAvg + 2 clipping candidates) | `project_clean_dev_more`, `9f396ccd2a71de79967729eaa71e3d1759420755` | MNIST 38602--38610; CIFAR-10 38611--38619 | All 18 completed and passed separate nine-run indices. Both levels calibrated on each dataset; thresholds remain development candidates. |
-| TierGuard 2 FashionMNIST attack development, three attacks × three seeds at clip 8 | `project_t2_attack_dev`, `897b419efa8c47774efd8ed14c41e020ad4df31e` | 38622--38630 | Only 38622 and 38623 completed. The other seven were cancelled. The index correctly reports 2/9 and incomplete; no full-panel claim is supported. |
+| TierGuard 2 FashionMNIST attack development, three attacks × three seeds at clip 8 | `project_t2_attack_dev`, `897b419efa8c47774efd8ed14c41e020ad4df31e` | 38622--38630; serial resume 39247 | Only 38622 and 38623 completed at the archived evidence cutoff. The other seven were cancelled. The index reports 2/9 and incomplete. Job 39247 is a new, single submission of unknown-patch seed 2003; its running state is not a completed result. |
 | CIFAR-10 clean learning-rate repair grid, 3 rates × 3 seeds | `project_cifar_lr_dev`, `aba8ac7b135ac342597a76bd25353c906a40eddc` | 38663--38671 | All nine cancelled before running; no repair-grid result exists. |
 | TierGuard 2 MNIST attack development, three attacks × three seeds at clip 8 | `project_t2_mnist_dev`, `1b1dacb67d383e5642b61b3bb50099f2a2812414` | 38672--38680 | All nine cancelled before running; no TierGuard 2 MNIST attack-development result exists. |
 

@@ -4,12 +4,14 @@ This branch is a new, unfinished study. It does **not** change the published
 `protocol-v1-freeze` Git tag or convert the earlier six-seed results into
 evidence for a new method. No confirmatory outcome or superiority claim exists.
 
-As of 27 September 2026, the HPC queue is empty. The 25 queued development
-jobs were cancelled at the administrator's request and automatic continuation
-is paused. Completed evidence is audited in
+As of 27 September 2026, the 25 queued development jobs were cancelled at
+the administrator's request. After the queue emptied, the user approved
+strictly one-at-a-time continuation. Job 39247.mgmt01 is the sole submitted
+job, completing the missing FashionMNIST unknown-patch development seed.
+The [serial execution policy](TIERGUARD2_SERIAL_EXECUTION.md) governs subsequent
+submissions; no batch or array is allowed. Previously completed evidence is audited in
 [the September 27 evidence review](TIERGUARD2_EVIDENCE_REVIEW_2026-09-27.md).
-Resuming compute requires an agreed resource limit; this status file does
-not authorize resubmission.
+That archived snapshot remains unchanged and contains no result from job 39247.
 
 ## Implemented and smoke-tested
 
