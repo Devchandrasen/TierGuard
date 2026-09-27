@@ -107,3 +107,18 @@ at 11:35:08 UTC for distributed backdoor seed 2003. It was verified state R
 and the sole live account job; no other submission was made. New evidence is
 in `TierGuard2_Serial_2026-09-27T113300Z` under Rajanmani/output. Prior
 archives and training checkouts remain unchanged.
+
+## Checkpoint: 27 September 2026, 11:56 UTC
+
+39366 completed with exit 0, 40 rounds, complete audits and zero stability
+failures. Source, partitions, attack instances, finite populated metrics and
+copied-record hashes pass verification. The paired index contains 6/9 records;
+only the three unattempted optimized-trigger seeds are missing. Index:
+`fashion_t2_attack_development_index_2026_09_27T115639Z.json`, SHA-256
+`2a682d872a34ece38bc7a69eefb737fa9041f8d79b8374a204ce4cd9ee297251`.
+
+After verifying the empty account queue, the guard submitted **39367.mgmt01**
+at 11:58:56 UTC for defence-aware optimized-trigger seed 2001. It was verified
+state R and the sole account job. No other submission was made. New evidence
+is in `TierGuard2_Serial_2026-09-27T115639Z` under Rajanmani/output. Earlier
+evidence and training checkouts remain unchanged.
