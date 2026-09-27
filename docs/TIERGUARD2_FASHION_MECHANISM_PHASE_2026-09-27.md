@@ -248,3 +248,22 @@ unknown_patch_model_replacement / seed 2002, verified R and the sole account
 job. Evidence is in
 `Rajanmani/output/TierGuard2_Mechanism_2026-09-27T200017Z`.
 No method superiority, tuning, confirmation or next campaign is inferred.
+
+## Checkpoint: 27 September 2026, 21:01 UTC
+
+Median unknown-patch/model-replacement seed 2002 (39406) completed F/exit 0.
+The frozen guard validates 5/96 cells without errors. The new cell's accuracy
+is 0.8630, macro-F1 0.8650849318225526 and ASR 0.7077777777777777.
+This adverse ASR is retained without tuning or exclusion. All 40 rounds,
+complete audits, zero stability failures, frozen inputs and paired partitions
+pass validation. The local copy passes all 51 hashes and metric checks,
+including the frozen five-round evaluation cadence.
+
+Both new indices have SHA-256
+`847ec07dc7139904580ce57b27ef24377fe364760d58acceb7a1b3b760d89079`.
+After validation and an empty-account check, the guard submitted
+**39407.mgmt01** once at 21:05:07 UTC for median /
+unknown_patch_model_replacement / seed 2003, verified R and the sole account
+job. Evidence is in
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-27T210148Z`.
+No comparative inference, tuning, confirmation, retry or clone edit occurred.

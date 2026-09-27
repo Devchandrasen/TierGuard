@@ -22,18 +22,18 @@ FedAvg, each under clean training and three attacks with three development
 seeds. Its 96 cells use a new source snapshot and never permit more than one
 outstanding account job. Later source-audited baselines and confirmation
 remain outside this screen. The original panel is not overwritten or pooled.
-At the 20:00 UTC checkpoint on 27 September, 4/96 cells had completed
+At the 21:01 UTC checkpoint on 27 September, 5/96 cells had completed
 F/exit 0 and passed the frozen guard with no errors: three median clean seeds
-and median unknown-patch/model-replacement seed 2001. Each has 40 rounds,
-complete audits and zero stability failures. The first attack cell (39405)
-has clean accuracy 86.14% and adverse ASR 87.88%, retained unchanged.
+and median unknown-patch/model-replacement seeds 2001 and 2002. Each has
+40 rounds, complete audits and zero stability failures. The second attack
+cell (39406) has clean accuracy 86.30% and adverse ASR 70.78%, retained
+unchanged alongside seed 2001's ASR 87.88%.
 These descriptive values do not establish a method comparison.
-After an empty-account check, **39406.mgmt01** was submitted once at
-20:04:42 UTC for median / unknown_patch_model_replacement / seed 2002
+After an empty-account check, **39407.mgmt01** was submitted once at
+21:05:07 UTC for median / unknown_patch_model_replacement / seed 2003
 and verified as the sole running account job. Each completed run's 51 files
-were copied and hash-verified locally. The local attack-copy checker was
-corrected to respect the already-frozen five-round evaluation cadence;
-the unchanged frozen guard and the corrected local check both passed.
+were copied and hash-verified locally. Local verification respects the
+frozen five-round evaluation cadence; both guard and local checks passed.
 The hourly follow-up now targets only this 96-cell
 phase; it was resumed after freezing the protocol and checking the account.
 The [serial execution policy](TIERGUARD2_SERIAL_EXECUTION.md) governs subsequent
