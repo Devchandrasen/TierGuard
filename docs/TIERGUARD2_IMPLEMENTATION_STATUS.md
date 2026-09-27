@@ -6,13 +6,15 @@ evidence for a new method. No confirmatory outcome or superiority claim exists.
 
 As of 27 September 2026, the 25 queued development jobs were cancelled at
 the administrator's request. After the queue emptied, the user approved
-strictly one-at-a-time continuation. Resumed jobs through 39385.mgmt01
-completed and passed validation, bringing FashionMNIST attack development
-to 8/9. Job 39388.mgmt01 (the final optimized-trigger seed 2003) was verified
-as the sole submitted job at the 13:57 UTC checkpoint. Seed 2002's 52.98%
-ASR is retained as an adverse result, not hidden by the validation status.
-Review all nine cells after completion before any further campaign. These
-are development results only.
+strictly one-at-a-time continuation. All resumed jobs through 39388.mgmt01
+completed with exit 0 and passed validation, bringing FashionMNIST attack
+development to 9/9. The final index is complete with zero errors. The account
+queue is empty and the hourly follow-up is paused; no further job was submitted.
+Optimized-trigger seeds 2002 and 2003 retain 52.98% and 54.37% ASR, respectively.
+The [complete panel review](TIERGUARD2_FASHIONMNIST_PANEL_REVIEW_2026-09-27.md)
+reports every seed and distinguishes validated execution from defence efficacy.
+These are development results only, not robust-baseline superiority or
+confirmation. Review this completed panel before any further campaign.
 The [serial execution policy](TIERGUARD2_SERIAL_EXECUTION.md) governs subsequent
 submissions; no batch or array is allowed. Previously completed evidence is audited in
 [the September 27 evidence review](TIERGUARD2_EVIDENCE_REVIEW_2026-09-27.md).
@@ -80,8 +82,9 @@ That archived snapshot remains unchanged and contains no result from job 39247.
   The optimized patch penalizes similarity to the defender's fixed probe
   templates and is shared by selected malicious clients within a round. Its
   actual values are saved per round. One-seed FashionMNIST pilots indicate
-  effective attacks against FedAvg, but the full cross-dataset validity
-  campaign is still running; pilots are not inferential evidence.
+  effective attacks against FedAvg. The completed validity campaign passed
+  on FashionMNIST and MNIST but failed on CIFAR-10; pilots are not inferential
+  evidence and no validity campaign is currently running.
 - Main-attack target class and patch location can now be drawn from a
   deterministic SHA-256 keyed instance, independent of method, for paired
   dataset/attack/seed comparisons. The location is chosen from the
@@ -155,9 +158,11 @@ failed the validity gate: three optimized-trigger runs produced non-finite
 updates, and all attacked runs had poor clean utility. Its original raw runs
 remain available as invalid development evidence. The separate three-rate,
 three-seed clean CIFAR-10 repair grid and all nine MNIST TierGuard 2
-attack-development jobs were cancelled before running. Only two of nine
-FashionMNIST TierGuard 2 attack-development jobs completed; the remaining
-seven were also cancelled. The
+attack-development jobs were cancelled before running. Initially, only two of
+nine FashionMNIST TierGuard 2 attack-development jobs completed and the other
+seven were cancelled. Those seven cells subsequently completed under the
+user-approved single-job workflow; the full nine-run panel passed validation
+on 27 September and automated submissions stopped. The
 attacker-side optimizer now fails closed on non-finite objectives, gradients
 and triggers, with a regression test; this source change does not
 retroactively validate old runs.

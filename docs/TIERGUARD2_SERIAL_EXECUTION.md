@@ -1,5 +1,10 @@
 # TierGuard 2 serial HPC execution
 
+**Bounded panel complete (27 September 2026): 9/9 validated. The account
+queue is empty and the hourly workflow is paused. Do not submit another
+campaign automatically.** See the final checkpoint below and the
+[complete panel review](TIERGUARD2_FASHIONMNIST_PANEL_REVIEW_2026-09-27.md).
+
 The user approved "yes one at time" on 27 September 2026 after the
 administrator-requested cancellation of the queued campaign. This is a user
 authorization; no additional administrator approval is represented here.
@@ -159,3 +164,31 @@ made. New evidence is in `TierGuard2_Serial_2026-09-27T135711Z` under
 Rajanmani/output. Validate this last run and review all nine cells before
 any further campaign; do not submit confirmation. Earlier evidence and
 training checkouts remain unchanged.
+
+## Final checkpoint: 27 September 2026, 14:59 UTC
+
+39388 completed with exit 0 and walltime 00:11:49. Forty rounds, complete
+audits, zero stability failures, exact source/partition/attack pairing and
+finite populated metrics pass validation. The final index contains 9/9
+records, is complete and has no errors:
+`fashion_t2_attack_development_index_2026_09_27T145912Z.json`, SHA-256
+`dded43b3d024cf0a17f1ca472c2812ad4cd54da86222d0fa6bba41906cdd76f0`.
+
+The account-wide qselect was empty at completion and again at 15:08 UTC.
+No next job was submitted. The existing hourly automation was paused on
+panel completion. Do not proceed to another campaign or confirmation without
+reviewing the full outcomes and a separately bounded next-stage decision.
+
+The completed panel retains adverse optimized-trigger ASRs of 52.98% and
+54.37% in seeds 2002 and 2003. The three-seed mean is 38.90%, despite lower
+ASR than the undefended FedAvg comparator. This does not establish superiority
+over robust methods or causal benefit of the cloud audit. The full review
+reports all nine values and the missing comparisons.
+
+New evidence is in `TierGuard2_FashionMNIST_Development_2026-09-27` under
+Rajanmani/output. The portable package contains all nine TG2 attack runs,
+nine paired FedAvg attack runs and nine clean/calibration-context runs;
+the independent local check covers 1,080 round records, 360 TG2 attack
+audits and 192 index/calibration-referenced file hashes. Source capsules
+and a per-file SHA-256 manifest accompany the evidence. Earlier archives,
+the original frozen study, HARP-DP and all training clones are unchanged.
