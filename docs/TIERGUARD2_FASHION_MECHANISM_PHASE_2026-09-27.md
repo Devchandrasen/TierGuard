@@ -540,3 +540,33 @@ sole account job. Evidence is in
 `Rajanmani/output/TierGuard2_Mechanism_2026-09-28T132302Z`.
 No retry, replacement, tuning, confirmation, clone edit or other submission
 was made. This remains the same bounded screen, not another campaign.
+
+## Checkpoint: 28 September 2026, 14:23 UTC heartbeat
+
+FLTrust unknown-patch/model-replacement seed 2003 (39522) completed F/exit 0,
+walltime 00:14:49. The frozen guard validates 18/96 cells with no errors:
+all median cells, all three FLTrust clean seeds and all three unknown-patch seeds.
+The index lists 78 genuinely unattempted cells before the next submission.
+The newest cell has clean-test accuracy under attack 0.7943, macro-F1
+0.7869355118352528 and residual ASR 0.049777777777777775.
+Seed 2001's adverse ASR 0.7796666666666666 and seed 2002's ASR 0.26 remain
+intact. All three results are retained without tuning, exclusion or rerun.
+These are different development seeds, not before/after evidence of a repair;
+no comparative inference is made. Clean-cell ASR remains undefined.
+
+All 40 rounds, complete audits, zero stability failures, frozen inputs and
+paired partitions/attack instances pass validation. The local copy passes
+all 51 hashes, exact file membership, metric and ASR-alias agreement and
+frozen evaluation cadence. Both new indices have SHA-256
+`4ba8dc20f94fde59ae2b34e473241e65e20179f8917fe10942e39450a9cf3bb3`.
+Recorded-metric agreement does not independently recompute predictions.
+
+After validation and refreshed empty-account, unchanged-ledger and approved
+hash checks, the guard submitted **39536.mgmt01** once at 14:30:13 UTC for
+fltrust / distributed_backdoor / seed 2001, verified R, non-rerunnable and
+the sole account job. The unchanged ledger prefix gained exactly one
+intent/submitted pair, reaching 38 rows. Evidence is in
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-28T142334Z`.
+Completion of the FLTrust unknown-patch subset does not end the 96-cell phase.
+No retry, replacement, tuning, confirmation, clone edit or other submission
+was made. This remains the same bounded screen, not another campaign.

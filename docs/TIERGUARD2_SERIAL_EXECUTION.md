@@ -689,3 +689,39 @@ hash checks and scheduler snapshots are preserved under
 No retry, replacement, array, tuning, confirmation, clone edit, second
 submission or another campaign occurred. This remains the same frozen
 96-cell screen; earlier evidence is unchanged.
+
+## Mechanism checkpoint: 28 September 2026, 14:23 UTC heartbeat
+
+39522 completed F/exit 0, walltime 00:14:49. The frozen guard validates
+18/96 cells with no errors: all median cells, all FLTrust clean seeds and
+all three unknown-patch/model-replacement seeds.
+Only 78 genuinely unattempted cells are missing before submission.
+The newest cell (seed 2003) has clean-test accuracy under attack 0.7943,
+macro-F1 0.7869355118352528 and residual ASR 0.049777777777777775.
+Seed 2001's adverse ASR 0.7796666666666666 and seed 2002's ASR 0.26 remain
+unchanged. All three results are retained without tuning, exclusion or rerun.
+They are different development seeds, not before/after evidence of a repair;
+no comparative inference is made. Clean-cell ASR remains undefined.
+
+All 40 rounds, complete audits, zero stability failures, frozen inputs,
+exact paired partitions/attack instances and the full ledger/run prefix pass
+validation. The local copy passes all 51 hashes, exact file membership,
+final/index/CSV agreement, ASR-alias consistency and frozen evaluation cadence.
+Recorded-metric agreement does not independently recompute predictions.
+
+Indices `fashion_mechanism_index_2026_09_28T142524_575705Z.json` (dry-run)
+and `fashion_mechanism_index_2026_09_28T143011_483468Z.json` (submission)
+share SHA-256
+`4ba8dc20f94fde59ae2b34e473241e65e20179f8917fe10942e39450a9cf3bb3`.
+After validation and refreshed empty-account, unchanged-ledger and approved
+manifest/guard-hash checks, the guard submitted **39536.mgmt01** once at
+14:30:13 UTC for fltrust / distributed_backdoor / seed 2001.
+It was verified R, non-rerunnable and the sole account job. The ledger gained
+exactly one matching intent/submitted pair, reaching 38 rows.
+
+Both copied indices, complete new run evidence, validation report, ledgers,
+hash checks and scheduler snapshots are preserved under
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-28T142334Z`.
+Completion of the FLTrust unknown-patch subset does not end the 96-cell phase.
+No retry, replacement, array, tuning, confirmation, clone edit, second
+submission or another campaign occurred. Earlier evidence is unchanged.
