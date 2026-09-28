@@ -22,19 +22,22 @@ FedAvg, each under clean training and three attacks with three development
 seeds. Its 96 cells use a new source snapshot and never permit more than one
 outstanding account job. Later source-audited baselines and confirmation
 remain outside this screen. The original panel is not overwritten or pooled.
-At the 14:23 UTC heartbeat checkpoint on 28 September, 18/96 cells had completed
+At the 15:24 UTC heartbeat checkpoint on 28 September, 19/96 cells had completed
 F/exit 0 and passed the frozen guard with no errors: all 12 median cells
-and all three FLTrust clean seeds, plus all three unknown-patch seeds.
-The validation index lists 78 unattempted cells before the next submission.
+and all three FLTrust clean seeds, all three unknown-patch seeds and
+distributed-backdoor seed 2001.
+The validation index lists 77 unattempted cells before the next submission.
 Each completed cell has 40 rounds, complete audits and zero stability failures.
-The newest cell (39522, fltrust / unknown_patch_model_replacement / seed 2003)
-has clean-test accuracy under attack 79.43%, macro-F1 0.7869355118352528
-and residual ASR 4.98% (0.049777777777777775).
-Seed 2002 retains accuracy 80.91%, macro-F1 0.7960852645745459 and
-ASR 26.00% (0.26). Seed 2001 retains accuracy 81.07%,
+The newest cell (39536, fltrust / distributed_backdoor / seed 2001)
+has clean-test accuracy under attack 80.72%, macro-F1 0.8008264683142536
+and residual ASR 2.50% (0.025). This is one development seed, not a
+method comparison. FLTrust unknown-patch seed 2003 retains accuracy 79.43%,
+macro-F1 0.7869355118352528 and ASR 4.98% (0.049777777777777775).
+Unknown-patch seed 2002 retains accuracy 80.91%, macro-F1 0.7960852645745459
+and ASR 26.00% (0.26). Unknown-patch seed 2001 retains accuracy 81.07%,
 macro-F1 0.8063727955403557 and adverse ASR 77.97% (0.7796666666666666).
-All three are retained without tuning, exclusion or rerun; they are different
-development seeds, not before/after evidence of a repair.
+All outcomes are retained without tuning, exclusion or rerun; different
+development seeds and attack conditions are not before/after evidence of a repair.
 FLTrust clean seeds 2001--2003 retain accuracies 81.21%, 80.31% and 79.66%
 and macro-F1 0.8077987660174857, 0.7862631414726295 and
 0.7886567798662272, respectively. Clean-cell ASR is undefined, not zero.
@@ -44,8 +47,8 @@ Unknown-patch ASRs of 87.88%, 70.78% and 33.40% remain unchanged.
 All outcomes are retained without tuning or exclusion. These descriptive
 development values do not establish a method comparison.
 After successful validation and refreshed empty-account, unchanged-ledger
-and approved hash checks, **39536.mgmt01** was submitted once at
-14:30:13 UTC for fltrust / distributed_backdoor / seed 2001
+and approved hash checks, **39538.mgmt01** was submitted once at
+15:30:25 UTC for fltrust / distributed_backdoor / seed 2002
 and verified as the sole running account job. This is the next cell in the
 same bounded screen, not a new campaign. Completion of the three-seed
 FLTrust unknown-patch subset does not end the authorized 96-cell screen.
@@ -53,7 +56,8 @@ All completed run files were copied and hash-verified locally; the newest
 FLTrust attack run contains 51 files. Local verification respects the frozen
 five-round evaluation cadence, both attack-ASR aliases and undefined clean ASR;
 both guard and local checks passed. Previous evidence and training clones
-remain unchanged.
+remain unchanged. The complete first-18 run records, including their file
+hashes, exactly match the previous timestamped index.
 The hourly follow-up now targets only this 96-cell
 phase; it was resumed after freezing the protocol and checking the account.
 The [serial execution policy](TIERGUARD2_SERIAL_EXECUTION.md) governs subsequent

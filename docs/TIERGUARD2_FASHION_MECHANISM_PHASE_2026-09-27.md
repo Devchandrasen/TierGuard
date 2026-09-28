@@ -570,3 +570,33 @@ intent/submitted pair, reaching 38 rows. Evidence is in
 Completion of the FLTrust unknown-patch subset does not end the 96-cell phase.
 No retry, replacement, tuning, confirmation, clone edit or other submission
 was made. This remains the same bounded screen, not another campaign.
+
+## Checkpoint: 28 September 2026, 15:24 UTC heartbeat
+
+FLTrust distributed-backdoor seed 2001 (39536) completed F/exit 0,
+walltime 00:14:17. The frozen guard validates 19/96 cells with no errors:
+all median cells, all FLTrust clean/unknown-patch seeds and its first
+distributed-backdoor seed. The index lists 77 genuinely unattempted cells
+before the next submission. The newest cell has clean-test accuracy under
+attack 0.8072, macro-F1 0.8008264683142536 and residual ASR 0.025.
+This is one development seed, not a comparative efficacy result. All prior
+outcomes, including adverse unknown-patch seeds, are retained without tuning,
+exclusion or rerun. Clean-cell ASR remains undefined.
+
+All 40 rounds, complete audits, zero stability failures, frozen inputs and
+paired partitions/attack instances pass validation. The local copy passes
+all 51 hashes, exact file membership, metric and ASR-alias agreement and
+frozen evaluation cadence. Its first-18 complete run records, including
+hashes, exactly match the previous timestamped index.
+Both new indices have SHA-256
+`203041e54e4bd386442893a5802ff65b79f6360c1cd9e4e2081d976f408e6a14`.
+Recorded-metric agreement does not independently recompute predictions.
+
+After validation and refreshed empty-account, unchanged-ledger and approved
+hash checks, the guard submitted **39538.mgmt01** once at 15:30:25 UTC for
+fltrust / distributed_backdoor / seed 2002, verified R, non-rerunnable and
+the sole account job. The previous ledger prefix gained exactly one
+intent/submitted pair, reaching 40 rows. Evidence is in
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-28T152404Z`.
+No retry, replacement, tuning, confirmation, clone edit or other submission
+was made. This remains the same bounded screen, not another campaign.
