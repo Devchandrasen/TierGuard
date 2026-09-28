@@ -763,3 +763,48 @@ hash checks and scheduler snapshots are preserved under
 No retry, replacement, array, tuning, confirmation, clone edit, second
 submission or another campaign occurred. The same frozen 96-cell order
 remains in force; previous evidence is unchanged.
+
+## Mechanism checkpoint: 28 September 2026, 16:25 UTC heartbeat
+
+39538 completed F/exit 0, walltime 00:04:40. The frozen guard validates
+20/96 cells with no errors: all 12 median cells, all FLTrust clean and
+unknown-patch/model-replacement seeds, and distributed-backdoor seeds
+2001 and 2002. Only 76 genuinely unattempted cells are missing before
+submission. The newest cell has clean-test accuracy under attack 0.8066,
+macro-F1 0.7924789504946977 and residual ASR 0.004333333333333333.
+Seed 2001 retains accuracy 0.8072, macro-F1 0.8008264683142536 and ASR
+0.025. All outcomes, including adverse unknown-patch seeds, remain intact.
+No partial-panel comparative inference is made; clean-cell ASR is undefined.
+
+The initial account-wide queue query failed during SSH banner exchange.
+No guard was invoked while scheduler state was uncertain. A fresh read-only
+qselect query succeeded with exit 0 and was empty; this was not a training
+or submission retry. The initial failure is retained with the successful
+query and the separately refreshed pre-submission checks.
+
+All 40 rounds, complete audits, zero stability failures, frozen inputs,
+exact paired partitions/attack instances and the full ledger/run prefix pass
+validation. The local copy passes all 51 hashes, exact file membership,
+final/index/CSV agreement, ASR-alias consistency and frozen evaluation cadence.
+The first-19 complete run records, including hashes, exactly match the prior
+timestamped index. Recorded-metric agreement does not recompute predictions.
+The validation skill guided completeness, null handling, spot-checks and
+the development-only confidence assessment in the new VALIDATION.md.
+
+Indices `fashion_mechanism_index_2026_09_28T162830_913902Z.json` (dry-run)
+and `fashion_mechanism_index_2026_09_28T163436_239440Z.json` (submission)
+share SHA-256
+`d4bd086b6346efa48f95555cc8dc6171ca617792db127f42eb63a23700c96b28`.
+After validation and refreshed empty-account, unchanged-ledger and approved
+manifest/guard-hash checks, the guard submitted **39540.mgmt01** once at
+16:34:36 UTC for fltrust / distributed_backdoor / seed 2003.
+It was verified R, non-rerunnable and the sole account job. The ledger gained
+exactly one matching intent/submitted pair, reaching 42 rows; the previous
+40 rows are unchanged.
+
+Both copied indices, complete new run evidence, validation report, ledgers,
+hash checks and scheduler snapshots are preserved under
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-28T162535Z`.
+No retry, replacement, array, tuning, confirmation, clone edit, second
+submission or another campaign occurred. The same frozen 96-cell order
+remains in force; previous evidence is unchanged.
