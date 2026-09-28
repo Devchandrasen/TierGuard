@@ -582,3 +582,39 @@ scheduler snapshots are preserved under
 No retry, replacement, array, tuning, confirmation, clone edit, second
 submission or another campaign occurred. Previous evidence is unchanged;
 the same frozen 96-cell order remains in force.
+
+## Mechanism checkpoint: 28 September 2026, 07:44 UTC heartbeat
+
+39441 completed F/exit 0, walltime 00:07:53. The frozen guard validates
+15/96 cells with no errors: all 12 median cells and all three FLTrust clean
+seeds. Only 81 genuinely unattempted cells are missing before submission.
+The newest cell (fltrust / none / seed 2003) has accuracy 0.7966 and
+macro-F1 0.7886567798662272. Clean ASR is null in final JSON/index and
+blank throughout the CSV. Seeds 2001 and 2002 retain accuracy 0.8121 and
+0.8031 and macro-F1 0.8077987660174857 and 0.7862631414726295.
+These descriptive development values support no comparative inference;
+all prior outcomes are retained without tuning, exclusion or replacement.
+
+All 40 rounds, complete audits, zero stability failures, frozen inputs,
+exact paired partitions and the full ledger/run prefix pass validation.
+The local copy passes all 51 hashes, exact file membership, metric agreement
+and the frozen five-round evaluation cadence.
+
+Indices `fashion_mechanism_index_2026_09_28T074842_969334Z.json` (dry-run)
+and `fashion_mechanism_index_2026_09_28T075039_020813Z.json` (submission)
+share SHA-256
+`2fb912775e7d815017745028e731706f255aaa65700087a053af711fa2826d65`.
+After validation and refreshed empty-account, unchanged-ledger and approved
+manifest/guard-hash checks, the guard submitted **39478.mgmt01** once at
+07:50:39 UTC for fltrust / unknown_patch_model_replacement / seed 2001.
+It was verified R and the sole account job. The ledger gained one matching
+intent/submitted pair, reaching 32 rows.
+
+Both copied indices, complete new run evidence, ledgers, hash checks and
+scheduler snapshots are preserved under
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-28T074431Z`.
+The validation skill guided completeness, null handling, independent metric
+agreement and the development-only confidence assessment in VALIDATION.md.
+No retry, replacement, array, tuning, confirmation, clone edit, second
+submission or another campaign occurred. Previous evidence is unchanged;
+the same frozen 96-cell order remains in force.

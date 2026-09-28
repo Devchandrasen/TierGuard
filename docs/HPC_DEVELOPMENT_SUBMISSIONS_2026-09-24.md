@@ -13,20 +13,22 @@ wall times are not an algorithmic efficiency comparison.
 
 **New authorized phase:** after the completed nine-run panel was reviewed,
 the user approved the [bounded matched-baseline/ablation screen](TIERGUARD2_FASHION_MECHANISM_PHASE_2026-09-27.md).
-At the 06:44 UTC checkpoint, the 12 median cells and first two FLTrust clean
-seeds had completed with exit 0. The frozen guard validates 14/96 cells
+At the 07:44 UTC heartbeat checkpoint, the 12 median cells and all three FLTrust
+clean seeds had completed with exit 0. The frozen guard validates 15/96 cells
 with no errors: 40 rounds, 40 complete audits and zero stability failures
-per run. The latest cell (**39430.mgmt01**, fltrust / none / seed 2002)
-has 80.31% clean accuracy and macro-F1 0.7862631414726295. Seed 2001
-retains 81.21% accuracy and macro-F1 0.8077987660174857; clean ASR is
-undefined. All median outcomes remain unchanged, including optimized-trigger
+per run. The latest cell (**39441.mgmt01**, fltrust / none / seed 2003)
+has 79.66% clean accuracy and macro-F1 0.7886567798662272. Seeds 2001 and
+2002 retain 81.21% and 80.31% accuracy and macro-F1 0.8077987660174857
+and 0.7862631414726295, respectively; clean ASR is undefined.
+All median outcomes remain unchanged, including optimized-trigger
 ASRs of 24.03%, 13.01% and 24.12%, distributed-backdoor ASRs of 1.22%,
 0.50% and 0.41%, and unknown-patch ASRs of 87.88%, 70.78% and 33.40%.
 These development values do not establish comparative efficacy. No tuning
 or exclusion was made. All completed run files were copied and hash-verified;
 the newest clean run contains 51 files. After validation and refreshed
-empty-account, unchanged-ledger and approved hash checks, **39441.mgmt01**
-(fltrust / none / seed 2003) was submitted once at 06:48:21 UTC and
+empty-account, unchanged-ledger and approved hash checks, **39478.mgmt01**
+(fltrust / unknown_patch_model_replacement / seed 2001) was submitted once
+at 07:50:39 UTC and
 verified as the sole running account job. The 96-cell
 development matrix is frozen in a new isolated clone; it is NOT a submitted
 batch. Hourly continuation permits at most one next job after validation.

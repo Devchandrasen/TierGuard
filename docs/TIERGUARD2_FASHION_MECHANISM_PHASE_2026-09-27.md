@@ -459,3 +459,30 @@ fltrust / none / seed 2003, verified R and the sole account job. Evidence is in
 `Rajanmani/output/TierGuard2_Mechanism_2026-09-28T064400Z`.
 No retry, replacement, tuning, confirmation, clone edit or other submission
 was made. This remains the same bounded screen, not another campaign.
+
+## Checkpoint: 28 September 2026, 07:44 UTC heartbeat
+
+FLTrust clean seed 2003 (39441) completed F/exit 0, walltime 00:07:53.
+The frozen guard validates 15/96 cells without errors: all median cells
+and all three FLTrust clean seeds. The index lists 81 genuinely unattempted
+cells before the next submission. Accuracy is 0.7966 and macro-F1 is
+0.7886567798662272. Clean ASR is null in final JSON/index and blank throughout
+the CSV. Seeds 2001 and 2002 retain accuracy 0.8121 and 0.8031 and macro-F1
+0.8077987660174857 and 0.7862631414726295, respectively. These descriptive
+development values support no method comparison; no tuning, exclusion or
+replacement is made.
+
+All 40 rounds, complete audits, zero stability failures, frozen inputs and
+paired partitions pass validation. The local copy passes all 51 hashes,
+exact file membership, metric agreement and frozen evaluation cadence.
+Both new indices have SHA-256
+`2fb912775e7d815017745028e731706f255aaa65700087a053af711fa2826d65`.
+
+After validation and refreshed empty-account, unchanged-ledger and approved
+hash checks, the guard submitted **39478.mgmt01** once at 07:50:39 UTC for
+fltrust / unknown_patch_model_replacement / seed 2001, verified R and the
+sole account job. Evidence is in
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-28T074431Z`.
+The clean subset's completion does not end the authorized 96-cell phase.
+No retry, replacement, tuning, confirmation, clone edit or other submission
+was made. This remains the same bounded screen, not another campaign.
