@@ -22,15 +22,16 @@ FedAvg, each under clean training and three attacks with three development
 seeds. Its 96 cells use a new source snapshot and never permit more than one
 outstanding account job. Later source-audited baselines and confirmation
 remain outside this screen. The original panel is not overwritten or pooled.
-At the 22:27 UTC heartbeat checkpoint on 28 September, 26/96 cells had completed
+At the 23:28 UTC heartbeat checkpoint on 28 September, 27/96 cells had completed
 F/exit 0 and passed the frozen guard with no errors: all 12 median cells,
-all 12 FLTrust cells and RFA clean seeds 2001/2002. The entire median
-and FLTrust subsets are complete; the validation index lists 70 genuinely
+all 12 FLTrust cells and all three RFA clean seeds. The entire median
+and FLTrust subsets and RFA clean subset are complete; the index lists 69 genuinely
 unattempted cells before the next submission.
 Each completed cell has 40 rounds, complete audits and zero stability failures.
-The newest cell (39554, rfa / none / seed 2002) has clean-training accuracy
-88.43% (0.8843) and macro-F1 0.8823849961603034. Seed 2001 retains
-88.50% (0.885) and macro-F1 0.8842036720600657. Clean ASR is null in final
+The newest cell (39555, rfa / none / seed 2003) has clean-training accuracy
+87.98% (0.8798) and macro-F1 0.8784533402701046. Seeds 2001/2002 retain
+88.50%/88.43% (0.885/0.8843) and macro-F1
+0.8842036720600657/0.8823849961603034. Clean ASR is null in final
 JSON/index and blank in both CSV ASR columns, not zero. These individual clean
 development values support no method comparison and are not compared with
 accuracy under attack.
@@ -63,11 +64,11 @@ Unknown-patch ASRs of 87.88%, 70.78% and 33.40% remain unchanged.
 All outcomes are retained without tuning or exclusion. These descriptive
 development values do not establish a method comparison.
 After successful validation and refreshed empty-account, unchanged-ledger
-and approved hash checks, **39555.mgmt01** was submitted once at
-22:33:21 UTC for rfa / none / seed 2003
+and approved hash checks, **39556.mgmt01** was submitted once at
+23:35:05 UTC for rfa / unknown_patch_model_replacement / seed 2001
 and verified as the sole running account job. This is the next cell in the
 same bounded screen, not a new campaign. Completion of the median and
-FLTrust subsets does not end the authorized 96-cell screen.
+FLTrust subsets or RFA clean subset does not end the authorized 96-cell screen.
 At an earlier 16:25 checkpoint, a queue query encountered an SSH
 banner-exchange error. No guard
 was invoked while status was uncertain; a fresh read-only query succeeded
@@ -79,12 +80,13 @@ RFA clean run contains 51 files, including 40 audit records. Earlier optimized-
 trigger records remain intact. Local verification respects the frozen
 five-round evaluation cadence, both attack-ASR aliases and undefined clean ASR;
 both guard and local checks passed. Previous evidence and training clones
-remain unchanged. The complete first-25 run records, including their file
+remain unchanged. The complete first-26 run records, including their file
 hashes, exactly match the previous timestamped index.
-A local post-submission JSON-key-order comparison initially gave a false
+At the preceding 22:27 checkpoint, a local JSON-key-order comparison gave a false
 ledger mismatch. Sorted-key and independent Python dictionary checks confirm
 identical fields and exactly one new submission pair; the diagnostic is saved.
-No scheduler/training attempt failed and no submission was retried.
+That diagnostic is retained in its original checkpoint. Current fieldwise checks
+pass without discrepancy; no scheduler/training attempt failed or was retried.
 The hourly follow-up now targets only this 96-cell
 phase; it was resumed after freezing the protocol and checking the account.
 The [serial execution policy](TIERGUARD2_SERIAL_EXECUTION.md) governs subsequent

@@ -1077,3 +1077,53 @@ hash checks and scheduler snapshots are preserved under
 `Rajanmani/output/TierGuard2_Mechanism_2026-09-28T222711Z`.
 No tuning, confirmation, array, clone edit or another campaign occurred.
 The same frozen 96-cell order remains in force; previous evidence is unchanged.
+
+
+## Checkpoint: 28 September 2026, 23:28 UTC heartbeat
+
+RFA clean seed 2003 (39555) completed F/exit 0, walltime 00:09:48.
+The frozen guard validates 27/96 cells with no errors: all 12 median
+cells, all 12 FLTrust cells and all three RFA clean seeds. The index lists
+69 genuinely unattempted cells before submission. The newest cell has
+clean-training accuracy 0.8798 and macro-F1 0.8784533402701046.
+Seeds 2001/2002 retain accuracies 0.885/0.8843 and macro-F1
+0.8842036720600657/0.8823849961603034. Clean ASR is null in final
+JSON/index and blank in both CSV ASR columns, never zero. These are
+individual final clean-development values, not a pooled method comparison
+or before/after repair evidence. Clean training is separate from accuracy
+under attack. All prior adverse outcomes remain unchanged, without tuning,
+exclusion or rerun. This subset's completion does not end the 96-cell screen.
+
+All 40 rounds, complete audits, finite populated metrics, zero stability
+failures, frozen inputs, exact paired partitions and the full ledger/run
+prefix pass validation. The local copy passes all 51 file hashes, exact
+membership, final/index/CSV agreement, undefined clean ASR and frozen
+five-round evaluation cadence. All 40 audit filenames are complete; no
+optimized-trigger artifacts are expected or present in this clean cell.
+Its first-26 complete run objects and hashes equal the previous timestamped
+index, whose SHA-256 is independently checked. Recorded consistency does
+not recompute test predictions or accuracy/F1 denominators independently.
+Scheduler walltime is provenance, not normalized speed. The data-validation
+skill guided completeness, deduplication, null handling, metric spot-checks,
+adverse-outcome retention and the development-only confidence assessment.
+
+Indices `fashion_mechanism_index_2026_09_28T233110_140664Z.json` (dry-run)
+and `fashion_mechanism_index_2026_09_28T233505_782106Z.json` (submission)
+share SHA-256
+`c69ba3ada0879f9b48b6faa31a23ea496948ea5735431531bb0a2af17e583df1`.
+After validation and refreshed empty-account, unchanged-ledger and approved
+manifest/guard-hash checks, the guard submitted **39556.mgmt01** once at
+23:35:05 UTC for rfa / unknown_patch_model_replacement / seed 2001.
+It was verified R, non-rerunnable and the sole account job. The ledger
+gained one matching intent/submitted pair, reaching 56 rows; all 54 previous
+rows are unchanged. Sorted-key and independent read-only Python fieldwise
+checks both pass. The preceding local JSON-key-order diagnostic remains
+preserved in its original checkpoint; no current discrepancy was found.
+The new attack cell is not yet a validated result.
+
+Both copied indices, the complete new clean-run evidence, validation report,
+ledgers, hash checks and scheduler snapshots are preserved under
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-28T232842Z`.
+No second submission, retry, replacement, skip, tuning, confirmation,
+array, training-clone edit or another campaign occurred. The same frozen
+96-cell order remains in force; previous evidence is unchanged.
