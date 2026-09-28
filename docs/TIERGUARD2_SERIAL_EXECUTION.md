@@ -653,3 +653,39 @@ hash checks and scheduler snapshots are preserved under
 No retry, replacement, array, tuning, confirmation, clone edit, second
 submission or another campaign occurred. This remains the same frozen
 96-cell screen; earlier evidence is unchanged.
+
+## Mechanism checkpoint: 28 September 2026, 13:23 UTC heartbeat
+
+39497 completed F/exit 0, walltime 00:03:01. The frozen guard validates
+17/96 cells with no errors: all median cells, all FLTrust clean seeds and
+unknown-patch/model-replacement seeds 2001 and 2002.
+Only 79 genuinely unattempted cells are missing before submission.
+The newest cell (seed 2002) has clean-test accuracy under attack 0.8091,
+macro-F1 0.7960852645745459 and residual ASR 0.26. Seed 2001 retains accuracy
+0.8107, macro-F1 0.8063727955403557 and adverse ASR 0.7796666666666666.
+Both results are retained without tuning, exclusion or replacement. These
+are different development seeds, not before/after evidence of a repair,
+and support no comparative inference. Clean-cell ASR remains undefined.
+
+All 40 rounds, complete audits, zero stability failures, frozen inputs,
+exact paired partitions/attack instances and the full ledger/run prefix pass
+validation. The local copy passes all 51 hashes, exact file membership,
+final/index/CSV agreement, ASR-alias consistency and frozen evaluation cadence.
+Walltime is preserved as provenance, not a hardware-normalized speed comparison.
+
+Indices `fashion_mechanism_index_2026_09_28T132458_409899Z.json` (dry-run)
+and `fashion_mechanism_index_2026_09_28T132813_070491Z.json` (submission)
+share SHA-256
+`b9761349cda1737e4c8bad477797939dd894dccb7920e7bad75c8a6328b5d218`.
+After validation and refreshed empty-account, unchanged-ledger and approved
+manifest/guard-hash checks, the guard submitted **39522.mgmt01** once at
+13:28:14 UTC for fltrust / unknown_patch_model_replacement / seed 2003.
+It was verified R and the sole account job. The ledger gained exactly one
+matching intent/submitted pair, reaching 36 rows.
+
+Both copied indices, complete new run evidence, validation report, ledgers,
+hash checks and scheduler snapshots are preserved under
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-28T132302Z`.
+No retry, replacement, array, tuning, confirmation, clone edit, second
+submission or another campaign occurred. This remains the same frozen
+96-cell screen; earlier evidence is unchanged.

@@ -13,14 +13,16 @@ wall times are not an algorithmic efficiency comparison.
 
 **New authorized phase:** after the completed nine-run panel was reviewed,
 the user approved the [bounded matched-baseline/ablation screen](TIERGUARD2_FASHION_MECHANISM_PHASE_2026-09-27.md).
-At the 08:45 UTC heartbeat checkpoint, the 12 median cells, all three FLTrust
-clean seeds and its first unknown-patch seed had completed with exit 0.
-The frozen guard validates 16/96 cells
+At the 13:23 UTC heartbeat checkpoint, the 12 median cells, all three FLTrust
+clean seeds and unknown-patch seeds 2001/2002 had completed with exit 0.
+The frozen guard validates 17/96 cells
 with no errors: 40 rounds, 40 complete audits and zero stability failures
-per run. The latest cell (**39478.mgmt01**, fltrust /
-unknown_patch_model_replacement / seed 2001) has 81.07% clean-test accuracy
-under attack, macro-F1 0.8063727955403557 and adverse ASR 77.97%
-(0.7796666666666666). This outcome is retained without tuning or rerun.
+per run. The latest cell (**39497.mgmt01**, fltrust /
+unknown_patch_model_replacement / seed 2002) has 80.91% clean-test accuracy
+under attack, macro-F1 0.7960852645745459 and residual ASR 26.00% (0.26).
+Seed 2001 retains accuracy 81.07%, macro-F1 0.8063727955403557 and adverse
+ASR 77.97% (0.7796666666666666). Both are retained without tuning or rerun;
+they are different development seeds, not before/after evidence of a repair.
 FLTrust clean seeds 2001--2003 retain accuracies 81.21%, 80.31% and 79.66%
 and macro-F1 0.8077987660174857, 0.7862631414726295 and
 0.7886567798662272, respectively; clean-cell ASR is undefined.
@@ -30,9 +32,9 @@ ASRs of 24.03%, 13.01% and 24.12%, distributed-backdoor ASRs of 1.22%,
 These development values do not establish comparative efficacy. No tuning
 or exclusion was made. All completed run files were copied and hash-verified;
 the newest attack run contains 51 files. After validation and refreshed
-empty-account, unchanged-ledger and approved hash checks, **39497.mgmt01**
-(fltrust / unknown_patch_model_replacement / seed 2002) was submitted once
-at 08:49:48 UTC and
+empty-account, unchanged-ledger and approved hash checks, **39522.mgmt01**
+(fltrust / unknown_patch_model_replacement / seed 2003) was submitted once
+at 13:28:14 UTC and
 verified as the sole running account job. The 96-cell
 development matrix is frozen in a new isolated clone; it is NOT a submitted
 batch. Hourly continuation permits at most one next job after validation.

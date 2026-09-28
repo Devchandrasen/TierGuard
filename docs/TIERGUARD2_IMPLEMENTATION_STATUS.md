@@ -22,14 +22,17 @@ FedAvg, each under clean training and three attacks with three development
 seeds. Its 96 cells use a new source snapshot and never permit more than one
 outstanding account job. Later source-audited baselines and confirmation
 remain outside this screen. The original panel is not overwritten or pooled.
-At the 08:45 UTC heartbeat checkpoint on 28 September, 16/96 cells had completed
+At the 13:23 UTC heartbeat checkpoint on 28 September, 17/96 cells had completed
 F/exit 0 and passed the frozen guard with no errors: all 12 median cells
-and all three FLTrust clean seeds, plus its first unknown-patch seed.
-The validation index lists 80 unattempted cells before the next submission.
+and all three FLTrust clean seeds, plus unknown-patch seeds 2001 and 2002.
+The validation index lists 79 unattempted cells before the next submission.
 Each completed cell has 40 rounds, complete audits and zero stability failures.
-The newest cell (39478, fltrust / unknown_patch_model_replacement / seed 2001)
-has clean-test accuracy under attack 81.07%, macro-F1 0.8063727955403557
-and adverse ASR 77.97% (0.7796666666666666), retained without tuning or rerun.
+The newest cell (39497, fltrust / unknown_patch_model_replacement / seed 2002)
+has clean-test accuracy under attack 80.91%, macro-F1 0.7960852645745459
+and residual ASR 26.00% (0.26). Seed 2001 retains accuracy 81.07%,
+macro-F1 0.8063727955403557 and adverse ASR 77.97% (0.7796666666666666).
+Both are retained without tuning, exclusion or rerun; they are different
+development seeds, not before/after evidence of a repair.
 FLTrust clean seeds 2001--2003 retain accuracies 81.21%, 80.31% and 79.66%
 and macro-F1 0.8077987660174857, 0.7862631414726295 and
 0.7886567798662272, respectively. Clean-cell ASR is undefined, not zero.
@@ -39,8 +42,8 @@ Unknown-patch ASRs of 87.88%, 70.78% and 33.40% remain unchanged.
 All outcomes are retained without tuning or exclusion. These descriptive
 development values do not establish a method comparison.
 After successful validation and refreshed empty-account, unchanged-ledger
-and approved hash checks, **39497.mgmt01** was submitted once at
-08:49:48 UTC for fltrust / unknown_patch_model_replacement / seed 2002
+and approved hash checks, **39522.mgmt01** was submitted once at
+13:28:14 UTC for fltrust / unknown_patch_model_replacement / seed 2003
 and verified as the sole running account job. This is the next cell in the
 same bounded screen, not a new campaign.
 All completed run files were copied and hash-verified locally; the newest
