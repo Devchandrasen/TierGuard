@@ -13,14 +13,18 @@ wall times are not an algorithmic efficiency comparison.
 
 **New authorized phase:** after the completed nine-run panel was reviewed,
 the user approved the [bounded matched-baseline/ablation screen](TIERGUARD2_FASHION_MECHANISM_PHASE_2026-09-27.md).
-At the 17:25 UTC heartbeat checkpoint, the 12 median cells, all three FLTrust
+At the 18:25 UTC heartbeat checkpoint, the 12 median cells, all three FLTrust
 clean seeds, all three unknown-patch seeds and distributed-backdoor seeds
-2001--2003 had completed with exit 0. The frozen guard validates 21/96 cells
+2001--2003, plus optimized-trigger seed 2001, had completed with exit 0.
+The frozen guard validates 22/96 cells
 with no errors: 40 rounds, 40 complete audits and zero stability failures
-per run. The index lists 75 genuinely unattempted cells before submission.
-The latest cell (**39540.mgmt01**, fltrust /
-distributed_backdoor / seed 2003) has 79.33% clean-test accuracy under attack,
-macro-F1 0.7851625604766831 and residual ASR 0.69% (0.006888888888888889).
+per run. The index lists 74 genuinely unattempted cells before submission.
+The latest cell (**39546.mgmt01**, fltrust /
+defence_aware_optimized_trigger / seed 2001) has 81.08% clean-test accuracy
+under attack, macro-F1 0.805647132854906 and adverse residual ASR
+31.89% (0.3188888888888889), retained unchanged.
+Distributed-backdoor seed 2003 retains 79.33% accuracy, macro-F1
+0.7851625604766831 and ASR 0.69% (0.006888888888888889).
 Seed 2002 retains 80.66% accuracy, macro-F1 0.7924789504946977 and ASR
 0.43% (0.004333333333333333).
 Seed 2001 retains 80.72% accuracy, macro-F1 0.8008264683142536 and ASR
@@ -40,15 +44,16 @@ ASRs of 24.03%, 13.01% and 24.12%, distributed-backdoor ASRs of 1.22%,
 0.50% and 0.41%, and unknown-patch ASRs of 87.88%, 70.78% and 33.40%.
 These development values do not establish comparative efficacy. No tuning
 or exclusion was made. All completed run files were copied and hash-verified;
-the newest attack run contains 51 files. After validation and refreshed
-empty-account, unchanged-ledger and approved hash checks, **39546.mgmt01**
-(fltrust / defence_aware_optimized_trigger / seed 2001) was submitted once
-at 17:31:36 UTC and
+the newest attack run contains 91 files, including 40 finite optimized-trigger
+JSON records. After validation and refreshed
+empty-account, unchanged-ledger and approved hash checks, **39549.mgmt01**
+(fltrust / defence_aware_optimized_trigger / seed 2002) was submitted once
+at 18:30:58 UTC and
 verified as the sole running account job. The 96-cell
 development matrix is frozen in a new isolated clone; it is NOT a submitted
 batch. Hourly continuation permits at most one next job after validation.
 Completion of the FLTrust distributed-backdoor subset does not end this phase.
-The first-20 complete run records and their hashes match the prior index exactly.
+The first-21 complete run records and their hashes match the prior index exactly.
 At the preceding 16:25 checkpoint, a queue query failed during SSH banner
 exchange, so no guard was
 invoked until a fresh read-only query returned exit 0 and an empty account.
