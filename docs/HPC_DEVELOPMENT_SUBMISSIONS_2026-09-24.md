@@ -13,14 +13,17 @@ wall times are not an algorithmic efficiency comparison.
 
 **New authorized phase:** after the completed nine-run panel was reviewed,
 the user approved the [bounded matched-baseline/ablation screen](TIERGUARD2_FASHION_MECHANISM_PHASE_2026-09-27.md).
-At the 20:27 UTC heartbeat checkpoint, the 12 median cells, all three FLTrust
-clean seeds, all three unknown-patch seeds and distributed-backdoor seeds
-2001--2003, plus all three optimized-trigger seeds, had completed with exit 0.
-The full median and FLTrust subsets are complete. The frozen guard validates 24/96 cells
+At the 21:27 UTC heartbeat checkpoint, all 12 median cells, all 12 FLTrust
+cells and RFA clean seed 2001 had completed with exit 0.
+The full median and FLTrust subsets are complete. The frozen guard validates 25/96 cells
 with no errors: 40 rounds, 40 complete audits and zero stability failures
-per run. The index lists 72 genuinely unattempted cells before submission.
-The latest cell (**39550.mgmt01**, fltrust /
-defence_aware_optimized_trigger / seed 2003) has 79.51% clean-test accuracy
+per run. The index lists 71 genuinely unattempted cells before submission.
+The latest cell (**39553.mgmt01**, rfa / none / seed 2001) has 88.50%
+clean-training accuracy (0.885) and macro-F1 0.8842036720600657.
+Clean ASR is null in final JSON/index and blank in both CSV ASR columns,
+not zero. It is one clean development seed, not a method comparison or
+an accuracy-under-attack comparison.
+FLTrust optimized-trigger seed 2003 retains 79.51% clean-test accuracy
 under attack, macro-F1 0.7876075739817777 and residual ASR
 6.56% (0.06555555555555556). Seed 2002 retains 80.87% accuracy,
 macro-F1 0.7963585252238866 and ASR
@@ -48,17 +51,17 @@ ASRs of 24.03%, 13.01% and 24.12%, distributed-backdoor ASRs of 1.22%,
 0.50% and 0.41%, and unknown-patch ASRs of 87.88%, 70.78% and 33.40%.
 These development values do not establish comparative efficacy. No tuning
 or exclusion was made. All completed run files were copied and hash-verified;
-the newest attack run contains 91 files, including 40 finite optimized-trigger
-JSON records. After validation and refreshed
-empty-account, unchanged-ledger and approved hash checks, **39553.mgmt01**
-(rfa / none / seed 2001) was submitted once
-at 20:33:11 UTC and
+the newest RFA clean run contains 51 files, including 40 audit records.
+Earlier optimized-trigger records remain intact. After validation and refreshed
+empty-account, unchanged-ledger and approved hash checks, **39554.mgmt01**
+(rfa / none / seed 2002) was submitted once
+at 21:33:40 UTC and
 verified as the sole running account job. The 96-cell
 development matrix is frozen in a new isolated clone; it is NOT a submitted
 batch. Hourly continuation permits at most one next job after validation.
 Completion of the median and FLTrust subsets does not end this phase.
-The first-23 complete run records and their hashes match the prior index exactly.
-At the preceding 16:25 checkpoint, a queue query failed during SSH banner
+The first-24 complete run records and their hashes match the prior index exactly.
+At an earlier 16:25 checkpoint, a queue query failed during SSH banner
 exchange, so no guard was
 invoked until a fresh read-only query returned exit 0 and an empty account.
 That diagnostic failure and the subsequent successful checks are preserved

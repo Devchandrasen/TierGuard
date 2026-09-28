@@ -22,16 +22,20 @@ FedAvg, each under clean training and three attacks with three development
 seeds. Its 96 cells use a new source snapshot and never permit more than one
 outstanding account job. Later source-audited baselines and confirmation
 remain outside this screen. The original panel is not overwritten or pooled.
-At the 20:27 UTC heartbeat checkpoint on 28 September, 24/96 cells had completed
-F/exit 0 and passed the frozen guard with no errors: all 12 median cells
-and all three FLTrust clean seeds, all three unknown-patch seeds and
-all three distributed-backdoor and optimized-trigger seeds. The entire
-12-cell FLTrust subset is complete; the validation index lists 72 genuinely
+At the 21:27 UTC heartbeat checkpoint on 28 September, 25/96 cells had completed
+F/exit 0 and passed the frozen guard with no errors: all 12 median cells,
+all 12 FLTrust cells and the first RFA clean seed, 2001. The entire median
+and FLTrust subsets are complete; the validation index lists 71 genuinely
 unattempted cells before the next submission.
 Each completed cell has 40 rounds, complete audits and zero stability failures.
-The newest cell (39550, fltrust / defence_aware_optimized_trigger / seed 2003)
-has clean-test accuracy under attack 79.51%, macro-F1 0.7876075739817777
-and residual ASR 6.56% (0.06555555555555556). Seed 2002 retains 80.87%
+The newest cell (39553, rfa / none / seed 2001) has clean-training accuracy
+88.50% (0.885) and macro-F1 0.8842036720600657. ASR is null in final
+JSON/index and blank in both CSV ASR columns, not zero. This single clean
+development seed supports no method comparison and is not compared with
+accuracy under attack.
+FLTrust optimized-trigger seed 2003 retains clean-test accuracy under attack
+79.51%, macro-F1 0.7876075739817777 and residual ASR
+6.56% (0.06555555555555556). Seed 2002 retains 80.87%
 accuracy, macro-F1 0.7963585252238866 and ASR
 2.16% (0.021555555555555557). Seed 2001 retains 81.08%
 accuracy, macro-F1 0.805647132854906 and adverse ASR
@@ -58,23 +62,23 @@ Unknown-patch ASRs of 87.88%, 70.78% and 33.40% remain unchanged.
 All outcomes are retained without tuning or exclusion. These descriptive
 development values do not establish a method comparison.
 After successful validation and refreshed empty-account, unchanged-ledger
-and approved hash checks, **39553.mgmt01** was submitted once at
-20:33:11 UTC for rfa / none / seed 2001
+and approved hash checks, **39554.mgmt01** was submitted once at
+21:33:40 UTC for rfa / none / seed 2002
 and verified as the sole running account job. This is the next cell in the
 same bounded screen, not a new campaign. Completion of the median and
 FLTrust subsets does not end the authorized 96-cell screen.
-At the preceding 16:25 checkpoint, a queue query encountered an SSH
+At an earlier 16:25 checkpoint, a queue query encountered an SSH
 banner-exchange error. No guard
 was invoked while status was uncertain; a fresh read-only query succeeded
 with exit 0 and proved the account empty before validation/submission.
 The failed query and successful checks are both preserved in that earlier
 checkpoint. This checkpoint's queue, ledger and hash checks succeeded.
 All completed run files were copied and hash-verified locally; the newest
-FLTrust attack run contains 91 files, including all 40 optimized-trigger
-JSON records with finite numerical values. Local verification respects the frozen
+RFA clean run contains 51 files, including 40 audit records. Earlier optimized-
+trigger records remain intact. Local verification respects the frozen
 five-round evaluation cadence, both attack-ASR aliases and undefined clean ASR;
 both guard and local checks passed. Previous evidence and training clones
-remain unchanged. The complete first-23 run records, including their file
+remain unchanged. The complete first-24 run records, including their file
 hashes, exactly match the previous timestamped index.
 The hourly follow-up now targets only this 96-cell
 phase; it was resumed after freezing the protocol and checking the account.
