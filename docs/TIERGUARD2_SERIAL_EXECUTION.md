@@ -550,3 +550,35 @@ Evidence, both copied indices, ledgers, hashes and scheduler snapshots are in
 No retry, replacement, array, tuning, confirmation, clone edit, second
 submission or another campaign occurred. The same frozen 96-cell order
 remains in force; previous evidence is preserved.
+
+## Mechanism checkpoint: 28 September 2026, 06:44 UTC heartbeat
+
+39430 completed F/exit 0, walltime 00:07:44. The frozen guard validates
+14/96 cells with no errors: all 12 median cells and FLTrust clean seeds
+2001 and 2002. Only 82 genuinely unattempted cells are missing before submission.
+The newest cell has accuracy 0.8031 and macro-F1 0.7862631414726295.
+Clean ASR is null in final JSON/index and blank throughout the CSV, not zero.
+Seed 2001's accuracy 0.8121 and macro-F1 0.8077987660174857 remain unchanged.
+These descriptive development values support no comparative inference;
+all prior outcomes are retained without tuning, exclusion or replacement.
+
+All 40 rounds, complete audits, zero stability failures, frozen inputs,
+exact paired partitions and the full ledger/run prefix pass validation.
+The local copy passes all 51 hashes, exact file membership, metric agreement
+and the frozen five-round evaluation cadence.
+
+Indices `fashion_mechanism_index_2026_09_28T064552_937722Z.json` (dry-run)
+and `fashion_mechanism_index_2026_09_28T064821_653625Z.json` (submission)
+share SHA-256
+`723f9e6ee1cdfe69b7c7936263f1a712b9a99dea0a5a70fd5d39faafffcf7747`.
+After validation and refreshed empty-account, unchanged-ledger and approved
+manifest/guard-hash checks, the guard submitted **39441.mgmt01** once at
+06:48:21 UTC for fltrust / none / seed 2003. It was verified R and the sole
+account job. The ledger gained one matching intent/submitted pair.
+
+Both copied indices, complete new run evidence, ledgers, hash checks and
+scheduler snapshots are preserved under
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-28T064400Z`.
+No retry, replacement, array, tuning, confirmation, clone edit, second
+submission or another campaign occurred. Previous evidence is unchanged;
+the same frozen 96-cell order remains in force.

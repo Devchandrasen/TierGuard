@@ -22,21 +22,22 @@ FedAvg, each under clean training and three attacks with three development
 seeds. Its 96 cells use a new source snapshot and never permit more than one
 outstanding account job. Later source-audited baselines and confirmation
 remain outside this screen. The original panel is not overwritten or pooled.
-At the 05:42 UTC checkpoint on 28 September, 13/96 cells had completed
+At the 06:44 UTC checkpoint on 28 September, 14/96 cells had completed
 F/exit 0 and passed the frozen guard with no errors: all 12 median cells
-and the first FLTrust clean seed. The validation index lists 83 unattempted
+and the first two FLTrust clean seeds. The validation index lists 82 unattempted
 cells before the next submission. Each completed cell has 40 rounds,
-complete audits and zero stability failures. The newest cell (39420,
-fltrust / none / seed 2001) has clean accuracy 81.21% and macro-F1
-0.8077987660174857; clean ASR is undefined, not zero.
+complete audits and zero stability failures. The newest cell (39430,
+fltrust / none / seed 2002) has clean accuracy 80.31% and macro-F1
+0.7862631414726295. Seed 2001 retains 81.21% accuracy and macro-F1
+0.8077987660174857. Clean ASR is undefined, not zero.
 The median optimized-trigger seeds retain ASRs of 24.03%, 13.01% and
 24.12%; the distributed seeds retain 1.22%, 0.50% and 0.41%, respectively.
 Unknown-patch ASRs of 87.88%, 70.78% and 33.40% remain unchanged.
 All outcomes are retained without tuning or exclusion. These descriptive
 development values do not establish a method comparison.
 After successful validation and refreshed empty-account, unchanged-ledger
-and approved hash checks, **39430.mgmt01** was submitted once at
-05:48:21 UTC for fltrust / none / seed 2002 and verified as the sole running
+and approved hash checks, **39441.mgmt01** was submitted once at
+06:48:21 UTC for fltrust / none / seed 2003 and verified as the sole running
 account job. This is the next cell in the same bounded screen.
 All completed run files were copied and hash-verified locally; the newest
 clean FLTrust run contains 51 files. Local verification respects the frozen
