@@ -9,22 +9,23 @@ commit, partition indices, per-round metrics and node provenance. The two
 H100 nodes have different drivers and runtime characteristics, so concurrent
 wall times are not an algorithmic efficiency comparison.
 
-## Current execution state (checked 27 September 2026)
+## Current execution state (checked 28 September 2026)
 
 **New authorized phase:** after the completed nine-run panel was reviewed,
 the user approved the [bounded matched-baseline/ablation screen](TIERGUARD2_FASHION_MECHANISM_PHASE_2026-09-27.md).
-At the 23:04 UTC checkpoint, the three median clean seeds, all three
-median unknown-patch/model-replacement seeds and the first median
-distributed-backdoor seed had completed with exit 0. The frozen guard
-validates 7/96 cells with no errors: 40 rounds, 40 complete audits and zero
-stability failures per run. The latest attack cell (**39408.mgmt01**,
-distributed-backdoor seed 2001) has 85.30% clean accuracy and 1.22% ASR.
+At the 00:06 UTC checkpoint, the three median clean seeds, all three
+median unknown-patch/model-replacement seeds and the first two median
+distributed-backdoor seeds had completed with exit 0. The frozen guard
+validates 8/96 cells with no errors: 40 rounds, 40 complete audits and zero
+stability failures per run. The latest attack cell (**39409.mgmt01**,
+distributed-backdoor seed 2002) has 86.31% clean accuracy and 0.50% ASR;
+seed 2001 retains 1.22% ASR.
 The earlier unknown-patch ASRs of 87.88%, 70.78% and 33.40% remain unchanged.
 These development values do not establish comparative efficacy.
 All 51 files per completed run were copied and hash-verified.
-After an empty-account check, **39409.mgmt01** (median /
-distributed_backdoor / seed 2002)
-was submitted once at 23:08:37 UTC and verified as the sole running account
+After an empty-account check, **39410.mgmt01** (median /
+distributed_backdoor / seed 2003)
+was submitted once at 00:10:00 UTC and verified as the sole running account
 job. The 96-cell
 development matrix is frozen in a new isolated clone; it is NOT a submitted
 batch. Hourly continuation permits at most one next job after validation.

@@ -305,3 +305,22 @@ After validation and an empty-account check, the guard submitted
 seed 2002, verified R and the only account job. Evidence is in
 `Rajanmani/output/TierGuard2_Mechanism_2026-09-27T230420Z`.
 No comparative inference, tuning, confirmation, retry or clone edit was made.
+
+## Checkpoint: 28 September 2026, 00:06 UTC
+
+Median distributed-backdoor seed 2002 (39409) completed F/exit 0,
+walltime 00:13:14. The frozen guard validates 8/96 cells with no errors.
+The new cell's accuracy is 0.8631, macro-F1 0.8611206785526117 and ASR
+0.005. These are descriptive development values; no method comparison is
+available yet. All prior outcomes, including adverse unknown-patch ASRs,
+remain unchanged. All 40 rounds, complete audits, zero stability failures,
+frozen inputs and paired partitions pass validation. The local copy passes
+all 51 file hashes, metric agreement and the frozen evaluation-cadence checks.
+
+Both new indices have SHA-256
+`fe491e4aa1d129d802e67e173beae025cc290b65aa9947221a72bdafd3314d29`.
+After validation and an empty-account check, the guard submitted
+**39410.mgmt01** once at 00:10:00 UTC for median / distributed_backdoor /
+seed 2003, verified R and the only account job. Evidence is in
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-28T000621Z`.
+No comparative inference, tuning, confirmation, retry or clone edit was made.
