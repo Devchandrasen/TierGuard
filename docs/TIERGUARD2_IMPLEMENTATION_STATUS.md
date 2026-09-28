@@ -22,20 +22,22 @@ FedAvg, each under clean training and three attacks with three development
 seeds. Its 96 cells use a new source snapshot and never permit more than one
 outstanding account job. Later source-audited baselines and confirmation
 remain outside this screen. The original panel is not overwritten or pooled.
-At the 01:07 UTC checkpoint on 28 September, 9/96 cells had completed
+At the 02:41 UTC checkpoint on 28 September, 10/96 cells had completed
 F/exit 0 and passed the frozen guard with no errors: three median clean seeds,
 all three median unknown-patch/model-replacement seeds and all three median
-distributed-backdoor seeds. Each has 40 rounds, complete audits and zero
-stability failures. The newest cell (39410, distributed-backdoor seed 2003)
-has clean accuracy 85.50% and ASR 0.41%; seeds 2001 and 2002 retain
-1.22% and 0.50% ASR, respectively.
+distributed-backdoor seeds, plus the first median optimized-trigger seed.
+Each has 40 rounds, complete audits and zero stability failures. The newest
+cell (39411, optimized-trigger seed 2001) has clean accuracy 85.02% and
+residual ASR 24.03%, retained without tuning or exclusion. The distributed
+seeds retain ASRs of 1.22%, 0.50% and 0.41%, respectively.
 The earlier unknown-patch ASRs of
 87.88%, 70.78% and 33.40% remain unchanged. These descriptive values,
-including the completed distributed-backdoor subset, do not establish a method comparison.
-After an empty-account check, **39411.mgmt01** was submitted once at
-01:11:36 UTC for median / defence_aware_optimized_trigger / seed 2001
-and verified as the sole running account job. Each completed run's 51 files
-were copied and hash-verified locally. Local verification respects the
+including one optimized-trigger seed, do not establish a method comparison.
+After refreshed empty-account, ledger and hash checks following the user's
+status query, **39413.mgmt01** was submitted once at 03:28:32 UTC for median /
+defence_aware_optimized_trigger / seed 2002 and verified as the sole running
+account job. All completed run files were copied and hash-verified locally;
+the newest optimized-trigger run contains 91 files. Local verification respects the
 frozen five-round evaluation cadence; both guard and local checks passed.
 The hourly follow-up now targets only this 96-cell
 phase; it was resumed after freezing the protocol and checking the account.

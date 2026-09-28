@@ -437,3 +437,30 @@ sole account job. Evidence, ledgers and scheduler snapshots are preserved in
 No comparative inference, retry, tuning, confirmation, clone edit or other
 submission occurred. This continues the existing 96-cell screen, not the
 earlier nine-cell candidate panel or another campaign.
+
+## Mechanism checkpoint: 28 September 2026, 02:41 UTC heartbeat
+
+39411 completed F/exit 0, walltime 00:13:51. The frozen guard validates
+10/96 cells with no errors and only 86 genuinely unattempted cells missing.
+Median / defence_aware_optimized_trigger / seed 2001 has accuracy 0.8502,
+macro-F1 0.8492562304825864 and residual ASR 0.24033333333333334. This
+adverse baseline outcome is retained without tuning, exclusion or replacement.
+It is one development seed, not a method comparison. All 40 rounds,
+complete audits, finite optimized-trigger artifacts, zero stability failures,
+frozen inputs and exact paired partitions pass validation. All 91 copied
+files pass SHA-256 checks; local metrics agree with the final/index record
+and frozen five-round evaluation cadence.
+
+Indices `fashion_mechanism_index_2026_09_28T024317_906547Z.json` (dry-run)
+and `fashion_mechanism_index_2026_09_28T032832_531465Z.json` (submission)
+share SHA-256
+`ff60b3d309b0db57490e10c7d7c7717f57bc162705a86ee7b75411fc44b89eff`.
+Following the user's intervening status query, the account queue, full ledger
+and approved manifest/guard hashes were checked again before continuation.
+After successful validation and an empty account, the guard submitted
+**39413.mgmt01** once at 03:28:32 UTC for median /
+defence_aware_optimized_trigger / seed 2002. It was verified R and the sole
+account job. Evidence, refreshed checks, ledgers and scheduler snapshots are
+preserved in `Rajanmani/output/TierGuard2_Mechanism_2026-09-28T024137Z`.
+No comparative inference, retry, tuning, confirmation, clone edit or other
+submission occurred for this heartbeat. The existing 96-cell order is unchanged.
