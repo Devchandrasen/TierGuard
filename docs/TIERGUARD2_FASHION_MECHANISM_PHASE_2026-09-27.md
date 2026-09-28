@@ -638,3 +638,38 @@ intent/submitted pair, reaching 42 rows. Evidence is in
 `Rajanmani/output/TierGuard2_Mechanism_2026-09-28T162535Z`.
 No retry, replacement, tuning, confirmation, clone edit or other submission
 was made. This remains the same bounded screen, not another campaign.
+
+## Checkpoint: 28 September 2026, 17:25 UTC heartbeat
+
+FLTrust distributed-backdoor seed 2003 (39540) completed F/exit 0,
+walltime 00:15:24. The frozen guard validates 21/96 cells with no errors:
+all median cells and all FLTrust clean/unknown-patch/distributed seeds.
+The index lists 75 genuinely unattempted cells before the next submission.
+The newest cell has clean-test accuracy under attack 0.7933, macro-F1
+0.7851625604766831 and residual ASR 0.006888888888888889.
+Seeds 2001 and 2002 retain accuracies 0.8072 and 0.8066, macro-F1
+0.8008264683142536 and 0.7924789504946977, and ASRs 0.025 and
+0.004333333333333333, respectively. These individual development values
+are not a comparative efficacy result or before/after repair evidence.
+All prior outcomes remain intact without tuning, exclusion or rerun.
+Clean-cell ASR remains undefined. This three-seed subset's completion
+does not end the authorized 96-cell screen.
+
+All 40 rounds, complete audits, zero stability failures, frozen inputs and
+paired partitions/attack instances pass validation. The local copy passes
+all 51 hashes, exact file membership, metric and ASR-alias agreement and
+frozen evaluation cadence. Its first-20 complete run records, including
+hashes, exactly match the previous timestamped index.
+Both new indices have SHA-256
+`c4ee957bd3b087a123acf390c7a6146091d49e42234cb8ab1336b7ac7a401ada`.
+Recorded-metric agreement does not independently recompute predictions.
+Scheduler walltime remains provenance, not a normalized speed comparison.
+
+After validation and refreshed empty-account, unchanged-ledger and approved
+hash checks, the guard submitted **39546.mgmt01** once at 17:31:36 UTC for
+fltrust / defence_aware_optimized_trigger / seed 2001, verified R,
+non-rerunnable and the sole account job. The previous ledger prefix gained
+exactly one intent/submitted pair, reaching 44 rows. Evidence is in
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-28T172536Z`.
+No retry, replacement, tuning, confirmation, clone edit or other submission
+was made. This remains the same bounded screen, not another campaign.

@@ -22,15 +22,17 @@ FedAvg, each under clean training and three attacks with three development
 seeds. Its 96 cells use a new source snapshot and never permit more than one
 outstanding account job. Later source-audited baselines and confirmation
 remain outside this screen. The original panel is not overwritten or pooled.
-At the 16:25 UTC heartbeat checkpoint on 28 September, 20/96 cells had completed
+At the 17:25 UTC heartbeat checkpoint on 28 September, 21/96 cells had completed
 F/exit 0 and passed the frozen guard with no errors: all 12 median cells
 and all three FLTrust clean seeds, all three unknown-patch seeds and
-distributed-backdoor seeds 2001 and 2002.
-The validation index lists 76 unattempted cells before the next submission.
+all three distributed-backdoor seeds.
+The validation index lists 75 unattempted cells before the next submission.
 Each completed cell has 40 rounds, complete audits and zero stability failures.
-The newest cell (39538, fltrust / distributed_backdoor / seed 2002)
-has clean-test accuracy under attack 80.66%, macro-F1 0.7924789504946977
-and residual ASR 0.43% (0.004333333333333333). Seed 2001 retains
+The newest cell (39540, fltrust / distributed_backdoor / seed 2003)
+has clean-test accuracy under attack 79.33%, macro-F1 0.7851625604766831
+and residual ASR 0.69% (0.006888888888888889). Seed 2002 retains
+80.66% accuracy, macro-F1 0.7924789504946977 and ASR
+0.43% (0.004333333333333333). Seed 2001 retains
 80.72% accuracy, macro-F1 0.8008264683142536 and ASR 2.50% (0.025).
 These are individual development seeds, not a method comparison.
 FLTrust unknown-patch seed 2003 retains accuracy 79.43%,
@@ -49,20 +51,22 @@ Unknown-patch ASRs of 87.88%, 70.78% and 33.40% remain unchanged.
 All outcomes are retained without tuning or exclusion. These descriptive
 development values do not establish a method comparison.
 After successful validation and refreshed empty-account, unchanged-ledger
-and approved hash checks, **39540.mgmt01** was submitted once at
-16:34:36 UTC for fltrust / distributed_backdoor / seed 2003
+and approved hash checks, **39546.mgmt01** was submitted once at
+17:31:36 UTC for fltrust / defence_aware_optimized_trigger / seed 2001
 and verified as the sole running account job. This is the next cell in the
-same bounded screen, not a new campaign. Completion of the three-seed
-FLTrust unknown-patch subset does not end the authorized 96-cell screen.
-The initial queue query encountered an SSH banner-exchange error. No guard
+same bounded screen, not a new campaign. Completion of the FLTrust
+distributed-backdoor subset does not end the authorized 96-cell screen.
+At the preceding 16:25 checkpoint, a queue query encountered an SSH
+banner-exchange error. No guard
 was invoked while status was uncertain; a fresh read-only query succeeded
 with exit 0 and proved the account empty before validation/submission.
-The failed query and successful checks are both preserved.
+The failed query and successful checks are both preserved in that earlier
+checkpoint. This checkpoint's queue, ledger and hash checks succeeded.
 All completed run files were copied and hash-verified locally; the newest
 FLTrust attack run contains 51 files. Local verification respects the frozen
 five-round evaluation cadence, both attack-ASR aliases and undefined clean ASR;
 both guard and local checks passed. Previous evidence and training clones
-remain unchanged. The complete first-19 run records, including their file
+remain unchanged. The complete first-20 run records, including their file
 hashes, exactly match the previous timestamped index.
 The hourly follow-up now targets only this 96-cell
 phase; it was resumed after freezing the protocol and checking the account.
