@@ -519,3 +519,34 @@ This continues the same frozen 96-cell screen, not a new campaign. Stop only
 after the full screen, or earlier on execution/provenance/validation uncertainty.
 No comparative inference, retry, tuning, confirmation, clone edit or other
 submission occurred for this heartbeat. All previous evidence is unchanged.
+
+## Mechanism checkpoint: 28 September 2026, 05:42 UTC heartbeat
+
+39420 completed F/exit 0, walltime 00:07:37. The frozen guard validates
+13/96 cells with no errors: all 12 median cells and fltrust / none / seed
+2001. Only 83 genuinely unattempted cells are missing before submission.
+The new clean cell has accuracy 0.8121 and macro-F1 0.8077987660174857.
+Clean ASR is undefined: null in the index/final JSON and blank throughout
+the CSV. These descriptive development values support no comparative inference.
+All prior outcomes, including adverse ASRs, remain unchanged; no tuning,
+exclusion or replacement is made.
+
+All 40 rounds, 40 complete audits, zero stability failures, frozen inputs,
+exact paired partitions and the full ledger/run prefix pass validation.
+The local copy independently passes all 51 file hashes, exact file membership,
+CSV/final/index agreement and the frozen five-round evaluation cadence.
+
+Indices `fashion_mechanism_index_2026_09_28T054537_391288Z.json` (dry-run)
+and `fashion_mechanism_index_2026_09_28T054821_487952Z.json` (submission)
+share SHA-256
+`d1026d0f7e037e9fe35a92f5e08dc3fb371dbb7c435bb6b18c612ceaefff5623`.
+After successful validation and refreshed empty-account, unchanged-ledger
+and approved manifest/guard-hash checks, the guard submitted **39430.mgmt01**
+once at 05:48:21 UTC for fltrust / none / seed 2002. It was verified R and
+the sole account job; the ledger gained one matching intent/submitted pair.
+
+Evidence, both copied indices, ledgers, hashes and scheduler snapshots are in
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-28T054258Z`.
+No retry, replacement, array, tuning, confirmation, clone edit, second
+submission or another campaign occurred. The same frozen 96-cell order
+remains in force; previous evidence is preserved.

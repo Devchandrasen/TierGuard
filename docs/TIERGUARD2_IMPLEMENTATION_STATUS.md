@@ -22,25 +22,26 @@ FedAvg, each under clean training and three attacks with three development
 seeds. Its 96 cells use a new source snapshot and never permit more than one
 outstanding account job. Later source-audited baselines and confirmation
 remain outside this screen. The original panel is not overwritten or pooled.
-At the 04:42 UTC checkpoint on 28 September, 12/96 cells had completed
-F/exit 0 and passed the frozen guard with no errors: all three median seeds
-under clean training and each of the three attack conditions. The median
-subset is complete; the validation index lists 84 unattempted cells before
-the next submission.
-Each has 40 rounds, complete audits and zero stability failures. The newest
-cell (39416, optimized-trigger seed 2003) has clean accuracy 85.20% and
-residual ASR 24.12%; seeds 2001 and 2002 retain 24.03% and 13.01% ASR.
-No tuning or exclusion was made. The distributed seeds retain ASRs of
-1.22%, 0.50% and 0.41%, respectively.
-The earlier unknown-patch ASRs of
-87.88%, 70.78% and 33.40% remain unchanged. These descriptive values,
-including all three optimized-trigger seeds, do not establish a method comparison.
-After successful validation and a refreshed empty-account check, **39420.mgmt01**
-was submitted once at 04:49:56 UTC for fltrust / none / seed 2001,
-the next cell in this same bounded screen, and verified as the sole running
-account job. All completed run files were copied and hash-verified locally;
-the newest optimized-trigger run contains 91 files. Local verification respects the
-frozen five-round evaluation cadence; both guard and local checks passed.
+At the 05:42 UTC checkpoint on 28 September, 13/96 cells had completed
+F/exit 0 and passed the frozen guard with no errors: all 12 median cells
+and the first FLTrust clean seed. The validation index lists 83 unattempted
+cells before the next submission. Each completed cell has 40 rounds,
+complete audits and zero stability failures. The newest cell (39420,
+fltrust / none / seed 2001) has clean accuracy 81.21% and macro-F1
+0.8077987660174857; clean ASR is undefined, not zero.
+The median optimized-trigger seeds retain ASRs of 24.03%, 13.01% and
+24.12%; the distributed seeds retain 1.22%, 0.50% and 0.41%, respectively.
+Unknown-patch ASRs of 87.88%, 70.78% and 33.40% remain unchanged.
+All outcomes are retained without tuning or exclusion. These descriptive
+development values do not establish a method comparison.
+After successful validation and refreshed empty-account, unchanged-ledger
+and approved hash checks, **39430.mgmt01** was submitted once at
+05:48:21 UTC for fltrust / none / seed 2002 and verified as the sole running
+account job. This is the next cell in the same bounded screen.
+All completed run files were copied and hash-verified locally; the newest
+clean FLTrust run contains 51 files. Local verification respects the frozen
+five-round evaluation cadence and undefined clean ASR; both guard and local
+checks passed. Previous evidence and training clones remain unchanged.
 The hourly follow-up now targets only this 96-cell
 phase; it was resumed after freezing the protocol and checking the account.
 The [serial execution policy](TIERGUARD2_SERIAL_EXECUTION.md) governs subsequent
