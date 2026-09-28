@@ -22,21 +22,22 @@ FedAvg, each under clean training and three attacks with three development
 seeds. Its 96 cells use a new source snapshot and never permit more than one
 outstanding account job. Later source-audited baselines and confirmation
 remain outside this screen. The original panel is not overwritten or pooled.
-At the 03:41 UTC checkpoint on 28 September, 11/96 cells had completed
-F/exit 0 and passed the frozen guard with no errors: three median clean seeds,
-all three median unknown-patch/model-replacement seeds and all three median
-distributed-backdoor seeds, plus the first two median optimized-trigger seeds.
+At the 04:42 UTC checkpoint on 28 September, 12/96 cells had completed
+F/exit 0 and passed the frozen guard with no errors: all three median seeds
+under clean training and each of the three attack conditions. The median
+subset is complete; the validation index lists 84 unattempted cells before
+the next submission.
 Each has 40 rounds, complete audits and zero stability failures. The newest
-cell (39413, optimized-trigger seed 2002) has clean accuracy 86.54% and
-residual ASR 13.01%; seed 2001 retains 24.03% ASR. No tuning or exclusion
-was made. The distributed
-seeds retain ASRs of 1.22%, 0.50% and 0.41%, respectively.
+cell (39416, optimized-trigger seed 2003) has clean accuracy 85.20% and
+residual ASR 24.12%; seeds 2001 and 2002 retain 24.03% and 13.01% ASR.
+No tuning or exclusion was made. The distributed seeds retain ASRs of
+1.22%, 0.50% and 0.41%, respectively.
 The earlier unknown-patch ASRs of
 87.88%, 70.78% and 33.40% remain unchanged. These descriptive values,
-including the two optimized-trigger seeds, do not establish a method comparison.
-After successful validation and an empty-account check, **39416.mgmt01**
-was submitted once at 03:45:07 UTC for median /
-defence_aware_optimized_trigger / seed 2003 and verified as the sole running
+including all three optimized-trigger seeds, do not establish a method comparison.
+After successful validation and a refreshed empty-account check, **39420.mgmt01**
+was submitted once at 04:49:56 UTC for fltrust / none / seed 2001,
+the next cell in this same bounded screen, and verified as the sole running
 account job. All completed run files were copied and hash-verified locally;
 the newest optimized-trigger run contains 91 files. Local verification respects the
 frozen five-round evaluation cadence; both guard and local checks passed.

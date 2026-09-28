@@ -489,3 +489,33 @@ account job. Evidence, ledgers and scheduler snapshots are preserved under
 `Rajanmani/output/TierGuard2_Mechanism_2026-09-28T034156Z`.
 No comparative inference, retry, tuning, confirmation, clone edit or other
 submission occurred for this heartbeat. The existing 96-cell order is unchanged.
+
+## Mechanism checkpoint: 28 September 2026, 04:42 UTC heartbeat
+
+39416 completed F/exit 0, walltime 00:12:08. The frozen guard validates
+12/96 cells with no errors and only 84 genuinely unattempted cells missing.
+The median subset is complete: three clean seeds and three seeds per attack.
+The newest optimized-trigger cell (seed 2003) has accuracy 0.8520,
+macro-F1 0.8497660839220946 and residual ASR 0.24122222222222223.
+Every outcome, including the earlier adverse unknown-patch and residual
+optimized-trigger ASRs, is retained without tuning, exclusion or replacement.
+The partial development screen supports no matched method comparison.
+All 40 rounds, complete audits, finite optimized artifacts, zero stability
+failures, frozen inputs and exact paired partitions pass validation. The
+local copy passes all 91 hashes, metric agreement and evaluation-cadence checks.
+
+Indices `fashion_mechanism_index_2026_09_28T044743_701882Z.json` (dry-run)
+and `fashion_mechanism_index_2026_09_28T044955_923496Z.json` (submission)
+share SHA-256
+`e2eba78b54be19a9dd1e1e08e89451dd8d7e3b19344c3130b32cf66e4f4a6b06`.
+After approved hash checks, successful validation and refreshed empty-account
+and unchanged-ledger checks, the guard submitted **39420.mgmt01** once at
+04:49:56 UTC for fltrust / none / seed 2001. It was verified R and the sole
+account job. The ledger contains one matching intent/submitted pair for it.
+
+Evidence, both indices, ledgers and scheduler snapshots are preserved under
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-28T044257Z`.
+This continues the same frozen 96-cell screen, not a new campaign. Stop only
+after the full screen, or earlier on execution/provenance/validation uncertainty.
+No comparative inference, retry, tuning, confirmation, clone edit or other
+submission occurred for this heartbeat. All previous evidence is unchanged.

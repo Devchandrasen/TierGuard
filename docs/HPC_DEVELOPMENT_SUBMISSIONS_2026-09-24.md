@@ -13,21 +13,20 @@ wall times are not an algorithmic efficiency comparison.
 
 **New authorized phase:** after the completed nine-run panel was reviewed,
 the user approved the [bounded matched-baseline/ablation screen](TIERGUARD2_FASHION_MECHANISM_PHASE_2026-09-27.md).
-At the 03:41 UTC checkpoint, the three median clean seeds, all three
-median unknown-patch/model-replacement seeds and all three median
-distributed-backdoor seeds, plus the first two median optimized-trigger seeds,
-had completed with exit 0. The frozen guard validates 11/96 cells with no
+At the 04:42 UTC checkpoint, all three median seeds under clean training
+and each of the three attack conditions had completed with exit 0. The
+median subset is complete; the frozen guard validates 12/96 cells with no
 errors: 40 rounds, 40 complete audits and zero stability failures per run.
-The latest attack cell (**39413.mgmt01**, optimized-trigger seed 2002)
-has 86.54% clean accuracy and residual ASR 13.01%, retained unchanged.
-Optimized-trigger seed 2001 retains 24.03% ASR.
+The latest attack cell (**39416.mgmt01**, optimized-trigger seed 2003)
+has 85.20% clean accuracy and residual ASR 24.12%, retained unchanged.
+Optimized-trigger seeds 2001 and 2002 retain 24.03% and 13.01% ASR.
 Distributed-backdoor seeds retain ASRs of 1.22%, 0.50% and 0.41%.
 The earlier unknown-patch ASRs of 87.88%, 70.78% and 33.40% remain unchanged.
 These development values do not establish comparative efficacy.
 All completed run files were copied and hash-verified; the newest
-optimized-trigger run contains 91 files. After validation and an empty-account
-check, **39416.mgmt01** (median / defence_aware_optimized_trigger / seed 2003)
-was submitted once at 03:45:07 UTC and verified as the sole running account
+optimized-trigger run contains 91 files. After validation and a refreshed
+empty-account check, **39420.mgmt01** (fltrust / none / seed 2001)
+was submitted once at 04:49:56 UTC and verified as the sole running account
 job. The 96-cell
 development matrix is frozen in a new isolated clone; it is NOT a submitted
 batch. Hourly continuation permits at most one next job after validation.
