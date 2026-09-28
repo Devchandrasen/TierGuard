@@ -22,20 +22,21 @@ FedAvg, each under clean training and three attacks with three development
 seeds. Its 96 cells use a new source snapshot and never permit more than one
 outstanding account job. Later source-audited baselines and confirmation
 remain outside this screen. The original panel is not overwritten or pooled.
-At the 02:41 UTC checkpoint on 28 September, 10/96 cells had completed
+At the 03:41 UTC checkpoint on 28 September, 11/96 cells had completed
 F/exit 0 and passed the frozen guard with no errors: three median clean seeds,
 all three median unknown-patch/model-replacement seeds and all three median
-distributed-backdoor seeds, plus the first median optimized-trigger seed.
+distributed-backdoor seeds, plus the first two median optimized-trigger seeds.
 Each has 40 rounds, complete audits and zero stability failures. The newest
-cell (39411, optimized-trigger seed 2001) has clean accuracy 85.02% and
-residual ASR 24.03%, retained without tuning or exclusion. The distributed
+cell (39413, optimized-trigger seed 2002) has clean accuracy 86.54% and
+residual ASR 13.01%; seed 2001 retains 24.03% ASR. No tuning or exclusion
+was made. The distributed
 seeds retain ASRs of 1.22%, 0.50% and 0.41%, respectively.
 The earlier unknown-patch ASRs of
 87.88%, 70.78% and 33.40% remain unchanged. These descriptive values,
-including one optimized-trigger seed, do not establish a method comparison.
-After refreshed empty-account, ledger and hash checks following the user's
-status query, **39413.mgmt01** was submitted once at 03:28:32 UTC for median /
-defence_aware_optimized_trigger / seed 2002 and verified as the sole running
+including the two optimized-trigger seeds, do not establish a method comparison.
+After successful validation and an empty-account check, **39416.mgmt01**
+was submitted once at 03:45:07 UTC for median /
+defence_aware_optimized_trigger / seed 2003 and verified as the sole running
 account job. All completed run files were copied and hash-verified locally;
 the newest optimized-trigger run contains 91 files. Local verification respects the
 frozen five-round evaluation cadence; both guard and local checks passed.

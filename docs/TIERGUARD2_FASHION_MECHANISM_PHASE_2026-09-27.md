@@ -367,3 +367,24 @@ defence_aware_optimized_trigger / seed 2002, verified R and the only account
 job. Evidence is in
 `Rajanmani/output/TierGuard2_Mechanism_2026-09-28T024137Z`.
 No comparative inference, tuning, confirmation, retry or clone edit was made.
+
+## Checkpoint: 28 September 2026, 03:41 UTC heartbeat
+
+Median optimized-trigger seed 2002 (39413) completed F/exit 0,
+walltime 00:13:00. The frozen guard validates 11/96 cells with no errors.
+Accuracy is 0.8654, macro-F1 0.8650128130882108 and residual ASR
+0.13011111111111112. This result and seed 2001's 24.03% ASR are retained
+without tuning or exclusion. The partial development panel supports no
+comparative inference. All 40 rounds, complete audits, finite optimized
+artifacts, zero stability failures, frozen inputs and paired partitions pass
+validation. The local copy passes all 91 hashes, metric agreement and
+frozen evaluation-cadence checks.
+
+Both new indices have SHA-256
+`d6c30ecadbd0053a7ddfb83aa3d7ab71205d16f034156e0826583a8d76b6b7a5`.
+After successful validation and an empty-account check, the guard submitted
+**39416.mgmt01** once at 03:45:07 UTC for median /
+defence_aware_optimized_trigger / seed 2003, verified R and the only account
+job. Evidence is in
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-28T034156Z`.
+No comparative inference, tuning, confirmation, retry or clone edit was made.
