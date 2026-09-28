@@ -22,17 +22,18 @@ FedAvg, each under clean training and three attacks with three development
 seeds. Its 96 cells use a new source snapshot and never permit more than one
 outstanding account job. Later source-audited baselines and confirmation
 remain outside this screen. The original panel is not overwritten or pooled.
-At the 00:06 UTC checkpoint on 28 September, 8/96 cells had completed
+At the 01:07 UTC checkpoint on 28 September, 9/96 cells had completed
 F/exit 0 and passed the frozen guard with no errors: three median clean seeds,
-all three median unknown-patch/model-replacement seeds and the first two median
+all three median unknown-patch/model-replacement seeds and all three median
 distributed-backdoor seeds. Each has 40 rounds, complete audits and zero
-stability failures. The newest cell (39409, distributed-backdoor seed 2002)
-has clean accuracy 86.31% and ASR 0.50%; seed 2001 retains 1.22% ASR.
+stability failures. The newest cell (39410, distributed-backdoor seed 2003)
+has clean accuracy 85.50% and ASR 0.41%; seeds 2001 and 2002 retain
+1.22% and 0.50% ASR, respectively.
 The earlier unknown-patch ASRs of
 87.88%, 70.78% and 33.40% remain unchanged. These descriptive values,
-including the two distributed-backdoor seeds, do not establish a method comparison.
-After an empty-account check, **39410.mgmt01** was submitted once at
-00:10:00 UTC for median / distributed_backdoor / seed 2003
+including the completed distributed-backdoor subset, do not establish a method comparison.
+After an empty-account check, **39411.mgmt01** was submitted once at
+01:11:36 UTC for median / defence_aware_optimized_trigger / seed 2001
 and verified as the sole running account job. Each completed run's 51 files
 were copied and hash-verified locally. Local verification respects the
 frozen five-round evaluation cadence; both guard and local checks passed.
