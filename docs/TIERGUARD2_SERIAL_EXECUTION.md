@@ -1407,3 +1407,54 @@ Evidence and validation are preserved in
 No second submission, retry, replacement, skip, tuning, confirmation,
 array, training-clone edit or another campaign occurred. Continue only
 the same frozen 96-cell screen; prior evidence is unchanged.
+
+## Checkpoint: 29 September 2026, 07:03 UTC heartbeat
+
+RFA optimized-trigger seed 2001 (39583) completed F/exit 0, run_count 1,
+walltime 00:08:20. The guard validates 34/96 cells with no errors:
+all 12 median cells, all 12 FLTrust cells, all three RFA clean,
+unknown-patch and distributed-backdoor seeds, and the first RFA optimized
+seed. Only 62 genuinely unattempted suffix cells are missing before
+submission. The full screen is not complete.
+
+The newest result has clean-test accuracy under attack 0.8768 (87.68%),
+macro-F1 0.8777828838556347 and adverse ASR 0.9947777777777778 (99.48%).
+Recorded ASR increases from 0.4777777777777778 at round 5 to
+0.9502222222222222 at round 10; it is 0.9867777777777778 at round 35
+and 0.9947777777777778 at round 40. All eight evaluation points are saved.
+No result is excluded, tuned or replaced; earlier adverse outcomes
+are unchanged. No partial-panel inference, baseline selection, superiority,
+novelty or submission-readiness claim is made.
+
+All 40 rounds, complete audits, finite populated metrics, zero stability
+failures, frozen inputs, exact paired partitions and ledger/run prefix pass.
+All 91 copied files match exact membership and hashes, including 40 audit
+records and 40 finite optimized-trigger artifacts. Final/index/CSV metrics,
+both ASR aliases and the frozen five-round evaluation cadence agree.
+The first 33 complete run objects/hashes match the preceding hash-verified
+index. The saved test contains 10,000 unique indices. This does not
+independently recompute predictions or the exact ASR numerator/denominator.
+Clean ASR stays null/blank, never zero. The data-validation skill guided
+completeness, deduplication, cadence/null handling, metric spot-checks and
+adverse retention; the report states development-only caveats.
+
+Dry-run index `fashion_mechanism_index_2026_09_29T070835_683013Z.json`
+and submission index `fashion_mechanism_index_2026_09_29T071210_037403Z.json`
+are byte-identical, SHA-256
+`0d5eae751e6b181235007ca798379572ced33af357aaf46f090044550c8ed810`.
+After refreshed empty-account, unchanged-ledger and approved hash checks,
+the guard submitted **39595.mgmt01** once at 07:12:10 UTC for
+rfa / defence_aware_optimized_trigger / seed 2002. It was verified R,
+non-rerunnable and the sole account job. Exactly one matching
+intent/submitted pair extends the ledger to 70 rows; all prior 68 are
+unchanged. Sorted-key and independent Python fieldwise checks pass.
+The new job is an attempt, not a validated result.
+A local documentation patch initially failed a context match and made no edits;
+its corrected patch applies successfully. This saved diagnostic is not a
+training, guard, index, ledger or submission failure.
+
+Evidence and validation are preserved in
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-29T070345Z`.
+No second submission, retry, replacement, skip, tuning, confirmation,
+array, training-clone edit or another campaign occurred. Continue only
+the same frozen 96-cell screen; prior evidence is unchanged.
