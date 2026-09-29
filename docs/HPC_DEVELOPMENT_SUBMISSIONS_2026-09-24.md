@@ -13,14 +13,22 @@ wall times are not an algorithmic efficiency comparison.
 
 **New authorized phase:** after the completed nine-run panel was reviewed,
 the user approved the [bounded matched-baseline/ablation screen](TIERGUARD2_FASHION_MECHANISM_PHASE_2026-09-27.md).
-At the 08:03 UTC heartbeat checkpoint, all 12 median cells, all 12 FLTrust
+At the 09:04 UTC heartbeat checkpoint, all 12 median cells, all 12 FLTrust
 cells, all three RFA clean seeds, all three unknown-patch seeds and RFA
-distributed-backdoor seeds 2001--2003, plus optimized-trigger seeds 2001/2002,
-had completed with exit 0. The guard validates 35/96 cells
+distributed-backdoor and optimized-trigger seeds 2001--2003
+had completed with exit 0. The guard validates 36/96 cells
 with no errors: 40 rounds, 40 complete audits and zero stability failures
-per run. The index lists 61 genuinely unattempted cells before submission.
-The latest cell (**39595.mgmt01**, rfa / defence_aware_optimized_trigger /
-seed 2002) has clean-test accuracy under attack 88.54% (0.8854), macro-F1
+per run. All three 12-cell baseline subsets are complete, not the full screen.
+The index lists 60 genuinely unattempted cells before any next submission.
+The latest cell (**39607.mgmt01**, rfa / defence_aware_optimized_trigger /
+seed 2003) has clean-test accuracy under attack 87.92% (0.8792), macro-F1
+0.8767053758248743 and adverse ASR 71.44% (0.7144444444444444).
+Recorded ASR is 0.10288888888888889 at round 5, 0.5587777777777778 at round 10,
+0.6491111111111111 at round 35 and 0.7144444444444444 at round 40.
+Final/index/CSV metrics and both aliases agree; all eight evaluation points
+and 40 finite trigger artifacts are saved without tuning or rerun.
+Optimized-trigger seed 2002 (**39595.mgmt01**) retains clean-test accuracy
+under attack 88.54% (0.8854), macro-F1
 0.883715817471517 and adverse ASR 70.54% (0.7054444444444444).
 Recorded ASR is 0.024666666666666667 at round 5, 0.101 at round 10,
 0.49655555555555553 at round 35 and 0.7054444444444444 at round 40.
@@ -92,15 +100,22 @@ These development values do not establish comparative efficacy. No tuning
 or exclusion was made. All completed run files were copied and hash-verified;
 the newest RFA optimized-trigger run contains 91 files, including 40 audit
 records and 40 finite trigger artifacts.
-Earlier optimized-trigger records remain intact. After validation and refreshed
-empty-account, unchanged-ledger and approved hash checks, **39607.mgmt01**
-(rfa / defence_aware_optimized_trigger / seed 2003) was submitted once
-at 08:07:51 UTC and
-verified as the sole running account job. The 96-cell
+Earlier optimized-trigger records remain intact. At the preceding checkpoint,
+**39607.mgmt01** (rfa / defence_aware_optimized_trigger / seed 2003) was
+submitted once at 08:07:51 UTC and verified as the sole running job; it is
+now complete and validated. The original external copy-check script in this
+heartbeat failed to parse a diagnostic output key with a missing closing quote.
+Its original bytes/error are preserved. Corrected read-only checker
+verify_copy_v2.py passes; no training source, record or pinned guard failed
+or was edited. No --submit invocation was made in this heartbeat after that
+local error. The end-of-turn account query is empty and the ledger unchanged.
+The next unattempted cell is clip_only / none / seed 2001, requiring fresh
+account, ledger, pin and guard validation checks on a later heartbeat.
+The 96-cell
 development matrix is frozen in a new isolated clone; it is NOT a submitted
 batch. Hourly continuation permits at most one next job after validation.
-Completion of the median/FLTrust and RFA clean/unknown-patch/distributed subsets does not end this phase.
-The first-34 complete run records and their hashes match the prior index exactly.
+Completion of the median/FLTrust/RFA subsets does not end this phase.
+The first-35 complete run records and their hashes match the prior index exactly.
 The earlier 04:03 boundary-value review resolved local source-path and optional-null
 metadata inspection diagnostics; frozen-source inspection and direct non-null
 counts pass. They were not training/guard/index failures.
@@ -112,9 +127,10 @@ At the earlier 28 September, 22:27 checkpoint, a local JSON-key-order comparison
 ledger mismatch. Sorted-key and independent Python dictionary checks confirm
 identical fields and exactly one new submission pair. Its diagnostic remains
 in the original checkpoint. Current fieldwise checks pass, with 72 ledger rows
-and all prior 70 unchanged; no scheduler/training attempt failed or was retried.
+all unchanged from the preceding checkpoint; no new submission pair was added.
+No scheduler/training attempt failed or was retried.
 The current evidence is preserved in
-`Rajanmani/output/TierGuard2_Mechanism_2026-09-29T080346Z`.
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-29T090417Z`.
 At an earlier 16:25 checkpoint, a queue query failed during SSH banner
 exchange, so no guard was
 invoked until a fresh read-only query returned exit 0 and an empty account.

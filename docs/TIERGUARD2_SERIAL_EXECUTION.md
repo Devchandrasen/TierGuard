@@ -1511,3 +1511,54 @@ read-only checker results and snapshots are preserved in
 No second submission, retry, replacement, skip, tuning, confirmation,
 array, training-clone edit or another campaign occurred. Continue only
 the same frozen 96-cell screen; prior evidence is unchanged.
+
+## Checkpoint: 29 September 2026, 09:04 UTC heartbeat
+
+RFA optimized-trigger seed 2003 (39607) completed F/exit 0, run_count 1,
+walltime 00:03:48. The hash-pinned guard validates 36/96 cells with zero
+errors: every median, FLTrust and RFA cell. Only 60 genuinely unattempted
+suffix cells remain. The RFA subset is complete, not the 96-cell screen.
+The next frozen unattempted cell is clip_only / none / seed 2001.
+
+The newest adverse result has ASR 0.7144444444444444 (71.44%), clean-test
+accuracy under attack 0.8792 (87.92%) and macro-F1 0.8767053758248743.
+Recorded ASR is 0.10288888888888889 at round 5, 0.5587777777777778 at
+round 10, 0.6491111111111111 at round 35 and 0.7144444444444444 at round 40;
+all eight evaluation points are preserved. Optimized seeds 2001/2002 retain
+ASRs 0.9947777777777778 / 0.7054444444444444, accuracies 0.8768 / 0.8854
+and macro-F1 0.8777828838556347 / 0.883715817471517. All earlier outcomes
+remain unchanged without tuning, exclusion or rerun. Different seeds are
+not repair evidence; no partial-panel inference, strongest-baseline
+selection, novelty, superiority or submission-readiness claim is made.
+
+Source/configuration/environment/data, exact paired partitions, 40 rounds,
+complete audits, finite populated metrics, stability failures zero and the
+ledger/run prefix pass the guard. All 91 copied raw files match exact
+membership and hashes, including 40 audits and 40 finite optimized-trigger
+artifacts. Final/index/CSV metrics, both ASR aliases and five-round cadence
+agree. The first 35 complete run objects/hashes match the preceding
+hash-verified index. The saved test has 10,000 unique indices. Recorded
+agreement does not independently recompute predictions or the exact ASR
+numerator/denominator; clean ASR remains undefined/null/blank.
+
+The original external copy-check script failed to parse because one output
+key lacked a closing quote. The original checker and failure diagnostic are
+preserved. Corrected read-only verify_copy_v2.py passes every data/integrity
+assertion. No training source, run record or pinned guard failed or was
+edited. To respect the stop-on-error rule, no --submit invocation was made
+in this heartbeat. The end-of-turn account query returns empty with exit 0;
+all 72 ledger rows exactly match the preceding checkpoint. This local
+checker issue is resolved; the next authorized cell remains genuinely
+unattempted and requires fresh scheduler/ledger/pins/guard validation in a
+subsequent heartbeat. No training retry, replacement or skip occurred.
+
+The new index `fashion_mechanism_index_2026_09_29T090620_470188Z.json`
+has SHA-256
+`d672b1d1138905a81acc81bdf2760d6243ea7ef2eb064139d7823ee4c08cd9f0`.
+Evidence, scheduler log, manifest, copied records, checker versions/results,
+snapshots and validation report are preserved in
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-29T090417Z`.
+The data-validation skill guided completeness, deduplication, null/cadence
+handling, metric spot-checks, adverse retention and confidence caveats.
+Continue only the same 96-cell development screen; no tuning, confirmation,
+new campaign, training-clone edit, DOI or additional submission occurred.

@@ -22,15 +22,22 @@ FedAvg, each under clean training and three attacks with three development
 seeds. Its 96 cells use a new source snapshot and never permit more than one
 outstanding account job. Later source-audited baselines and confirmation
 remain outside this screen. The original panel is not overwritten or pooled.
-At the 08:03 UTC heartbeat checkpoint on 29 September, 35/96 cells had completed
+At the 09:04 UTC heartbeat checkpoint on 29 September, 36/96 cells had completed
 F/exit 0 and passed the frozen guard with no errors: all 12 median cells,
 all 12 FLTrust cells, all three RFA clean seeds, all three RFA unknown-patch seeds
-and all three RFA distributed-backdoor seeds, plus optimized-trigger seeds 2001/2002.
-The median/FLTrust and RFA clean/unknown-patch/distributed subsets are complete;
-the index lists 61 genuinely unattempted cells before the next submission.
+and all three RFA distributed-backdoor and optimized-trigger seeds.
+All three 12-cell baseline subsets are complete, not the 96-cell screen;
+the index lists 60 genuinely unattempted cells before any next submission.
 Each completed cell has 40 rounds, complete audits and zero stability failures.
-The newest cell (39595, rfa / defence_aware_optimized_trigger / seed 2002)
-has clean-test accuracy under attack 88.54% (0.8854), macro-F1
+The newest cell (39607, rfa / defence_aware_optimized_trigger / seed 2003)
+has clean-test accuracy under attack 87.92% (0.8792), macro-F1
+0.8767053758248743 and adverse ASR 71.44% (0.7144444444444444).
+Recorded ASR is 0.10288888888888889 at round 5, 0.5587777777777778 at round 10,
+0.6491111111111111 at round 35 and 0.7144444444444444 at round 40.
+Final/index/CSV metrics and both aliases agree; all eight evaluation points
+and 40 finite optimized-trigger artifacts are saved without tuning or rerun.
+Optimized-trigger seed 2002 (39595) retains
+clean-test accuracy under attack 88.54% (0.8854), macro-F1
 0.883715817471517 and adverse ASR 70.54% (0.7054444444444444).
 Recorded ASR is 0.024666666666666667 at round 5, 0.101 at round 10,
 0.49655555555555553 at round 35 and 0.7054444444444444 at round 40.
@@ -106,12 +113,19 @@ The median optimized-trigger seeds retain ASRs of 24.03%, 13.01% and
 Unknown-patch ASRs of 87.88%, 70.78% and 33.40% remain unchanged.
 All outcomes are retained without tuning or exclusion. These descriptive
 development values do not establish a method comparison.
-After successful validation and refreshed empty-account, unchanged-ledger
-and approved hash checks, **39607.mgmt01** was submitted once at
+At the previous checkpoint, **39607.mgmt01** was submitted once at
 08:07:51 UTC for rfa / defence_aware_optimized_trigger / seed 2003
-and verified as the sole running account job. This is the next cell in the
-same bounded screen, not a new campaign. Completion of the median and
-FLTrust subsets or RFA clean/unknown-patch/distributed subsets does not end the 96-cell screen.
+and verified as the sole running job; it is now complete and validated.
+This checkpoint's original external copy-check script failed to parse because
+a diagnostic output key lacked one closing quote. Its original bytes/error
+are preserved. Corrected read-only checker verify_copy_v2.py passes all data
+assertions; no training source, record or pinned guard failed or was edited.
+No --submit invocation was made after that local error in this heartbeat.
+The end-of-turn account query is empty and the ledger unchanged.
+The next unattempted cell is clip_only / none / seed 2001; a later heartbeat
+must check fresh account state, ledger, pins and guard validation first.
+This is within the same 96-cell screen, not a new campaign. Completion of
+the median/FLTrust/RFA subsets does not end that screen.
 At an earlier 16:25 checkpoint, a queue query encountered an SSH
 banner-exchange error. No guard
 was invoked while status was uncertain; a fresh read-only query succeeded
@@ -124,7 +138,7 @@ RFA optimized-trigger run contains 91 files, including 40 audit records and
 trigger records remain intact. Local verification respects the frozen
 five-round evaluation cadence, both attack-ASR aliases and undefined clean ASR;
 both guard and local checks passed. Previous evidence and training clones
-remain unchanged. The complete first-34 run records, including their file
+remain unchanged. The complete first-35 run records, including their file
 hashes, exactly match the previous timestamped index.
 The earlier 04:03 boundary review resolved local source-path and optional-null
 metadata inspection diagnostics through actual file inventory, frozen-source
@@ -138,9 +152,10 @@ ledger mismatch. Sorted-key and independent Python dictionary checks confirm
 identical fields and exactly one new submission pair; the diagnostic is saved.
 That diagnostic is retained in its original checkpoint. Current fieldwise checks
 pass without discrepancy; no scheduler/training attempt failed or was retried.
-Current post-submission checks confirm 72 ledger rows, all prior 70 unchanged
-and exactly one new intent/submitted pair. Evidence is preserved in
-`Rajanmani/output/TierGuard2_Mechanism_2026-09-29T080346Z`.
+Current end-state checks confirm 72 ledger rows, all unchanged from the
+preceding checkpoint; no new intent/submitted pair was added this heartbeat.
+Evidence and the resolved checker diagnostic are preserved in
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-29T090417Z`.
 The hourly follow-up now targets only this 96-cell
 phase; it was resumed after freezing the protocol and checking the account.
 The [serial execution policy](TIERGUARD2_SERIAL_EXECUTION.md) governs subsequent
