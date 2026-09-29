@@ -1171,3 +1171,53 @@ Evidence and validation are preserved in
 No second submission, retry, replacement, skip, tuning, confirmation,
 array, training-clone edit or another campaign occurred. Continue only
 the same frozen 96-cell screen; prior evidence is unchanged.
+
+
+## Checkpoint: 29 September 2026, 06:03 UTC heartbeat
+
+RFA distributed-backdoor seed 2003 (39566) completed F/exit 0, run_count 1,
+walltime 00:08:00. The guard validates 33/96 cells with no errors:
+all 12 median cells, all 12 FLTrust cells and three RFA seeds in each of
+clean, unknown-patch and distributed-backdoor conditions. Only 63 genuinely unattempted
+suffix cells are missing before submission. The RFA distributed subset
+is complete, not the 96-cell screen. Its newest result has clean-test
+accuracy under attack 0.8756, macro-F1 0.8748556960047212 and adverse
+ASR 1.0 (100%). Distributed seeds 2001/2002 retain ASRs 100%/99.18%,
+accuracies 0.8795/0.8879 and macro-F1 0.8799075719382156/0.886147613311708.
+All adverse outcomes remain unchanged, without tuning, exclusion or rerun.
+No partial-panel inference, strongest-baseline selection, superiority,
+novelty or submission-readiness claim is made.
+
+All 40 rounds, complete audits, finite populated metrics, zero stability
+failures, frozen inputs, exact paired partitions and ledger/run prefix pass.
+The copied run passes all 51 hashes, exact membership, final/index/CSV and
+both ASR-alias agreement and the frozen five-round evaluation cadence.
+Its first 32 complete run objects/hashes equal the prior index, whose hash
+is checked. The boundary review finds ASR 0.0035555555555555557 at round 5
+and 1.0 at rounds 35/40. Exact frozen source excludes true-target examples,
+evaluates all other classes and returns zero for an empty loader, not one.
+The resolved target is 5; the test has 10,000 unique indices. This does not
+independently recompute predictions or the exact ASR numerator/denominator.
+Clean ASR remains null/blank, never zero. Earlier diagnostics stay preserved;
+no current validation discrepancy exists. The data-validation skill guided
+completeness, deduplication, null/cadence handling, boundary checks and adverse
+retention, with development-only caveats.
+
+Indices `fashion_mechanism_index_2026_09_29T060624_564025Z.json` (dry-run)
+and `fashion_mechanism_index_2026_09_29T060943_642021Z.json` (submission)
+are byte-identical, SHA-256
+`a33a19f069f249064d743e4b5bd8ed1ce6b1b0d337140b79c5f2a489c98bccb5`.
+After refreshed empty-account, unchanged-ledger and approved pin checks,
+the guard submitted **39583.mgmt01** once at 06:09:43 UTC for
+rfa / defence_aware_optimized_trigger / seed 2001. It was verified R,
+non-rerunnable and the sole account job. The original post-submission
+qselect yielded while pending, then completed exit 0; it was resumed,
+not reissued or retried. Exactly one matching intent/submitted pair extends
+the ledger to 68 rows; all prior 66 are unchanged. Sorted-key and independent
+Python fieldwise checks pass. The new job is not a validated result.
+
+Evidence and validation are preserved in
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-29T060344Z`.
+No second submission, retry, replacement, skip, tuning, confirmation,
+array, training-clone edit or another campaign occurred. Continue only
+the same frozen 96-cell screen; prior evidence is unchanged.

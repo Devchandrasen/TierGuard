@@ -13,14 +13,19 @@ wall times are not an algorithmic efficiency comparison.
 
 **New authorized phase:** after the completed nine-run panel was reviewed,
 the user approved the [bounded matched-baseline/ablation screen](TIERGUARD2_FASHION_MECHANISM_PHASE_2026-09-27.md).
-At the 05:03 UTC heartbeat checkpoint, all 12 median cells, all 12 FLTrust
+At the 06:03 UTC heartbeat checkpoint, all 12 median cells, all 12 FLTrust
 cells, all three RFA clean seeds, all three unknown-patch seeds and RFA
-distributed-backdoor seeds 2001/2002 had completed with exit 0. The guard validates 32/96 cells
+distributed-backdoor seeds 2001--2003 had completed with exit 0. The guard validates 33/96 cells
 with no errors: 40 rounds, 40 complete audits and zero stability failures
-per run. The index lists 64 genuinely unattempted cells before submission.
-The latest cell (**39560.mgmt01**, rfa / distributed_backdoor /
-seed 2002) has clean-test accuracy under attack 88.79% (0.8879), macro-F1
-0.886147613311708 and adverse ASR 99.18% (0.9917777777777778).
+per run. The index lists 63 genuinely unattempted cells before submission.
+The latest cell (**39566.mgmt01**, rfa / distributed_backdoor /
+seed 2003) has clean-test accuracy under attack 87.56% (0.8756), macro-F1
+0.8748556960047212 and adverse ASR 100% (1.0).
+ASR was 0.0035555555555555557 at round 5 and 1.0 at rounds 35/40;
+the current exact-frozen-source boundary review confirms true-target exclusion,
+all remaining classes, target label 5 and an empty-loader ASR of zero.
+Distributed-backdoor seed 2002 retains accuracy 88.79% (0.8879),
+macro-F1 0.886147613311708 and adverse ASR 99.18% (0.9917777777777778).
 Final/index/CSV metrics and both ASR aliases agree. Distributed-backdoor
 seed 2001 retains accuracy 87.95% (0.8795), macro-F1 0.8799075719382156
 and adverse ASR 100% (1.0). Its earlier frozen-source boundary review remains
@@ -70,14 +75,14 @@ These development values do not establish comparative efficacy. No tuning
 or exclusion was made. All completed run files were copied and hash-verified;
 the newest RFA distributed-backdoor run contains 51 files, including 40 audit records.
 Earlier optimized-trigger records remain intact. After validation and refreshed
-empty-account, unchanged-ledger and approved hash checks, **39566.mgmt01**
-(rfa / distributed_backdoor / seed 2003) was submitted once
-at 05:08:39 UTC and
+empty-account, unchanged-ledger and approved hash checks, **39583.mgmt01**
+(rfa / defence_aware_optimized_trigger / seed 2001) was submitted once
+at 06:09:43 UTC and
 verified as the sole running account job. The 96-cell
 development matrix is frozen in a new isolated clone; it is NOT a submitted
 batch. Hourly continuation permits at most one next job after validation.
-Completion of the median/FLTrust and RFA clean/unknown-patch subsets does not end this phase.
-The first-31 complete run records and their hashes match the prior index exactly.
+Completion of the median/FLTrust and RFA clean/unknown-patch/distributed subsets does not end this phase.
+The first-32 complete run records and their hashes match the prior index exactly.
 The earlier 04:03 boundary-value review resolved local source-path and optional-null
 metadata inspection diagnostics; frozen-source inspection and direct non-null
 counts pass. They were not training/guard/index failures.
@@ -88,10 +93,10 @@ or retry occurred. Current projection and file checks pass without discrepancy.
 At the earlier 28 September, 22:27 checkpoint, a local JSON-key-order comparison gave a false
 ledger mismatch. Sorted-key and independent Python dictionary checks confirm
 identical fields and exactly one new submission pair. Its diagnostic remains
-in the original checkpoint. Current fieldwise checks pass, with 66 ledger rows
-and all prior 64 unchanged; no scheduler/training attempt failed or was retried.
+in the original checkpoint. Current fieldwise checks pass, with 68 ledger rows
+and all prior 66 unchanged; no scheduler/training attempt failed or was retried.
 The current evidence is preserved in
-`Rajanmani/output/TierGuard2_Mechanism_2026-09-29T050311Z`.
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-29T060344Z`.
 At an earlier 16:25 checkpoint, a queue query failed during SSH banner
 exchange, so no guard was
 invoked until a fresh read-only query returned exit 0 and an empty account.
