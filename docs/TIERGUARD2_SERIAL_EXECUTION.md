@@ -1217,3 +1217,47 @@ Evidence and validation are preserved in
 No second submission, retry, replacement, skip, tuning, confirmation,
 array, training-clone edit or another campaign occurred. Continue only
 the same frozen 96-cell screen; prior evidence is unchanged.
+
+
+## Checkpoint: 29 September 2026, 02:32 UTC heartbeat
+
+RFA unknown-patch/model-replacement seed 2003 (39558) completed F/exit 0,
+walltime 00:07:11. The guard validates 30/96 cells with no errors:
+all 12 median cells, all 12 FLTrust cells, three RFA clean cells and
+three RFA unknown-patch cells. Only 66 genuinely unattempted suffix cells
+are missing before submission. The newest cell has clean-test accuracy
+under attack 0.881, macro-F1 0.8802445937287672 and adverse ASR
+0.9486666666666667 (94.87%). Seeds 2001/2002 retain adverse ASRs
+99.86%/99.92%. All three baseline results are unchanged, without tuning,
+exclusion or rerun. They do not establish TierGuard 2 superiority.
+Clean-cell ASR remains null/blank, never zero; no partial-panel inference
+or strongest-baseline selection is made. Subset completion does not end
+the authorized 96-cell screen.
+
+All 40 rounds, complete audits, finite populated metrics, zero stability
+failures, frozen inputs, exact paired partitions and ledger/run prefix pass.
+The local copy passes all 51 hashes, exact membership, final/index/CSV and
+ASR-alias agreement and the frozen five-round evaluation cadence. The first
+29 complete run objects/hashes equal the prior index, whose hash is checked.
+The bounded index projection and independent file checks pass; there is no
+current discrepancy. Earlier local diagnostics remain in their checkpoints.
+Recorded agreement does not independently recompute predictions or ASR
+denominators. The data-validation skill guided completeness, deduplication,
+null/magnitude handling, adverse retention and development-only confidence.
+
+Indices `fashion_mechanism_index_2026_09_29T023456_385562Z.json` (dry-run)
+and `fashion_mechanism_index_2026_09_29T023746_152559Z.json` (submission)
+share SHA-256
+`91626aa7b1d797f292e69cceec7003872ae74b704d907ed3fac05566ca095b7e`.
+After refreshed empty-account, unchanged-ledger and approved pin checks,
+the guard submitted **39559.mgmt01** once at 02:37:46 UTC for
+rfa / distributed_backdoor / seed 2001. It was verified R, non-rerunnable
+and the sole account job. Exactly one intent/submitted pair was added
+(62 rows), with all 60 prior rows unchanged. Sorted-key and independent
+Python fieldwise checks pass. The new cell is not a validated result.
+
+Evidence and validation are preserved in
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-29T023245Z`.
+No second submission, retry, replacement, skip, tuning, confirmation,
+array, training-clone edit or another campaign occurred. Continue only
+the same frozen 96-cell screen; prior evidence is unchanged.

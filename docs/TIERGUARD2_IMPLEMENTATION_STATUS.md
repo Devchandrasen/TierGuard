@@ -22,18 +22,20 @@ FedAvg, each under clean training and three attacks with three development
 seeds. Its 96 cells use a new source snapshot and never permit more than one
 outstanding account job. Later source-audited baselines and confirmation
 remain outside this screen. The original panel is not overwritten or pooled.
-At the 01:31 UTC heartbeat checkpoint on 29 September, 29/96 cells had completed
+At the 02:32 UTC heartbeat checkpoint on 29 September, 30/96 cells had completed
 F/exit 0 and passed the frozen guard with no errors: all 12 median cells,
-all 12 FLTrust cells, all three RFA clean seeds and RFA unknown-patch seeds 2001/2002.
-The median/FLTrust subsets and RFA clean subset are complete; the index lists
-67 genuinely unattempted cells before the next submission.
+all 12 FLTrust cells, all three RFA clean seeds and all three RFA unknown-patch seeds.
+The median/FLTrust and RFA clean/unknown-patch subsets are complete; the index lists
+66 genuinely unattempted cells before the next submission.
 Each completed cell has 40 rounds, complete audits and zero stability failures.
-The newest cell (39557, rfa / unknown_patch_model_replacement / seed 2002)
-has clean-test accuracy under attack 88.88% (0.8888), macro-F1
+The newest cell (39558, rfa / unknown_patch_model_replacement / seed 2003)
+has clean-test accuracy under attack 88.10% (0.881), macro-F1
+0.8802445937287672 and adverse ASR 94.87% (0.9486666666666667).
+Seed 2002 retains accuracy 88.88% (0.8888), macro-F1
 0.8872450787792507 and adverse ASR 99.92% (0.9992222222222222).
 Seed 2001 retains accuracy 87.82% (0.8782), macro-F1
 0.8784813701102749 and adverse ASR 99.86% (0.9985555555555555).
-Both RFA baseline outcomes are retained without tuning, exclusion or rerun;
+All three RFA baseline outcomes are retained without tuning, exclusion or rerun;
 they are not evidence of TierGuard 2 superiority.
 RFA clean seed 2003 retains accuracy 87.98% (0.8798) and macro-F1
 0.8784533402701046. Clean seeds 2001/2002 retain
@@ -71,11 +73,11 @@ Unknown-patch ASRs of 87.88%, 70.78% and 33.40% remain unchanged.
 All outcomes are retained without tuning or exclusion. These descriptive
 development values do not establish a method comparison.
 After successful validation and refreshed empty-account, unchanged-ledger
-and approved hash checks, **39558.mgmt01** was submitted once at
-01:37:32 UTC for rfa / unknown_patch_model_replacement / seed 2003
+and approved hash checks, **39559.mgmt01** was submitted once at
+02:37:46 UTC for rfa / distributed_backdoor / seed 2001
 and verified as the sole running account job. This is the next cell in the
 same bounded screen, not a new campaign. Completion of the median and
-FLTrust subsets or RFA clean subset does not end the authorized 96-cell screen.
+FLTrust subsets or RFA clean/unknown-patch subsets does not end the 96-cell screen.
 At an earlier 16:25 checkpoint, a queue query encountered an SSH
 banner-exchange error. No guard
 was invoked while status was uncertain; a fresh read-only query succeeded
@@ -87,11 +89,12 @@ RFA unknown-patch run contains 51 files, including 40 audit records. Earlier opt
 trigger records remain intact. Local verification respects the frozen
 five-round evaluation cadence, both attack-ASR aliases and undefined clean ASR;
 both guard and local checks passed. Previous evidence and training clones
-remain unchanged. The complete first-28 run records, including their file
+remain unchanged. The complete first-29 run records, including their file
 hashes, exactly match the previous timestamped index.
-The initial full-index command display exceeded the output limit; a bounded
-JSON projection and independent file checks passed. This local display
-diagnostic is preserved; no training/guard failure or retry occurred.
+At the earlier 29 September, 01:31 checkpoint, the full-index command display
+exceeded the output limit; bounded JSON projection and independent file checks
+passed. That local display diagnostic is preserved; no training/guard failure
+or retry occurred. Current projection and file checks pass without discrepancy.
 At the earlier 28 September, 22:27 checkpoint, a local JSON-key-order comparison gave a false
 ledger mismatch. Sorted-key and independent Python dictionary checks confirm
 identical fields and exactly one new submission pair; the diagnostic is saved.
