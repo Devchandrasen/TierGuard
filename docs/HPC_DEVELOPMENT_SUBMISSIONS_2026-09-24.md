@@ -9,20 +9,24 @@ commit, partition indices, per-round metrics and node provenance. The two
 H100 nodes have different drivers and runtime characteristics, so concurrent
 wall times are not an algorithmic efficiency comparison.
 
-## Current execution state (checked 28 September 2026)
+## Current execution state (checked 29 September 2026)
 
 **New authorized phase:** after the completed nine-run panel was reviewed,
 the user approved the [bounded matched-baseline/ablation screen](TIERGUARD2_FASHION_MECHANISM_PHASE_2026-09-27.md).
-At the 23:28 UTC heartbeat checkpoint, all 12 median cells, all 12 FLTrust
-cells and all three RFA clean seeds had completed with exit 0.
-The median/FLTrust subsets and RFA clean subset are complete; the guard validates 27/96 cells
+At the 00:30 UTC heartbeat checkpoint, all 12 median cells, all 12 FLTrust
+cells, all three RFA clean seeds and its first unknown-patch seed had completed
+with exit 0. The guard validates 28/96 cells
 with no errors: 40 rounds, 40 complete audits and zero stability failures
-per run. The index lists 69 genuinely unattempted cells before submission.
-The latest cell (**39555.mgmt01**, rfa / none / seed 2003) has 87.98%
-clean-training accuracy (0.8798) and macro-F1 0.8784533402701046.
-Seeds 2001/2002 retain accuracies 88.50%/88.43% (0.885/0.8843) and
+per run. The index lists 68 genuinely unattempted cells before submission.
+The latest cell (**39556.mgmt01**, rfa / unknown_patch_model_replacement /
+seed 2001) has clean-test accuracy under attack 87.82% (0.8782), macro-F1
+0.8784813701102749 and adverse ASR 99.86% (0.9985555555555555).
+This RFA baseline outcome is retained without tuning, exclusion or rerun;
+it is not evidence of TierGuard 2 superiority.
+RFA clean seed 2003 retains 87.98% (0.8798) and macro-F1 0.8784533402701046.
+Clean seeds 2001/2002 retain accuracies 88.50%/88.43% (0.885/0.8843) and
 macro-F1 0.8842036720600657/0.8823849961603034.
-Clean ASR is null in final JSON/index and blank in both CSV ASR columns,
+Clean-cell ASR is null in final JSON/index and blank in both CSV ASR columns,
 not zero. These are individual clean development values, not a method comparison or
 an accuracy-under-attack comparison.
 FLTrust optimized-trigger seed 2003 retains 79.51% clean-test accuracy
@@ -53,21 +57,21 @@ ASRs of 24.03%, 13.01% and 24.12%, distributed-backdoor ASRs of 1.22%,
 0.50% and 0.41%, and unknown-patch ASRs of 87.88%, 70.78% and 33.40%.
 These development values do not establish comparative efficacy. No tuning
 or exclusion was made. All completed run files were copied and hash-verified;
-the newest RFA clean run contains 51 files, including 40 audit records.
+the newest RFA unknown-patch run contains 51 files, including 40 audit records.
 Earlier optimized-trigger records remain intact. After validation and refreshed
-empty-account, unchanged-ledger and approved hash checks, **39556.mgmt01**
-(rfa / unknown_patch_model_replacement / seed 2001) was submitted once
-at 23:35:05 UTC and
+empty-account, unchanged-ledger and approved hash checks, **39557.mgmt01**
+(rfa / unknown_patch_model_replacement / seed 2002) was submitted once
+at 00:36:27 UTC and
 verified as the sole running account job. The 96-cell
 development matrix is frozen in a new isolated clone; it is NOT a submitted
 batch. Hourly continuation permits at most one next job after validation.
 Completion of the median/FLTrust subsets or RFA clean subset does not end this phase.
-The first-26 complete run records and their hashes match the prior index exactly.
-At the preceding 22:27 checkpoint, a local JSON-key-order comparison gave a false
+The first-27 complete run records and their hashes match the prior index exactly.
+At the earlier 28 September, 22:27 checkpoint, a local JSON-key-order comparison gave a false
 ledger mismatch. Sorted-key and independent Python dictionary checks confirm
 identical fields and exactly one new submission pair. Its diagnostic remains
-in the original checkpoint. Current fieldwise checks pass, with 56 ledger rows
-and all prior 54 unchanged; no scheduler/training attempt failed or was retried.
+in the original checkpoint. Current fieldwise checks pass, with 58 ledger rows
+and all prior 56 unchanged; no scheduler/training attempt failed or was retried.
 At an earlier 16:25 checkpoint, a queue query failed during SSH banner
 exchange, so no guard was
 invoked until a fresh read-only query returned exit 0 and an empty account.

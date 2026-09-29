@@ -22,16 +22,21 @@ FedAvg, each under clean training and three attacks with three development
 seeds. Its 96 cells use a new source snapshot and never permit more than one
 outstanding account job. Later source-audited baselines and confirmation
 remain outside this screen. The original panel is not overwritten or pooled.
-At the 23:28 UTC heartbeat checkpoint on 28 September, 27/96 cells had completed
+At the 00:30 UTC heartbeat checkpoint on 29 September, 28/96 cells had completed
 F/exit 0 and passed the frozen guard with no errors: all 12 median cells,
-all 12 FLTrust cells and all three RFA clean seeds. The entire median
-and FLTrust subsets and RFA clean subset are complete; the index lists 69 genuinely
-unattempted cells before the next submission.
+all 12 FLTrust cells, all three RFA clean seeds and RFA unknown-patch seed 2001.
+The median/FLTrust subsets and RFA clean subset are complete; the index lists
+68 genuinely unattempted cells before the next submission.
 Each completed cell has 40 rounds, complete audits and zero stability failures.
-The newest cell (39555, rfa / none / seed 2003) has clean-training accuracy
-87.98% (0.8798) and macro-F1 0.8784533402701046. Seeds 2001/2002 retain
+The newest cell (39556, rfa / unknown_patch_model_replacement / seed 2001)
+has clean-test accuracy under attack 87.82% (0.8782), macro-F1
+0.8784813701102749 and adverse ASR 99.86% (0.9985555555555555).
+This RFA baseline outcome is retained without tuning, exclusion or rerun;
+it is not evidence of TierGuard 2 superiority.
+RFA clean seed 2003 retains accuracy 87.98% (0.8798) and macro-F1
+0.8784533402701046. Clean seeds 2001/2002 retain
 88.50%/88.43% (0.885/0.8843) and macro-F1
-0.8842036720600657/0.8823849961603034. Clean ASR is null in final
+0.8842036720600657/0.8823849961603034. Clean-cell ASR is null in final
 JSON/index and blank in both CSV ASR columns, not zero. These individual clean
 development values support no method comparison and are not compared with
 accuracy under attack.
@@ -64,8 +69,8 @@ Unknown-patch ASRs of 87.88%, 70.78% and 33.40% remain unchanged.
 All outcomes are retained without tuning or exclusion. These descriptive
 development values do not establish a method comparison.
 After successful validation and refreshed empty-account, unchanged-ledger
-and approved hash checks, **39556.mgmt01** was submitted once at
-23:35:05 UTC for rfa / unknown_patch_model_replacement / seed 2001
+and approved hash checks, **39557.mgmt01** was submitted once at
+00:36:27 UTC for rfa / unknown_patch_model_replacement / seed 2002
 and verified as the sole running account job. This is the next cell in the
 same bounded screen, not a new campaign. Completion of the median and
 FLTrust subsets or RFA clean subset does not end the authorized 96-cell screen.
@@ -76,13 +81,13 @@ with exit 0 and proved the account empty before validation/submission.
 The failed query and successful checks are both preserved in that earlier
 checkpoint. This checkpoint's queue, ledger and hash checks succeeded.
 All completed run files were copied and hash-verified locally; the newest
-RFA clean run contains 51 files, including 40 audit records. Earlier optimized-
+RFA unknown-patch run contains 51 files, including 40 audit records. Earlier optimized-
 trigger records remain intact. Local verification respects the frozen
 five-round evaluation cadence, both attack-ASR aliases and undefined clean ASR;
 both guard and local checks passed. Previous evidence and training clones
-remain unchanged. The complete first-26 run records, including their file
+remain unchanged. The complete first-27 run records, including their file
 hashes, exactly match the previous timestamped index.
-At the preceding 22:27 checkpoint, a local JSON-key-order comparison gave a false
+At the earlier 28 September, 22:27 checkpoint, a local JSON-key-order comparison gave a false
 ledger mismatch. Sorted-key and independent Python dictionary checks confirm
 identical fields and exactly one new submission pair; the diagnostic is saved.
 That diagnostic is retained in its original checkpoint. Current fieldwise checks
