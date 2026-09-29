@@ -1458,3 +1458,56 @@ Evidence and validation are preserved in
 No second submission, retry, replacement, skip, tuning, confirmation,
 array, training-clone edit or another campaign occurred. Continue only
 the same frozen 96-cell screen; prior evidence is unchanged.
+
+## Checkpoint: 29 September 2026, 08:03 UTC heartbeat
+
+RFA optimized-trigger seed 2002 (39595) completed F/exit 0, run_count 1,
+walltime 00:04:22. The guard validates 35/96 cells with zero errors:
+all 12 median cells, all 12 FLTrust cells, all three RFA clean,
+unknown-patch and distributed-backdoor seeds, and optimized seeds 2001/2002.
+Only 61 genuinely unattempted suffix cells are missing before submission.
+The screen and RFA optimized subset are not complete.
+
+The new adverse outcome is ASR 0.7054444444444444 (70.54%), clean-test
+accuracy under attack 0.8854 (88.54%) and macro-F1 0.883715817471517.
+Recorded ASR is 0.024666666666666667 at round 5, 0.101 at round 10,
+0.49655555555555553 at round 35 and 0.7054444444444444 at round 40;
+all eight evaluation points are saved. Seed 2001 retains ASR
+0.9947777777777778, accuracy 0.8768 and macro-F1 0.8777828838556347.
+All adverse evidence remains unchanged without tuning, exclusion or rerun;
+different seeds are not before/after repair evidence. No partial-panel
+inference, baseline selection, novelty, superiority or submission-readiness
+claim is made.
+
+All 40 rounds, complete audits, finite populated metrics, zero stability
+failures, frozen source/configuration/environment/data, exact paired
+partitions and ledger/run prefix pass. All 91 copied raw files match exact
+membership and hashes, including 40 audit records and 40 finite optimized
+trigger artifacts. Final/index/CSV metrics, both ASR aliases and five-round
+evaluation cadence agree. The first 34 complete run objects/hashes exactly
+match the preceding hash-verified index. The 10,000 saved test indices are
+unique; recorded agreement does not independently recompute predictions or
+the exact ASR numerator/denominator. Clean ASR stays undefined/null/blank.
+The data-validation skill guided completeness, deduplication, cadence/null
+handling, hash/metric spot-checks and adverse retention; confidence is
+share with development-only caveats, not comparative or confirmatory inference.
+
+Dry-run index `fashion_mechanism_index_2026_09_29T080532_367403Z.json`
+and submission index `fashion_mechanism_index_2026_09_29T080751_222828Z.json`
+are byte-identical with SHA-256
+`ef136caa4ad028d1172df5c29414429c11437cfa2069d38de12faeb049749de2`.
+After refreshed empty-account, unchanged-ledger and approved hash checks,
+the guard submitted **39607.mgmt01** once at 08:07:51 UTC for RFA /
+defence_aware_optimized_trigger / seed 2003. PBS verified R, non-rerunnable
+and run_count 1; account-wide qselect showed it as the sole outstanding job.
+The ledger has 72 rows, all prior 70 unchanged and exactly one new matching
+intent/submitted pair. Sorted-key and independent Python checks pass.
+The new job is an attempt, not a validated outcome. No current validation
+discrepancy was found; earlier diagnostics remain in their own checkpoints.
+
+Evidence, completed scheduler log, both indices, manifest, raw records,
+read-only checker results and snapshots are preserved in
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-29T080346Z`.
+No second submission, retry, replacement, skip, tuning, confirmation,
+array, training-clone edit or another campaign occurred. Continue only
+the same frozen 96-cell screen; prior evidence is unchanged.
