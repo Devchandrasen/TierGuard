@@ -13,16 +13,18 @@ wall times are not an algorithmic efficiency comparison.
 
 **New authorized phase:** after the completed nine-run panel was reviewed,
 the user approved the [bounded matched-baseline/ablation screen](TIERGUARD2_FASHION_MECHANISM_PHASE_2026-09-27.md).
-At the 00:30 UTC heartbeat checkpoint, all 12 median cells, all 12 FLTrust
-cells, all three RFA clean seeds and its first unknown-patch seed had completed
-with exit 0. The guard validates 28/96 cells
+At the 01:31 UTC heartbeat checkpoint, all 12 median cells, all 12 FLTrust
+cells, all three RFA clean seeds and unknown-patch seeds 2001/2002 had completed
+with exit 0. The guard validates 29/96 cells
 with no errors: 40 rounds, 40 complete audits and zero stability failures
-per run. The index lists 68 genuinely unattempted cells before submission.
-The latest cell (**39556.mgmt01**, rfa / unknown_patch_model_replacement /
-seed 2001) has clean-test accuracy under attack 87.82% (0.8782), macro-F1
+per run. The index lists 67 genuinely unattempted cells before submission.
+The latest cell (**39557.mgmt01**, rfa / unknown_patch_model_replacement /
+seed 2002) has clean-test accuracy under attack 88.88% (0.8888), macro-F1
+0.8872450787792507 and adverse ASR 99.92% (0.9992222222222222).
+Seed 2001 retains accuracy 87.82% (0.8782), macro-F1
 0.8784813701102749 and adverse ASR 99.86% (0.9985555555555555).
-This RFA baseline outcome is retained without tuning, exclusion or rerun;
-it is not evidence of TierGuard 2 superiority.
+Both RFA baseline outcomes are retained without tuning, exclusion or rerun;
+they are not evidence of TierGuard 2 superiority.
 RFA clean seed 2003 retains 87.98% (0.8798) and macro-F1 0.8784533402701046.
 Clean seeds 2001/2002 retain accuracies 88.50%/88.43% (0.885/0.8843) and
 macro-F1 0.8842036720600657/0.8823849961603034.
@@ -59,19 +61,22 @@ These development values do not establish comparative efficacy. No tuning
 or exclusion was made. All completed run files were copied and hash-verified;
 the newest RFA unknown-patch run contains 51 files, including 40 audit records.
 Earlier optimized-trigger records remain intact. After validation and refreshed
-empty-account, unchanged-ledger and approved hash checks, **39557.mgmt01**
-(rfa / unknown_patch_model_replacement / seed 2002) was submitted once
-at 00:36:27 UTC and
+empty-account, unchanged-ledger and approved hash checks, **39558.mgmt01**
+(rfa / unknown_patch_model_replacement / seed 2003) was submitted once
+at 01:37:32 UTC and
 verified as the sole running account job. The 96-cell
 development matrix is frozen in a new isolated clone; it is NOT a submitted
 batch. Hourly continuation permits at most one next job after validation.
 Completion of the median/FLTrust subsets or RFA clean subset does not end this phase.
-The first-27 complete run records and their hashes match the prior index exactly.
+The first-28 complete run records and their hashes match the prior index exactly.
+The initial full-index command display exceeded the output limit; a bounded
+JSON projection and independent file checks passed. This local display
+diagnostic is preserved; no training/guard failure or retry occurred.
 At the earlier 28 September, 22:27 checkpoint, a local JSON-key-order comparison gave a false
 ledger mismatch. Sorted-key and independent Python dictionary checks confirm
 identical fields and exactly one new submission pair. Its diagnostic remains
-in the original checkpoint. Current fieldwise checks pass, with 58 ledger rows
-and all prior 56 unchanged; no scheduler/training attempt failed or was retried.
+in the original checkpoint. Current fieldwise checks pass, with 60 ledger rows
+and all prior 58 unchanged; no scheduler/training attempt failed or was retried.
 At an earlier 16:25 checkpoint, a queue query failed during SSH banner
 exchange, so no guard was
 invoked until a fresh read-only query returned exit 0 and an empty account.
