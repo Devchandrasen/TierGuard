@@ -22,20 +22,28 @@ FedAvg, each under clean training and three attacks with three development
 seeds. Its 96 cells use a new source snapshot and never permit more than one
 outstanding account job. Later source-audited baselines and confirmation
 remain outside this screen. The original panel is not overwritten or pooled.
-At the 02:32 UTC heartbeat checkpoint on 29 September, 30/96 cells had completed
+At the 04:03 UTC heartbeat checkpoint on 29 September, 31/96 cells had completed
 F/exit 0 and passed the frozen guard with no errors: all 12 median cells,
-all 12 FLTrust cells, all three RFA clean seeds and all three RFA unknown-patch seeds.
+all 12 FLTrust cells, all three RFA clean seeds, all three RFA unknown-patch seeds
+and RFA distributed-backdoor seed 2001.
 The median/FLTrust and RFA clean/unknown-patch subsets are complete; the index lists
-66 genuinely unattempted cells before the next submission.
+65 genuinely unattempted cells before the next submission.
 Each completed cell has 40 rounds, complete audits and zero stability failures.
-The newest cell (39558, rfa / unknown_patch_model_replacement / seed 2003)
-has clean-test accuracy under attack 88.10% (0.881), macro-F1
+The newest cell (39559, rfa / distributed_backdoor / seed 2001)
+has clean-test accuracy under attack 87.95% (0.8795), macro-F1
+0.8799075719382156 and adverse ASR 100% (1.0).
+The boundary review confirms final/index/CSV agreement, ASR 4% at round 5,
+99.9333% at round 35 and 100% at round 40. Frozen-source inspection confirms
+true-target exclusion and all other classes; an empty loader returns zero.
+The saved test partition has 10,000 unique indices. Predictions and the exact
+backdoor numerator/denominator were not independently recomputed.
+RFA unknown-patch seed 2003 retains accuracy 88.10% (0.881), macro-F1
 0.8802445937287672 and adverse ASR 94.87% (0.9486666666666667).
-Seed 2002 retains accuracy 88.88% (0.8888), macro-F1
+Unknown-patch seed 2002 retains accuracy 88.88% (0.8888), macro-F1
 0.8872450787792507 and adverse ASR 99.92% (0.9992222222222222).
-Seed 2001 retains accuracy 87.82% (0.8782), macro-F1
+Unknown-patch seed 2001 retains accuracy 87.82% (0.8782), macro-F1
 0.8784813701102749 and adverse ASR 99.86% (0.9985555555555555).
-All three RFA baseline outcomes are retained without tuning, exclusion or rerun;
+All RFA baseline outcomes are retained without tuning, exclusion or rerun;
 they are not evidence of TierGuard 2 superiority.
 RFA clean seed 2003 retains accuracy 87.98% (0.8798) and macro-F1
 0.8784533402701046. Clean seeds 2001/2002 retain
@@ -73,8 +81,8 @@ Unknown-patch ASRs of 87.88%, 70.78% and 33.40% remain unchanged.
 All outcomes are retained without tuning or exclusion. These descriptive
 development values do not establish a method comparison.
 After successful validation and refreshed empty-account, unchanged-ledger
-and approved hash checks, **39559.mgmt01** was submitted once at
-02:37:46 UTC for rfa / distributed_backdoor / seed 2001
+and approved hash checks, **39560.mgmt01** was submitted once at
+04:12:56 UTC for rfa / distributed_backdoor / seed 2002
 and verified as the sole running account job. This is the next cell in the
 same bounded screen, not a new campaign. Completion of the median and
 FLTrust subsets or RFA clean/unknown-patch subsets does not end the 96-cell screen.
@@ -85,12 +93,15 @@ with exit 0 and proved the account empty before validation/submission.
 The failed query and successful checks are both preserved in that earlier
 checkpoint. This checkpoint's queue, ledger and hash checks succeeded.
 All completed run files were copied and hash-verified locally; the newest
-RFA unknown-patch run contains 51 files, including 40 audit records. Earlier optimized-
+RFA distributed-backdoor run contains 51 files, including 40 audit records. Earlier optimized-
 trigger records remain intact. Local verification respects the frozen
 five-round evaluation cadence, both attack-ASR aliases and undefined clean ASR;
 both guard and local checks passed. Previous evidence and training clones
-remain unchanged. The complete first-29 run records, including their file
+remain unchanged. The complete first-30 run records, including their file
 hashes, exactly match the previous timestamped index.
+The current boundary review resolved local source-path and optional-null
+metadata inspection diagnostics through actual file inventory, frozen-source
+inspection and direct non-null counts; no training/guard/index check failed.
 At the earlier 29 September, 01:31 checkpoint, the full-index command display
 exceeded the output limit; bounded JSON projection and independent file checks
 passed. That local display diagnostic is preserved; no training/guard failure
@@ -100,6 +111,9 @@ ledger mismatch. Sorted-key and independent Python dictionary checks confirm
 identical fields and exactly one new submission pair; the diagnostic is saved.
 That diagnostic is retained in its original checkpoint. Current fieldwise checks
 pass without discrepancy; no scheduler/training attempt failed or was retried.
+Current post-submission checks confirm 64 ledger rows, all prior 62 unchanged
+and exactly one new intent/submitted pair. Evidence is preserved in
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-29T040310Z`.
 The hourly follow-up now targets only this 96-cell
 phase; it was resumed after freezing the protocol and checking the account.
 The [serial execution policy](TIERGUARD2_SERIAL_EXECUTION.md) governs subsequent
