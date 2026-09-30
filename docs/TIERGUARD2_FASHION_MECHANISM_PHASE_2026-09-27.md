@@ -1416,3 +1416,25 @@ ledger to 76 rows, leaving the earlier 74 unchanged. This is not a
 validated result. The new evidence is under
 `Rajanmani/output/TierGuard2_Mechanism_2026-09-30T030119Z`.
 No other job, tuning, confirmation or campaign was started.
+
+## Checkpoint: 30 September 2026, 04:06 UTC
+
+Job **39710.mgmt01** (`clip_only / none / 2002`) finished PBS F/exit 0.
+The pinned guard validates **38/96** cells with zero errors, 40 rounds
+and complete audits, zero stability failures and 58 genuinely unattempted
+suffix cells. Independent checks pass all 51 raw-file hashes, the exact
+37-run prefix, final/index/CSV metric agreement and zero applied
+client/edge risks with audit scores still recorded. This clean
+development seed recorded accuracy 0.8840 and macro-F1
+0.8828316721127758; ASR is null/undefined. Dry-run and submission
+indices share SHA-256
+`cdb9e0430e62b1a9049b8fa48df8067852cf9c0c03bd9c1a61bc296420b3fb3d`.
+
+After an empty-account check and unchanged 76-row ledger, the guard
+submitted **39719.mgmt01** once at 04:06:26 UTC for
+`clip_only / none / 2003`. PBS showed R, non-rerunnable and the sole
+account job. Exactly one matching intent/submitted pair extends the
+ledger to 78 rows, leaving the earlier 76 unchanged. This is not a
+validated result. The evidence is under
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-30T040151Z`.
+No other job, tuning, confirmation or campaign was started.
