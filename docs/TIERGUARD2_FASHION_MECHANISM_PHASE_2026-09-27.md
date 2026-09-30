@@ -1458,3 +1458,21 @@ No training or frozen-guard error was found. In accordance with the
 stop-on-error rule, **no new job was submitted** in this heartbeat.
 Account-wide qselect ended empty; the 78-row ledger stayed unchanged.
 Evidence is in `Rajanmani/output/TierGuard2_Mechanism_2026-09-30T050151Z`.
+
+## Checkpoint: 30 September 2026, 06:09 UTC
+
+The prior clip-only clean seed 2003 remains validated F/exit 0. The
+corrected independent check passes, and the frozen guard validates
+**39/96** cells with zero errors and 57 unattempted suffix cells.
+The dry-run and submission-time indices are byte-identical to the
+previous 39-run index (SHA-256
+`7ffe4332c4a03899e4e1b20d6e36fbc3c1d12c2bdb7932428412454275c12d31`).
+
+After a fresh empty-account, unchanged 78-row ledger and pin check,
+the guard submitted **39730.mgmt01** exactly once for
+`clip_only / unknown_patch_model_replacement / 2001`. PBS showed R,
+non-rerunnable, run count 1 and the sole account job. The ledger now
+has 80 rows with the prior 78 unchanged and one matching pair. This
+job is not yet a validated result. No second submission or new
+campaign occurred. Evidence is under
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-30T060322Z`.

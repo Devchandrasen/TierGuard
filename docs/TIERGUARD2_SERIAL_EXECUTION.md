@@ -1663,3 +1663,24 @@ ledger rows matched the previous checkpoint. The next frozen cell is
 unattempted; a future heartbeat must repeat scheduler, ledger, pin and
 guard checks. Evidence is preserved in
 `Rajanmani/output/TierGuard2_Mechanism_2026-09-30T050151Z`.
+
+## Mechanism checkpoint: 30 September 2026, 06:09 UTC
+
+Job **39719.mgmt01** remains F/exit 0, run count 1. The corrected
+independent checker again passes all 51 raw-file hashes, 40 rounds
+and audits, zero stability failures and null clean ASR. The frozen
+guard dry-run validates **39/96** cells with zero errors and 57
+genuinely unattempted suffix cells. Its index is byte-identical to
+the prior 39-run index (SHA-256
+`7ffe4332c4a03899e4e1b20d6e36fbc3c1d12c2bdb7932428412454275c12d31`).
+
+After refreshed empty-account, 78-row ledger and pinned-hash checks,
+the guard submitted exactly one next job, **39730.mgmt01**, at
+06:08:58 UTC for **clip_only / unknown_patch_model_replacement /
+seed 2001**. PBS showed R, non-rerunnable, run count 1, and the
+sole account job. The ledger grew to 80 rows with one matching
+intent/submitted pair; the preceding 78 lines are unchanged. The
+submission-time index has the same 39-run hash. Job 39730 is an
+attempt, not a result. No second job, retry, tuning, confirmation,
+clone edit or new campaign occurred. Evidence is preserved in
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-30T060322Z`.
