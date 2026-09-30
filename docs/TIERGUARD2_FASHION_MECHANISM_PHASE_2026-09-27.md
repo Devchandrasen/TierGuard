@@ -1438,3 +1438,23 @@ ledger to 78 rows, leaving the earlier 76 unchanged. This is not a
 validated result. The evidence is under
 `Rajanmani/output/TierGuard2_Mechanism_2026-09-30T040151Z`.
 No other job, tuning, confirmation or campaign was started.
+
+## Checkpoint: 30 September 2026, 05:03 UTC
+
+Job **39719.mgmt01** (`clip_only / none / 2003`) finished PBS F/exit 0.
+The frozen guard validates **39/96** cells, 40 rounds and complete audits,
+with zero errors, zero stability failures and 57 genuinely unattempted
+suffix cells. The run's 51 hashes, prior 38-run prefix, final/index/CSV
+metrics and zero applied client/edge risks pass the corrected independent
+check. Clean accuracy is 0.8792, macro-F1 is 0.8784398708213675 and
+ASR is undefined. The next frozen cell is clip-only unknown-patch seed
+2001. Index SHA-256 is
+`7ffe4332c4a03899e4e1b20d6e36fbc3c1d12c2bdb7932428412454275c12d31`.
+
+An initial external checker asserted a rounded macro-F1 value; the raw
+record and frozen index agree on the full-precision value. The original
+checker/traceback and passing corrected read-only checker are both saved.
+No training or frozen-guard error was found. In accordance with the
+stop-on-error rule, **no new job was submitted** in this heartbeat.
+Account-wide qselect ended empty; the 78-row ledger stayed unchanged.
+Evidence is in `Rajanmani/output/TierGuard2_Mechanism_2026-09-30T050151Z`.

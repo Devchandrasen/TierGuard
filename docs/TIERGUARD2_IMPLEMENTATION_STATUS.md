@@ -22,6 +22,16 @@ FedAvg, each under clean training and three attacks with three development
 seeds. Its 96 cells use a new source snapshot and never permit more than one
 outstanding account job. Later source-audited baselines and confirmation
 remain outside this screen. The original panel is not overwritten or pooled.
+At 05:03 UTC on 30 September, **39/96** cells completed and passed the
+frozen guard, including all three clip-only clean seeds. Seed 2003
+(39719) has accuracy 0.8792, macro-F1 0.8784398708213675 and
+undefined clean ASR. A first independent checker failed on a rounded
+macro-F1 literal; the raw record and index agree at full precision, and
+the corrected checker passes all 51 file hashes, 40 rounds and audits.
+No training discrepancy was found. In accordance with the stop-on-error
+rule, **no next job was submitted** in this heartbeat; the account ended
+empty and all 78 ledger rows were unchanged. The next attack cell remains
+unattempted pending fresh validation. No comparative claim is made.
 At 04:06 UTC on 30 September, **38/96** cells had completed and passed
 the frozen guard and independent raw-record checks. The second clip-only
 clean seed (39710) has accuracy 0.8840 and macro-F1

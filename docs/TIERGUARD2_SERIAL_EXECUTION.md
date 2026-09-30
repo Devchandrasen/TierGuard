@@ -1634,3 +1634,32 @@ is an attempt, not a validated result. Evidence is preserved in
 `Rajanmani/output/TierGuard2_Mechanism_2026-09-30T040151Z`.
 No second job, retry, replacement, tuning, confirmation, clone edit or
 new campaign occurred.
+
+## Mechanism checkpoint: 30 September 2026, 05:03 UTC
+
+Clip-only clean seed 2003 job **39719.mgmt01** finished F/exit 0, run
+count 1. The frozen guard dry-run validates **39/96** completed cells
+with zero errors and 57 genuinely unattempted suffix cells. Forty
+rounds, complete audits, finite populated metrics, zero stability
+failures, frozen source/configuration/environment/data, exact paired
+partitions and ledger prefix pass. All 51 copied raw-file hashes and
+zero client/edge *applied* risks pass the corrected independent check;
+the prior 38 run objects and hashes remain unchanged. This clean seed
+has accuracy 0.8792, macro-F1 0.8784398708213675 and undefined/null
+ASR. The three clip-only clean seeds are complete, but no comparative
+inference is made. Index SHA-256:
+`7ffe4332c4a03899e4e1b20d6e36fbc3c1d12c2bdb7932428412454275c12d31`.
+
+The first new local read-only checker used a rounded macro-F1 literal
+`0.878439870821368`, causing its assertion to fail. The raw final
+record and frozen index agree exactly at `0.8784398708213675`.
+The original checker and traceback are preserved; `verify_copy_v2.py`
+changes only that literal and passes every assertion. This was a local
+checker precision error, not a training/guard/ledger discrepancy.
+Because a checker error occurred, **no --submit call was made** in this
+heartbeat. The final account query was empty with exit 0 and all 78
+ledger rows matched the previous checkpoint. The next frozen cell is
+`clip_only / unknown_patch_model_replacement / seed 2001`, still
+unattempted; a future heartbeat must repeat scheduler, ledger, pin and
+guard checks. Evidence is preserved in
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-30T050151Z`.
