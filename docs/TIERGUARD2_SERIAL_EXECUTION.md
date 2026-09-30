@@ -1684,3 +1684,18 @@ submission-time index has the same 39-run hash. Job 39730 is an
 attempt, not a result. No second job, retry, tuning, confirmation,
 clone edit or new campaign occurred. Evidence is preserved in
 `Rajanmani/output/TierGuard2_Mechanism_2026-09-30T060322Z`.
+
+Job **39730.mgmt01** then finished PBS F/exit 0, run count 1. A new
+frozen guard dry-run validates **40/96** completed cells with zero
+errors and 56 genuinely unattempted suffix cells. Its new index
+SHA-256 is
+`1206ce80cb7aaf66cac5c3585ee4200fe4d1e9044ef30051da7cc7a94866b15b`.
+Independent checks verify 51 copied raw-file hashes, 40 rounds and
+audits, finite metrics, zero stability failures, zero applied
+clip-only risks, unchanged prior 39-run prefix and paired partitions.
+This adverse unknown-patch development seed has clean accuracy
+0.8822, macro-F1 0.8820349349730623 and ASR
+0.9995555555555555. It does not establish a comparative claim.
+No second submission occurred in this heartbeat. The next frozen
+cell is clip_only / unknown_patch_model_replacement / seed 2002,
+requiring fresh account, ledger, pin and guard checks later.

@@ -1476,3 +1476,14 @@ has 80 rows with the prior 78 unchanged and one matching pair. This
 job is not yet a validated result. No second submission or new
 campaign occurred. Evidence is under
 `Rajanmani/output/TierGuard2_Mechanism_2026-09-30T060322Z`.
+
+The submitted job then finished PBS F/exit 0. A further read-only
+frozen guard check validates **40/96** cells with zero errors and
+56 unattempted suffix cells; the new index SHA-256 is
+`1206ce80cb7aaf66cac5c3585ee4200fe4d1e9044ef30051da7cc7a94866b15b`.
+The independent copy checker passes 51 exact hashes, all 40
+rounds/audits, zero stability failures and the prior 39-run prefix.
+The clip-only unknown-patch seed 2001 has accuracy 0.8822,
+macro-F1 0.8820349349730623 and adverse ASR
+0.9995555555555555. This is one development seed, not a
+comparative result. No second submission was made in this heartbeat.

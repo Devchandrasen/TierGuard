@@ -21,6 +21,14 @@ job: **39730.mgmt01** (`clip_only / unknown_patch_model_replacement /
 The ledger grew to 80 rows with only the matching new pair. This is
 an attempt, not a validated result; no attack ASR is yet reported.
 Evidence is in `Rajanmani/output/TierGuard2_Mechanism_2026-09-30T060322Z`.
+Job 39730 then completed F/exit 0 and the frozen guard validated
+**40/96** cells with zero errors. Independent checks pass its 51
+raw-file hashes, 40 rounds and audits, finite metrics, zero
+stability failures and unchanged previous 39 cells. The clip-only
+unknown-patch seed 2001 result is adverse: accuracy 0.8822,
+macro-F1 0.8820349349730623, ASR 0.9995555555555555.
+No second job was submitted in this heartbeat; the next cell
+requires fresh checks later.
 At 05:03 UTC on 30 September, **39719.mgmt01** (`clip_only / none /
 2003`) completed F/exit 0. The frozen guard validates **39/96** cells,
 and a corrected independent checker passes 51 raw-file hashes, 40 rounds,

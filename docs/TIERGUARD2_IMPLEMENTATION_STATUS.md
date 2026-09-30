@@ -31,6 +31,13 @@ ledger retains the previous 78 rows unchanged and adds one matching
 intent/submitted pair. This is an attempt, not a validated result.
 The prior clean seed and full 39-run index remain validated. See
 `Rajanmani/output/TierGuard2_Mechanism_2026-09-30T060322Z`.
+Job 39730 subsequently finished F/exit 0. The frozen guard and
+independent raw-record checker validate **40/96** completed cells,
+zero errors, 40 rounds and audits, zero stability failures, and
+the unchanged 39-run prefix. This clip-only unknown-patch seed
+records accuracy 0.8822, macro-F1 0.8820349349730623 and
+adverse ASR 0.9995555555555555. This single development seed
+does not support comparative inference. No second job was submitted.
 At 05:03 UTC on 30 September, **39/96** cells completed and passed the
 frozen guard, including all three clip-only clean seeds. Seed 2003
 (39719) has accuracy 0.8792, macro-F1 0.8784398708213675 and
