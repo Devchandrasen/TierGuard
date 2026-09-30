@@ -9,10 +9,21 @@ commit, partition indices, per-round metrics and node provenance. The two
 H100 nodes have different drivers and runtime characteristics, so concurrent
 wall times are not an algorithmic efficiency comparison.
 
-## Current execution state (checked 29 September 2026)
+## Current execution state (checked 30 September 2026)
 
 **New authorized phase:** after the completed nine-run panel was reviewed,
 the user approved the [bounded matched-baseline/ablation screen](TIERGUARD2_FASHION_MECHANISM_PHASE_2026-09-27.md).
+At 02:57 UTC on 30 September, the 36/96 completed-run prefix still passes
+the frozen guard and independent raw-record checks. The previous and recovered
+dry-run indices and the submission-time index are byte-identical, SHA-256
+`d672b1d1138905a81acc81bdf2760d6243ea7ef2eb064139d7823ee4c08cd9f0`.
+Following an empty-account check, the hash-pinned guard submitted
+**39709.mgmt01** once for `clip_only / none / seed 2001`. PBS showed it R,
+non-rerunnable and the sole account job. The ledger contains 74 rows, with
+only one new matching intent/submitted pair. This job is not yet a validated
+result; clean ASR is undefined. Do not submit another job until it finishes
+F/exit 0, is fully validated and the entire account is empty. The new
+checkpoint evidence is in `Rajanmani/output/TierGuard2_Mechanism_2026-09-29T100548Z`.
 At the 09:04 UTC heartbeat checkpoint, all 12 median cells, all 12 FLTrust
 cells, all three RFA clean seeds, all three unknown-patch seeds and RFA
 distributed-backdoor and optimized-trigger seeds 2001--2003

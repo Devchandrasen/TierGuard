@@ -1562,3 +1562,26 @@ The data-validation skill guided completeness, deduplication, null/cadence
 handling, metric spot-checks, adverse retention and confidence caveats.
 Continue only the same 96-cell development screen; no tuning, confirmation,
 new campaign, training-clone edit, DOI or additional submission occurred.
+
+## Mechanism checkpoint: 30 September 2026, 02:57 UTC
+
+The 36/96 validated prefix remains unchanged. The prior job 39607.mgmt01
+is F/exit 0; all 40 rounds, audits, finite populated metrics, zero stability
+failures, frozen inputs, exact paired partitions and raw-file hashes remain
+validated. The recovered 29 September 10:08 UTC guard index is byte-identical
+to the preceding 36-run index (SHA-256
+`d672b1d1138905a81acc81bdf2760d6243ea7ef2eb064139d7823ee4c08cd9f0`).
+The previous read-only independent checker was rerun and passed. The old
+dry-run's local process session expired after it produced that index, but no
+guard process, account job or ledger submission remained at the next check.
+
+Following fresh scheduler, full-account qselect, ledger and pinned-hash
+checks, the frozen guard submitted **39709.mgmt01** once at 02:57:48 UTC for
+**clip_only / none / seed 2001**. PBS showed R, non-rerunnable and run count
+1; this was the sole account job. The ledger grew from 72 to 74 rows with
+one matching intent/submitted pair, leaving all preceding rows unchanged.
+The submission-time index has the same 36-run hash. Job 39709 is an attempt,
+not a validated result; clean ASR is undefined. No second submission,
+training retry, tuning, confirmation, clone edit or new campaign occurred.
+Evidence and the validation report are preserved under
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-29T100548Z`.

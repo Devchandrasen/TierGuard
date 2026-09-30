@@ -22,6 +22,15 @@ FedAvg, each under clean training and three attacks with three development
 seeds. Its 96 cells use a new source snapshot and never permit more than one
 outstanding account job. Later source-audited baselines and confirmation
 remain outside this screen. The original panel is not overwritten or pooled.
+At the 30 September 02:57 UTC checkpoint, the validated prefix remains
+**36/96**; the recovered dry-run, prior and submission-time indices are
+byte-identical and the independent raw-record checker passes. The account
+was empty before the pinned guard submitted exactly one next cell:
+**39709.mgmt01**, `clip_only / none / seed 2001`. PBS showed it running as
+the sole account job; the 74-row ledger has one new matching intent/submitted
+pair. This clean cell is not yet a validated result, and its ASR is undefined.
+No other job, tuning or confirmation was started. See the mechanism phase
+checkpoint and its separate evidence folder for scheduler and hash details.
 At the 09:04 UTC heartbeat checkpoint on 29 September, 36/96 cells had completed
 F/exit 0 and passed the frozen guard with no errors: all 12 median cells,
 all 12 FLTrust cells, all three RFA clean seeds, all three RFA unknown-patch seeds

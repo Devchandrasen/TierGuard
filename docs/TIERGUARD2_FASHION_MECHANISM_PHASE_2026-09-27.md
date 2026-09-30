@@ -1376,3 +1376,21 @@ The data-validation skill guided completeness, deduplication, null/cadence
 handling, metric spot-checks, adverse retention and confidence caveats.
 Continue only the same 96-cell development screen; no tuning, confirmation,
 new campaign, training-clone edit, DOI or additional submission occurred.
+
+## Checkpoint: 30 September 2026, 02:57 UTC
+
+The completed and validated prefix is still **36/96**, with zero guard
+errors and 60 genuinely unattempted cells before this submission. The
+recovered 29 September 10:08 UTC dry-run index and the 30 September
+submission-time index are byte-identical to the previous validated index,
+SHA-256 `d672b1d1138905a81acc81bdf2760d6243ea7ef2eb064139d7823ee4c08cd9f0`.
+The external independent read-only check passed again. Previous job 39607
+remains F/exit 0, and account-wide qselect was empty before the new call.
+
+The pinned guard made exactly one `--submit` call and returned
+**39709.mgmt01**, `clip_only / none / 2001`, at 02:57:48 UTC. PBS showed
+the job running, non-rerunnable and the sole account job. The external
+ledger has exactly one new intent/submitted pair (74 rows total) and all
+previous rows are unchanged. This is an unvalidated clean-training attempt;
+its ASR is undefined, not zero. No other job or campaign was started.
+Evidence is under `Rajanmani/output/TierGuard2_Mechanism_2026-09-29T100548Z`.
