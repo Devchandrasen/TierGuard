@@ -1585,3 +1585,27 @@ not a validated result; clean ASR is undefined. No second submission,
 training retry, tuning, confirmation, clone edit or new campaign occurred.
 Evidence and the validation report are preserved under
 `Rajanmani/output/TierGuard2_Mechanism_2026-09-29T100548Z`.
+
+## Mechanism checkpoint: 30 September 2026, 03:05 UTC
+
+The clip-only clean seed 2001 job **39709.mgmt01** finished F/exit 0, run
+count 1. The frozen guard validates **37/96** completed cells with zero
+errors and only 59 genuinely unattempted suffix cells. Forty rounds,
+complete audits, finite populated metrics, zero stability failures,
+frozen source/configuration/environment/data, exact paired partitions and
+ledger prefix pass. The independent local check verified all 51 copied
+raw-file hashes and the expected zero client/edge *applied* risk in this
+ablation. Accuracy is 0.8847 and macro-F1 is 0.8843347297719957; clean
+ASR is undefined/null, not zero. No comparative inference is made.
+
+The dry-run and submission-time indices are byte-identical, SHA-256
+`b30f7ebe166058f9057b625f9883eac8b29e425127b9920d539a64c43ceb60fb`.
+After a refreshed empty-account and approved-pin check, the frozen guard
+submitted **39710.mgmt01** once at 03:05:05 UTC for
+**clip_only / none / seed 2002**. PBS showed R, non-rerunnable and the
+sole account job. The ledger grew from 74 to 76 rows with one matching
+intent/submitted pair; all previous rows are unchanged. Job 39710 is an
+attempt, not a validated result. Evidence is preserved in
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-30T030119Z`.
+No second job, retry, replacement, tuning, confirmation, clone edit or
+new campaign occurred.

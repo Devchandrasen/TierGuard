@@ -13,6 +13,16 @@ wall times are not an algorithmic efficiency comparison.
 
 **New authorized phase:** after the completed nine-run panel was reviewed,
 the user approved the [bounded matched-baseline/ablation screen](TIERGUARD2_FASHION_MECHANISM_PHASE_2026-09-27.md).
+At 03:05 UTC on 30 September, job **39709.mgmt01** (`clip_only / none /
+2001`) completed F/exit 0 and the frozen guard plus independent local
+record checker validate **37/96** cells with zero errors. The clean
+seed's accuracy is 0.8847, macro-F1 0.8843347297719957, and ASR is
+undefined. After an empty-account check the guard submitted exactly one
+next job, **39710.mgmt01** (`clip_only / none / 2002`), verified R and
+the sole account job. It has no validated result yet. The ledger has
+76 rows, with all previous 74 unchanged and one new intent/submitted
+pair. Evidence is in
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-30T030119Z`.
 At 02:57 UTC on 30 September, the 36/96 completed-run prefix still passes
 the frozen guard and independent raw-record checks. The previous and recovered
 dry-run indices and the submission-time index are byte-identical, SHA-256

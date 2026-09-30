@@ -1394,3 +1394,25 @@ ledger has exactly one new intent/submitted pair (74 rows total) and all
 previous rows are unchanged. This is an unvalidated clean-training attempt;
 its ASR is undefined, not zero. No other job or campaign was started.
 Evidence is under `Rajanmani/output/TierGuard2_Mechanism_2026-09-29T100548Z`.
+
+## Checkpoint: 30 September 2026, 03:05 UTC
+
+Job **39709.mgmt01** (`clip_only / none / 2001`) finished PBS F/exit 0.
+The hash-pinned guard validates **37/96** cells, 40 rounds and complete
+audits, with zero errors, zero stability failures and 59 genuinely
+unattempted suffix cells. Independent checks pass all 51 raw-file hashes,
+final/index/CSV metric agreement, the exact prior 36-run prefix and
+zero applied client/edge risk while audit scores remain measured. This
+clean development seed recorded accuracy 0.8847 and macro-F1
+0.8843347297719957; ASR is null/undefined. The dry-run and submission
+indices share SHA-256
+`b30f7ebe166058f9057b625f9883eac8b29e425127b9920d539a64c43ceb60fb`.
+
+After an empty-account check and unchanged 74-row ledger, the guard
+submitted **39710.mgmt01** once at 03:05:05 UTC for
+`clip_only / none / 2002`. PBS showed R, non-rerunnable and the only
+account job. Exactly one matching intent/submitted pair extends the
+ledger to 76 rows, leaving the earlier 74 unchanged. This is not a
+validated result. The new evidence is under
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-30T030119Z`.
+No other job, tuning, confirmation or campaign was started.

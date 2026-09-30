@@ -22,6 +22,15 @@ FedAvg, each under clean training and three attacks with three development
 seeds. Its 96 cells use a new source snapshot and never permit more than one
 outstanding account job. Later source-audited baselines and confirmation
 remain outside this screen. The original panel is not overwritten or pooled.
+At 03:05 UTC on 30 September, **37/96** cells had completed and passed
+the frozen guard and independent raw-record checks. The first clip-only
+clean seed (39709) has accuracy 0.8847 and macro-F1 0.8843347297719957;
+clean ASR is undefined. After full-account empty and ledger checks, the
+guard submitted exactly one next job, **39710.mgmt01** for
+`clip_only / none / seed 2002`. PBS showed it running as the sole
+account job; it is not yet a result. The separate mechanism checkpoint
+records its 76-row ledger and timestamped evidence. No comparative or
+confirmatory claim is made.
 At the 30 September 02:57 UTC checkpoint, the validated prefix remains
 **36/96**; the recovered dry-run, prior and submission-time indices are
 byte-identical and the independent raw-record checker passes. The account
