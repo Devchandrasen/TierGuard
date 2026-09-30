@@ -1699,3 +1699,40 @@ This adverse unknown-patch development seed has clean accuracy
 No second submission occurred in this heartbeat. The next frozen
 cell is clip_only / unknown_patch_model_replacement / seed 2002,
 requiring fresh account, ledger, pin and guard checks later.
+
+## Mechanism checkpoint: 30 September 2026, 07:08 UTC
+
+Job **39730.mgmt01** remains F/exit 0, run count 1. The previous
+independent checker again passes its 51 copied hashes, all 40
+rounds/audits, finite metrics, zero stability failures and
+unchanged prior 39-run prefix; the adverse seed-2001 ASR remains
+0.9995555555555555. The frozen guard validates **40/96** cells
+with zero errors and 56 genuinely unattempted suffix cells.
+Dry-run and submission-time index SHA-256 both equal
+`1206ce80cb7aaf66cac5c3585ee4200fe4d1e9044ef30051da7cc7a94866b15b`.
+
+After refreshed empty-account, 80-row ledger and pinned-hash checks,
+the guard submitted exactly one next job, **39749.mgmt01**, at
+07:08:11 UTC for **clip_only / unknown_patch_model_replacement /
+seed 2002**. PBS showed R, non-rerunnable, run count 1 and the
+sole account job. The ledger grew to 82 rows with the previous
+80 unchanged and one matching intent/submitted pair. This job
+is an attempt, not a validated result. Evidence is under
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-30T070500Z`.
+No second submission, retry, tuning, confirmation or clone edit.
+
+Job **39749.mgmt01** then finished PBS F/exit 0, run count 1.
+The frozen guard validates **41/96** completed cells with zero
+errors and 55 genuinely unattempted suffix cells. Its new index
+SHA-256 is
+`6e9a4d6fe20e93a0afe822de1833a87d08af3e210193fdf4b97204392ab7e959`.
+Independent checks verify 51 copied hashes, all 40 rounds/audits,
+finite metrics, zero stability failures, zero applied clip-only
+risks, exact prior 40-run prefix and ledger order. This second
+unknown-patch clip-only development seed has clean accuracy
+0.8847, macro-F1 0.8843148565654431 and adverse ASR
+0.9995555555555555. Both completed seeds now have 99.96% ASR;
+this does not establish a result for full TierGuard 2. No second
+submission occurred in this heartbeat. The next frozen cell is
+clip_only / unknown_patch_model_replacement / seed 2003 and requires
+fresh account, ledger, pin and guard checks later.

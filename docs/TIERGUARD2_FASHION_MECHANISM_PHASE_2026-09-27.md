@@ -1487,3 +1487,33 @@ The clip-only unknown-patch seed 2001 has accuracy 0.8822,
 macro-F1 0.8820349349730623 and adverse ASR
 0.9995555555555555. This is one development seed, not a
 comparative result. No second submission was made in this heartbeat.
+
+## Checkpoint: 30 September 2026, 07:08 UTC
+
+The previous clip-only unknown-patch seed 2001 remains validated
+F/exit 0. The corrected independent checker passes and the frozen
+guard validates **40/96** completed cells with zero errors and
+56 unattempted suffix cells. Its dry-run and submission-time
+indices are byte-identical, SHA-256
+`1206ce80cb7aaf66cac5c3585ee4200fe4d1e9044ef30051da7cc7a94866b15b`.
+
+After fresh full-account empty, unchanged 80-row ledger and pinned
+hash checks, the guard submitted **39749.mgmt01** exactly once for
+`clip_only / unknown_patch_model_replacement / 2002`. PBS showed
+R, non-rerunnable, run count 1 and sole account job. Ledger 82
+rows retain the first 80 unchanged and add one matching pair.
+Job 39749 is an attempt, not yet a result. Evidence is under
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-30T070500Z`.
+
+The submitted job then finished PBS F/exit 0. The frozen guard's
+read-only check validates **41/96** completed cells with zero
+errors and 55 genuinely unattempted suffix cells. New index
+SHA-256 is
+`6e9a4d6fe20e93a0afe822de1833a87d08af3e210193fdf4b97204392ab7e959`.
+The independent checker passes 51 exact copied hashes, 40
+rounds/audits, finite metrics, zero stability failures and the
+unchanged prior 40-run prefix. Clip-only unknown-patch seed
+2002 has clean accuracy 0.8847, macro-F1 0.8843148565654431
+and adverse ASR 0.9995555555555555. Both completed seeds have
+99.96% ASR; this is not evidence about the full method. No
+second submission was made in this heartbeat.

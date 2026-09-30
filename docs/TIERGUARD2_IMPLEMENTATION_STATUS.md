@@ -22,6 +22,23 @@ FedAvg, each under clean training and three attacks with three development
 seeds. Its 96 cells use a new source snapshot and never permit more than one
 outstanding account job. Later source-audited baselines and confirmation
 remain outside this screen. The original panel is not overwritten or pooled.
+At 07:08 UTC on 30 September, the validated prefix remained
+**40/96** with zero guard errors. After full-account empty,
+ledger and pinned-hash checks, the guard submitted exactly one
+next job: **39749.mgmt01**, `clip_only /
+unknown_patch_model_replacement / seed 2002`. PBS showed it R
+and the sole account job. The 82-row ledger retains the previous
+80 rows unchanged and adds a matching intent/submitted pair.
+This is an attempt, not yet a validated result. Evidence is in
+`Rajanmani/output/TierGuard2_Mechanism_2026-09-30T070500Z`.
+Job 39749 subsequently finished F/exit 0. Frozen guard and
+independent raw-record checks validate **41/96** completed
+cells, zero errors, 40 rounds/audits, zero stability failures
+and unchanged prior 40-run prefix. This clip-only unknown-patch
+seed has accuracy 0.8847, macro-F1 0.8843148565654431 and
+adverse ASR 0.9995555555555555. It is an ablation development
+result, not a result for full TierGuard 2. No second job was
+submitted.
 At 06:09 UTC on 30 September, the validated prefix remained **39/96**
 with zero guard errors. Following refreshed empty-account, external
 ledger and pinned-hash checks, the guard submitted exactly one next
