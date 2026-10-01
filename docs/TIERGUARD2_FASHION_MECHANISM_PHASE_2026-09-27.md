@@ -1517,3 +1517,20 @@ unchanged prior 40-run prefix. Clip-only unknown-patch seed
 and adverse ASR 0.9995555555555555. Both completed seeds have
 99.96% ASR; this is not evidence about the full method. No
 second submission was made in this heartbeat.
+
+## Checkpoint: 1 October 2026, 03:27 UTC
+
+The previous clip-only unknown-patch seed 2002 remains validated
+F/exit 0. The independent checker passes and the frozen guard
+validates **41/96** completed cells with zero errors and 55
+unattempted suffix cells. Its dry-run and submission-time indices
+are byte-identical, SHA-256
+`6e9a4d6fe20e93a0afe822de1833a87d08af3e210193fdf4b97204392ab7e959`.
+
+After fresh full-account empty, unchanged 82-row ledger and pinned
+hash checks, the guard submitted **39904.mgmt01** exactly once for
+`clip_only / unknown_patch_model_replacement / 2003`. PBS showed
+R, non-rerunnable, run count 1 and sole account job. Ledger 84
+rows retain the first 82 unchanged and add one matching pair.
+Job 39904 is an attempt, not yet a result. Evidence is under
+`Rajanmani/output/TierGuard2_Mechanism_2026-10-01T032146Z`.

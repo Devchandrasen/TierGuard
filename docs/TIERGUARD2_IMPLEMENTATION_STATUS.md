@@ -22,6 +22,15 @@ FedAvg, each under clean training and three attacks with three development
 seeds. Its 96 cells use a new source snapshot and never permit more than one
 outstanding account job. Later source-audited baselines and confirmation
 remain outside this screen. The original panel is not overwritten or pooled.
+At 03:27 UTC on 1 October, the validated prefix remained **41/96**
+with zero guard errors. After full-account empty, ledger and
+pinned-hash checks, the guard submitted exactly one next job:
+**39904.mgmt01**, `clip_only / unknown_patch_model_replacement /
+seed 2003`. PBS showed it R and the sole account job. The 84-row
+ledger retains the previous 82 rows unchanged and adds a matching
+intent/submitted pair. This is an attempt, not yet a validated
+result. Evidence is in
+`Rajanmani/output/TierGuard2_Mechanism_2026-10-01T032146Z`.
 At 07:08 UTC on 30 September, the validated prefix remained
 **40/96** with zero guard errors. After full-account empty,
 ledger and pinned-hash checks, the guard submitted exactly one

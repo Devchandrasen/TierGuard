@@ -1736,3 +1736,24 @@ this does not establish a result for full TierGuard 2. No second
 submission occurred in this heartbeat. The next frozen cell is
 clip_only / unknown_patch_model_replacement / seed 2003 and requires
 fresh account, ledger, pin and guard checks later.
+
+## Mechanism checkpoint: 1 October 2026, 03:27 UTC
+
+Job **39749.mgmt01** remains F/exit 0, run count 1. The prior
+independent checker again passes 51 copied hashes, all 40
+rounds/audits, finite metrics, zero stability failures and the
+unchanged prior 40-run prefix; its adverse ASR remains
+0.9995555555555555. The frozen guard validates **41/96** cells
+with zero errors and 55 genuinely unattempted suffix cells.
+Dry-run and submission-time index SHA-256 both equal
+`6e9a4d6fe20e93a0afe822de1833a87d08af3e210193fdf4b97204392ab7e959`.
+
+After refreshed empty-account, 82-row ledger and pinned-hash checks,
+the guard submitted exactly one next job, **39904.mgmt01**, at
+03:26:51 UTC for **clip_only / unknown_patch_model_replacement /
+seed 2003**. PBS showed R, non-rerunnable, run count 1 and the
+sole account job. The ledger grew to 84 rows with the previous
+82 unchanged and one matching intent/submitted pair. This is an
+attempt, not a validated result. Evidence is under
+`Rajanmani/output/TierGuard2_Mechanism_2026-10-01T032146Z`.
+No second submission, retry, tuning, confirmation or clone edit.

@@ -13,6 +13,15 @@ wall times are not an algorithmic efficiency comparison.
 
 **New authorized phase:** after the completed nine-run panel was reviewed,
 the user approved the [bounded matched-baseline/ablation screen](TIERGUARD2_FASHION_MECHANISM_PHASE_2026-09-27.md).
+At 03:27 UTC on 1 October, the frozen guard validated **41/96**
+completed cells with zero errors. Following fresh full-account
+empty, 82-row ledger and pinned-hash checks, it submitted exactly
+one next job: **39904.mgmt01** (`clip_only /
+unknown_patch_model_replacement / 2003`). PBS showed R,
+non-rerunnable and sole account job. The ledger grew to 84 rows
+with one matching new pair and unchanged prior 82. This is an
+attempt, not yet a validated result. Evidence is in
+`Rajanmani/output/TierGuard2_Mechanism_2026-10-01T032146Z`.
 At 07:08 UTC on 30 September, the frozen guard validated **40/96**
 completed cells with zero errors. Following fresh full-account
 empty, 80-row ledger and pinned-hash checks, it submitted exactly
