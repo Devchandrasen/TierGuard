@@ -98,12 +98,22 @@ From the repository root with the documented environment installed:
 
 ```powershell
 python scripts/verify_published_results.py
+python scripts/verify_exploratory_runs.py
+python scripts/analyze_exploratory.py --output results/exploratory_tables
 python scripts/profile_aggregation.py --output results/aggregation_profile
 ```
 
 The verifier checks the run matrix and recorded settings and recalculates the
 summaries, paired intervals, effect sizes, and adjusted p-values from the final
 metrics CSV. Verification covers the recorded final outcomes.
+
+The exploratory commands work from the archived CSVs. The run verifier checks
+the complete seed matrix, recorded settings and provenance, and agreement with
+the primary comparator records. The analysis script recalculates the 314
+descriptive rows, 196 method and untargeted contrasts, and 90 Digits root
+contrasts. It verifies the seed differences, intervals, effect sizes, and
+adjusted p-values against the published tables. Omit the output option for a
+read-only check. The commands use saved outcomes and perform no model training.
 
 The profiler compares HFL-FedAvg, TierGuard Core, and TierGuard-PTA with shared
 synthetic client updates at 50% participation. It measures one CPU thread with
