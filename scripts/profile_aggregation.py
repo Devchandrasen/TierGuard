@@ -1,3 +1,4 @@
+# ruff: noqa: E402
 """Profile trusted aggregation on synthetic inputs without training or a network."""
 
 from __future__ import annotations
@@ -18,6 +19,7 @@ from unittest.mock import patch
 import torch
 
 ROOT = Path(__file__).resolve().parents[1]
+# Keep the profiler bound to this checkout even when another version is installed.
 sys.path.insert(0, str(ROOT / "src"))
 
 from tierguard.aggregators.tierguard import TierGuardAggregator

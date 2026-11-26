@@ -124,6 +124,13 @@ transport, root training, and calibration distribution.
 `artifacts/aggregation_profile/` contains the recorded synthetic-workload
 timings, payload counts, and environment information.
 
+`artifacts/exploratory_analysis/` contains matched final-run results for the
+additional methods, the Digits clean and untargeted conditions, and the Digits
+root interventions. Its CSVs include per-seed differences, uncertainty, and
+root class counts. The exploratory Holm families are separate from the four
+primary comparisons. The provenance file records the archived analysis and run
+design hashes. No manuscript files are needed to read the data.
+
 ## Citation
 
 Use the repository's “Cite this repository” control. See `CITATION.cff` for

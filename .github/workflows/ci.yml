@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -25,5 +25,9 @@ jobs:
         run: python scripts/freeze_protocol.py
       - name: Lint
         run: python -m ruff check src tests scripts/freeze_protocol.py scripts/run_confirmatory.py scripts/analyze_confirmatory.py
+      - name: Check results and profiling utilities
+        run: |
+          python -m ruff check scripts/profile_aggregation.py scripts/verify_published_results.py
+          python scripts/verify_published_results.py
       - name: Test
         run: python -m pytest -q
