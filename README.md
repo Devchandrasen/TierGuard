@@ -26,7 +26,7 @@ attack configuration:
 - `hfl_fltrust`: FLTrust at edges and cloud using the same clean root update;
 - `hfl_trimmed_mean`: coordinate-wise trimmed mean at edges and cloud;
 - `hfl_rfa`: weighted geometric median at edges and cloud;
-- `tierguard`: TierGuard-PTA at edges and cloud, including the predefined-trigger audit.
+- `tierguard`: anomaly-weighted averaging at both tiers, with the predefined-trigger audit applied to client candidates before edge aggregation.
 
 The audit has its own data-loader generator. Client and reference-loader
 generators are method-independent, so the audit cannot change another method's
@@ -89,9 +89,28 @@ correction. These results are therefore descriptive confirmatory evidence under
 the released simulation conditions, not evidence of general or statistically
 established superiority.
 
-The machine-readable validation, per-run metrics, descriptive summaries, paired
-comparisons, and concise report are in `artifacts/confirmatory_v1/`. Raw
-per-round records and their SHA-256 manifest are attached to the GitHub release.
+The machine-readable validation, final per-run metrics, descriptive summaries,
+paired comparisons, and concise report are in `artifacts/confirmatory_v1/`.
+
+## Verify results and profile aggregation
+
+From the repository root with the documented environment installed:
+
+```powershell
+python scripts/verify_published_results.py
+python scripts/profile_aggregation.py --output results/aggregation_profile
+```
+
+The verifier checks the run matrix and recorded settings and recalculates the
+summaries, paired intervals, effect sizes, and adjusted p-values from the final
+metrics CSV. Verification covers the recorded final outcomes.
+
+The profiler compares HFL-FedAvg, TierGuard Core, and TierGuard-PTA with shared
+synthetic client updates at 50% participation. It measures one CPU thread with
+a precomputed reference direction and a resident calibration batch. It reports
+update statistics, the rest of aggregation, and PTA time separately. Byte counts
+include the specified binary payload in each direction and exclude framing,
+transport, root training, and calibration distribution.
 
 ## Repository layout
 
@@ -102,13 +121,20 @@ per-round records and their SHA-256 manifest are attached to the GitHub release.
 - `artifacts/confirmatory_v1/`: validated aggregate results and report
 - `tests/`: unit and protocol-invariant tests
 
-Raw per-round outputs are distributed as a release asset because they are larger
-than the review-friendly aggregate files kept in Git.
+`artifacts/aggregation_profile/` contains the recorded synthetic-workload
+timings, payload counts, and environment information.
+
+`artifacts/exploratory_analysis/` contains matched final-run results for the
+additional methods, the Digits clean and untargeted conditions, and the Digits
+root interventions. Its CSVs include per-seed differences, uncertainty, and
+root class counts. The exploratory Holm families are separate from the four
+primary comparisons. The provenance file records the archived analysis and run
+design hashes. No manuscript files are needed to read the data.
 
 ## Citation
 
-Use the repository's “Cite this repository” control or the DOI listed on the
-latest release. See `CITATION.cff` for author metadata.
+Use the repository's “Cite this repository” control. See `CITATION.cff` for
+author metadata and cite a version-specific DOI when one is available.
 
 ## License
 

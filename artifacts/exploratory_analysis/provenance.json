@@ -1,0 +1,11 @@
+{
+  "primary_runs": 180,
+  "extension_runs": 528,
+  "total_runs": 708,
+  "extension_analysis_sha256": "cd0418c987c0845e3988aa5e152cf9c618d038a75aa712cc5e6ef97b2cda0493",
+  "extension_driver_sha256": "9c65d63b27947f64a2630536953afc87562244abbb7dd46c1b68e7a5c18b435e",
+  "extension_design_sha256": "81e4b62b39e6093931f3c15f7ac722d3e4600d3253052be68243379713bb7c17",
+  "method_and_untargeted_pairs": 196,
+  "digits_root_pairs": 90,
+  "partition_check": "All 528 extension records match their archived final round and client/test split. Standard cases also match the root indices."
+}
