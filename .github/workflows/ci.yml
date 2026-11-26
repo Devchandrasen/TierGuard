@@ -27,7 +27,8 @@ jobs:
         run: python -m ruff check src tests scripts/freeze_protocol.py scripts/run_confirmatory.py scripts/analyze_confirmatory.py
       - name: Check results and profiling utilities
         run: |
-          python -m ruff check scripts/profile_aggregation.py scripts/verify_published_results.py
+          python -m ruff check scripts/profile_aggregation.py scripts/verify_published_results.py scripts/verify_exploratory_runs.py scripts/analyze_exploratory.py
           python scripts/verify_published_results.py
+          python scripts/analyze_exploratory.py
       - name: Test
         run: python -m pytest -q
