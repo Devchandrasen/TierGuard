@@ -1,0 +1,14 @@
+{
+  "model_parameters": 105866,
+  "warmup_rounds": 5,
+  "measured_rounds": 30,
+  "torch_threads": 1,
+  "python": "3.12.10",
+  "torch": "2.11.0+cu128",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "processor": "Intel64 Family 6 Model 198 Stepping 2, GenuineIntel",
+  "model_seed": 2026,
+  "workload_seed": 2609,
+  "local_workload": "Synthetic updates, precomputed root direction, and one resident 64-item calibration batch",
+  "payload": "Little-endian float32 vectors, uint64 counts and float64 edge masses; unicast, no framing"
+}
